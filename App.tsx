@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
 import dayjs from "dayjs"
 import nanoid from "nanoid";
 
@@ -12,7 +12,7 @@ interface Item {
 
 export default function App() {
   const [items, setItems] = useState<Item[]>([]);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState("");
 
@@ -52,17 +52,10 @@ export default function App() {
 
   const getLeft = () => {
     return items.reduce((accu, { price, isPaid }) => {
-      return (isPaid)
+      return (!isPaid)
         ? accu + price
         : accu;
     }, 0)
-  }
-
-  const getWrapperStyle = (isPaid: boolean) => {
-    console.log("getwrapper style");
-    return (isPaid)
-      ? styles.itemWrapperDisabled
-      : styles.itemWrapper
   }
 
   return (
@@ -92,23 +85,25 @@ export default function App() {
       <ScrollView>
         {items.map(item => {
           return (
-            <TouchableOpacity
+            <TouchableHighlight
               key={item.id}
-              style={getWrapperStyle(item.isPaid)}
+              style={item.isPaid && styles.itemWrapperDisabled}
               onPress={() => toggleItem(item.id)}
             >
-              <View style={styles.itemText}>
-                <Text style={styles.textWhite}>{item.desc}</Text>
-                <Text style={styles.textWhite}>{item.price}€</Text>
+              <View style={styles.itemWrapper}>
+                <View style={styles.itemText}>
+                  <Text style={styles.textWhite}>{item.desc}</Text>
+                  <Text style={styles.textWhite}>{item.price}€</Text>
+                </View>
+                <TouchableOpacity onPress={() => deleteItem(item.id)}>
+                  <Text style={styles.itemBtn}>&times;</Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity onPress={() => deleteItem(item.id)}>
-                <Text style={styles.itemBtn}>&times;</Text>
-              </TouchableOpacity>
-            </TouchableOpacity>
+            </TouchableHighlight>
           )
         })}
       </ScrollView>
-    </View>
+    </View >
   );
 }
 
@@ -159,12 +154,6 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   itemWrapperDisabled: {
-    height: 50,
-    padding: 20,
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
     opacity: .1
   },
   itemText: {
