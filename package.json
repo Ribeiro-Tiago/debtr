@@ -1,4 +1,6 @@
 {
+  "name": "monthly-pay-tracker",
+  "description": "Simplistic app to help me keep track of what monthly expenses I have left to pay this month",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -28,5 +30,14 @@
   "jest": {
     "preset": "react-native"
   },
-  "private": true
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ribeiro-Tiago/monthly-pay-tracker.git"
+  },
+  "license": "ISC",
+  "author": {
+    "name": "Tiago Ribeiro",
+    "email": "tiagoribeiro.1803@gmail.com",
+    "url": "https://www.linkedin.com/in/ribeiro-tiago"
+  }
 }
