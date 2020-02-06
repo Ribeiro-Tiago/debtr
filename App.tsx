@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TouchableHighlight, AsyncStorage } from 'react-native';
 import dayjs from "dayjs"
 import nanoid from "nanoid";
 
@@ -10,24 +10,62 @@ interface Item {
   price: number;
 }
 
+interface StorageData {
+  currMonth: number;
+  items: Item[];
+}
+
+const key = "MPT_DATA";
 export default function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [isVisible, setIsVisible] = useState(false);
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState("");
+  const [currMonth, setCurrMonth] = useState(-1);
+
+  useEffect(() => {
+    loadStorage()
+  }, [false])
+
+  const loadStorage = async () => {
+    const data = JSON.parse(await AsyncStorage.getItem(key)) as StorageData;
+    const month = dayjs().month();
+
+    if (!data || !data.items.length) {
+      setCurrMonth(month);
+      saveToStorage([], month);
+      return;
+    }
+
+    setCurrMonth(data.currMonth);
+
+    if (data.currMonth !== month) {
+      setItems(data.items.map(item => ({ ...item, isPaid: false })));
+    } else {
+      setItems(data.items);
+    }
+  }
+
+  const saveToStorage = async (items: Item[], month = currMonth) => {
+    await AsyncStorage.setItem(key, JSON.stringify({ items, currMonth: month }));
+  }
 
   const toggleItem = (id: string) => {
-    setItems(items.map(item => {
+    const newItems = items.map(item => {
       if (item.id === id) {
         return { ...item, isPaid: !item.isPaid }
       }
 
       return item;
-    }));
+    });
+    setItems(newItems);
+    saveToStorage(newItems).catch(console.error);
   }
 
   const deleteItem = (id: string) => {
-    setItems(items.filter(item => item.id !== id))
+    const newItems = items.filter(item => item.id !== id);
+    saveToStorage(newItems).catch(console.error);
+    setItems(newItems);
   }
 
   const getCurrDate = () => {
@@ -42,10 +80,13 @@ export default function App() {
       return;
     }
 
-    setItems([
+    const newItems = [
       ...items,
       { id: nanoid(), desc, price: Number(price), isPaid: false }
-    ]);
+    ];
+
+    setItems(newItems);
+    saveToStorage(newItems).catch(console.error);
 
     setIsVisible(false);
   };
