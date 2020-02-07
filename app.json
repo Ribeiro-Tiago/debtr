@@ -3,7 +3,7 @@
   "displayName": "MonthlyPayTracker",
   "expo": {
     "name": "MonthlyPayTracker",
-    "slug": "expo-template-bare",
+    "slug": "monthly-pay-tracker",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
     "version": "1.0.0",
@@ -12,6 +12,11 @@
       "ios",
       "android",
       "web"
-    ]
+    ],
+    "icon": "./icon.png",
+    "android": {
+      "package": "com.monthlypaytracker",
+      "versionCode": 1
+    }
   }
 }
