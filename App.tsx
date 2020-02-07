@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TouchableHighlight, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TouchableHighlight, AsyncStorage, StatusBar } from 'react-native';
 import dayjs from "dayjs"
-import nanoid from "nanoid";
 
 interface Item {
-  id: string;
+  id: number;
   isPaid: boolean;
   desc: string;
   price: number;
@@ -50,7 +49,7 @@ export default function App() {
     await AsyncStorage.setItem(key, JSON.stringify({ items, currMonth: month }));
   }
 
-  const toggleItem = (id: string) => {
+  const toggleItem = (id: number) => {
     const newItems = items.map(item => {
       if (item.id === id) {
         return { ...item, isPaid: !item.isPaid }
@@ -62,7 +61,7 @@ export default function App() {
     saveToStorage(newItems).catch(console.error);
   }
 
-  const deleteItem = (id: string) => {
+  const deleteItem = (id: number) => {
     const newItems = items.filter(item => item.id !== id);
     saveToStorage(newItems).catch(console.error);
     setItems(newItems);
@@ -82,13 +81,15 @@ export default function App() {
 
     const newItems = [
       ...items,
-      { id: nanoid(), desc, price: Number(price), isPaid: false }
+      { id: Date.now(), desc, price: Number(price), isPaid: false }
     ];
 
     setItems(newItems);
     saveToStorage(newItems).catch(console.error);
 
     setIsVisible(false);
+    setDesc("");
+    setPrice(null);
   };
 
   const getLeft = () => {
@@ -101,6 +102,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="black" barStyle="default" />
+
       <View style={styles.topBar}>
         <Text style={styles.text}>Monthly Pay Tracker</Text>
         <Text style={styles.btn} onPress={toggleForm}>+</Text>
@@ -154,6 +157,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#333'
   },
   topBar: {
+    marginTop: 27,
     height: 50,
     backgroundColor: '#f9f9f9',
     justifyContent: "space-between",
