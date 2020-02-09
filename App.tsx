@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TouchableHighlight, AsyncStorage, StatusBar, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TouchableHighlight, StatusBar, AsyncStorage } from 'react-native';
 import dayjs from "dayjs";
-import MultiPicker from "react-native-multiple-select-list";
 
 interface Item {
   id: number;
@@ -55,7 +54,6 @@ export default function App() {
     }
 
     setCurrMonth(data.currMonth);
-
     if (data.currMonth !== month) {
       setItems(data.items.map(item => ({
         ...item,
@@ -121,6 +119,7 @@ export default function App() {
     setIsVisible(false);
     setDesc("");
     setPrice(null);
+    setMonths([]);
   };
 
   const getLeft = () => {
@@ -146,13 +145,11 @@ export default function App() {
   }
 
   const isItemThisMonth = (months: number[], month = currMonth): boolean => {
-    return months.includes(month);
+    return !months.length || months.includes(month);
   }
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="black" barStyle="default" />
-
       <View style={styles.topBar}>
         <Text style={styles.text}>Monthly Pay Tracker</Text>
         <Text style={styles.btn} onPress={toggleForm}>+</Text>
@@ -165,7 +162,8 @@ export default function App() {
           <TextInput style={styles.formInput} value={price} onChangeText={setPrice} placeholder="Valor" placeholderTextColor="#000" keyboardType="number-pad" />
         </View>
 
-        <Text style={styles.monthHint}>Months in which this expense happens.<br />Select none for monthly</Text>
+        <Text style={styles.monthHint}>Months in which this expense happens.</Text>
+        <Text style={styles.monthHint}>Select none for monthly.</Text>
         <ScrollView style={styles.monthWrapper}>
           {allMonths.map((item, index) => {
             return (
@@ -217,10 +215,10 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#333'
+    backgroundColor: '#333',
+    marginTop: StatusBar.currentHeight,
   },
   topBar: {
-    marginTop: StatusBar.currentHeight,
     height: 50,
     backgroundColor: '#f9f9f9',
     justifyContent: "space-between",
