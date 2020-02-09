@@ -150,6 +150,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+
       <View style={styles.topBar}>
         <Text style={styles.text}>Monthly Pay Tracker</Text>
         <Text style={styles.btn} onPress={toggleForm}>+</Text>
@@ -195,10 +197,8 @@ export default function App() {
                 onPress={() => toggleItem(item.id)}
               >
                 <View style={styles.itemWrapper}>
-                  <View style={styles.itemText}>
-                    <Text style={styles.textWhite}>{item.desc}</Text>
-                    <Text style={styles.textWhite}>{item.price}€</Text>
-                  </View>
+                  <Text style={styles.textWhite}>{item.desc}</Text>
+                  <Text style={styles.textWhite}>{item.price}€</Text>
                   <TouchableOpacity onPress={() => deleteItem(item.id)}>
                     <Text style={styles.itemBtn}>&times;</Text>
                   </TouchableOpacity>
@@ -252,28 +252,20 @@ const styles = StyleSheet.create({
     color: "#f7f7f7",
   },
   itemWrapper: {
-    height: 30,
-    padding: 20,
     flex: 1,
-    justifyContent: "space-between",
+    flexDirection: "row",
     alignItems: "center",
-    flexDirection: "row"
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   itemWrapperDisabled: {
     opacity: .1
-  },
-  itemText: {
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-    marginRight: 50
   },
   itemBtn: {
     fontSize: 36,
     color: "red",
     fontWeight: "bold",
-    marginBottom: 5
   },
   formWrapper: {
     marginTop: 10,
