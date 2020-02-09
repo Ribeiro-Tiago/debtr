@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TouchableHighlight, AsyncStorage, StatusBar } from 'react-native';
-import dayjs from "dayjs"
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TouchableHighlight, AsyncStorage, StatusBar, TouchableNativeFeedback } from 'react-native';
+import dayjs from "dayjs";
+import MultiPicker from "react-native-multiple-select-list";
 
 interface Item {
   id: number;
   isPaid: boolean;
   desc: string;
   price: number;
+  months: number[];
+  isVisible: boolean;
 }
 
 interface StorageData {
@@ -15,11 +18,26 @@ interface StorageData {
 }
 
 const key = "MPT_DATA";
+const allMonths = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
 export default function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [isVisible, setIsVisible] = useState(false);
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState("");
+  const [months, setMonths] = useState<number[]>([]);
   const [currMonth, setCurrMonth] = useState(-1);
 
   useEffect(() => {
@@ -39,9 +57,16 @@ export default function App() {
     setCurrMonth(data.currMonth);
 
     if (data.currMonth !== month) {
-      setItems(data.items.map(item => ({ ...item, isPaid: false })));
+      setItems(data.items.map(item => ({
+        ...item,
+        isPaid: false,
+        isVisible: isItemThisMonth(item.months, month)
+      })));
     } else {
-      setItems(data.items);
+      setItems(data.items.map(item => ({
+        ...item,
+        isVisible: isItemThisMonth(item.months, month)
+      })));
     }
   }
 
@@ -81,7 +106,13 @@ export default function App() {
 
     const newItems = [
       ...items,
-      { id: Date.now(), desc, price: Number(price), isPaid: false }
+      {
+        id: Date.now(), desc,
+        price: Number(price),
+        isPaid: false,
+        isVisible: isItemThisMonth(months),
+        months,
+      }
     ];
 
     setItems(newItems);
@@ -93,11 +124,29 @@ export default function App() {
   };
 
   const getLeft = () => {
-    return items.reduce((accu, { price, isPaid }) => {
-      return (!isPaid)
+    return items.reduce((accu, { price, isPaid, months }) => {
+      return (!isPaid && isItemThisMonth(months))
         ? accu + price
         : accu;
     }, 0)
+  }
+
+  const updateSelectMonths = (index: number): void => {
+    if (months.includes(index)) {
+      setMonths(months.filter(item => item !== index));
+    } else {
+      setMonths([...months, index]);
+    }
+  }
+
+  const getMonthItemStyle = (index: number) => {
+    return months.includes(index)
+      ? styles.monthItemSelected
+      : styles.monthItem
+  }
+
+  const isItemThisMonth = (months: number[], month = currMonth): boolean => {
+    return months.includes(month);
   }
 
   return (
@@ -116,6 +165,18 @@ export default function App() {
           <TextInput style={styles.formInput} value={price} onChangeText={setPrice} placeholder="Valor" placeholderTextColor="#000" keyboardType="number-pad" />
         </View>
 
+        <Text style={styles.monthHint}>Months in which this expense happens.<br />Select none for monthly</Text>
+        <ScrollView style={styles.monthWrapper}>
+          {allMonths.map((item, index) => {
+            return (
+              <TouchableOpacity key={index} style={getMonthItemStyle(index)} onPress={() => updateSelectMonths(index)}>
+                <Text style={styles.monthText}>{item}</Text>
+              </TouchableOpacity>
+            )
+          })}
+        </ScrollView>
+
+
         <TouchableOpacity disabled={!price || !desc} onPress={addItem} style={styles.formBtn}>
           <Text style={styles.textWhite}>Add</Text>
         </TouchableOpacity>
@@ -128,23 +189,25 @@ export default function App() {
 
       <ScrollView>
         {items.map(item => {
-          return (
-            <TouchableHighlight
-              key={item.id}
-              style={item.isPaid && styles.itemWrapperDisabled}
-              onPress={() => toggleItem(item.id)}
-            >
-              <View style={styles.itemWrapper}>
-                <View style={styles.itemText}>
-                  <Text style={styles.textWhite}>{item.desc}</Text>
-                  <Text style={styles.textWhite}>{item.price}€</Text>
+          if (item.isVisible) {
+            return (
+              <TouchableHighlight
+                key={item.id}
+                style={item.isPaid && styles.itemWrapperDisabled}
+                onPress={() => toggleItem(item.id)}
+              >
+                <View style={styles.itemWrapper}>
+                  <View style={styles.itemText}>
+                    <Text style={styles.textWhite}>{item.desc}</Text>
+                    <Text style={styles.textWhite}>{item.price}€</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => deleteItem(item.id)}>
+                    <Text style={styles.itemBtn}>&times;</Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => deleteItem(item.id)}>
-                  <Text style={styles.itemBtn}>&times;</Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableHighlight>
-          )
+              </TouchableHighlight>
+            )
+          }
         })}
       </ScrollView>
     </View >
@@ -157,7 +220,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#333'
   },
   topBar: {
-    marginTop: 27,
+    marginTop: StatusBar.currentHeight,
     height: 50,
     backgroundColor: '#f9f9f9',
     justifyContent: "space-between",
@@ -191,7 +254,7 @@ const styles = StyleSheet.create({
     color: "#f7f7f7",
   },
   itemWrapper: {
-    height: 50,
+    height: 30,
     padding: 20,
     flex: 1,
     justifyContent: "space-between",
@@ -247,5 +310,35 @@ const styles = StyleSheet.create({
     height: 40,
     marginTop: 20,
     borderRadius: 5
+  },
+  monthItemSelected: {
+    backgroundColor: "rgba(175, 175, 175, .35)",
+    height: 50,
+    flex: 1,
+    marginVertical: 5,
+    width: "100%",
+    padding: 5,
+  },
+  monthHint: {
+    fontSize: 18,
+    fontStyle: "italic",
+    color: "#afafaf",
+    marginTop: 10,
+    marginHorizontal: "5%"
+  },
+  monthWrapper: {
+    height: 250,
+    paddingHorizontal: "5%"
+  },
+  monthItem: {
+    backgroundColor: "#afafaf",
+    height: 50,
+    flex: 1,
+    marginVertical: 5,
+    width: "100%",
+    padding: 5,
+  },
+  monthText: {
+    fontSize: 20
   }
 });
