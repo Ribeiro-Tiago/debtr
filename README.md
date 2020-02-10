@@ -11,3 +11,5 @@ If you also wanna use this, just run `npm run build` to build an android apk. No
 - refactor everything
 - add proper icon
 - add tests
+- add listing of all existing expenses
+- add edit expense
