@@ -1,0 +1,52 @@
+import React from 'react';
+import { TouchableHighlight, View, StyleSheet, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+const primary = '#581c0c';
+const secondary = '#ca5116';
+
+export default function ListItem({ item, onPress, isEven }) {
+  return (
+    <TouchableHighlight key={item.id} onPress={() => onPress(item.id)}>
+      <View style={styles.container}>
+        <Text style={isEven ? styles.evenItem : styles.oddItem}>
+          {item.desc}
+        </Text>
+        <Text style={isEven ? styles.evenItem : styles.oddItem}>
+          {item.price}€
+        </Text>
+
+        <Icon
+          name="ios-checkmark"
+          size={48}
+          color={!item.isPaid ? 'transparent' : isEven ? primary : secondary}
+          style={styles.icon}
+        />
+      </View>
+    </TouchableHighlight>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    height: 70,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f9b384',
+  },
+  evenItem: {
+    color: '#581c0c',
+    fontSize: 18,
+  },
+  oddItem: {
+    color: '#ca5116',
+    fontSize: 18,
+  },
+  icon: {
+    textAlign: 'right',
+  },
+});
