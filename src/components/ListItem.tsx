@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableHighlight, View, StyleSheet, Text } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const primary = '#581c0c';
@@ -7,7 +7,7 @@ const secondary = '#ca5116';
 
 export default function ListItem({ item, onPress, isEven }) {
   return (
-    <TouchableHighlight key={item.id} onPress={() => onPress(item.id)}>
+    <TouchableOpacity key={item.id} onPress={() => onPress(item.id)}>
       <View style={styles.container}>
         <Text style={isEven ? styles.evenItem : styles.oddItem}>
           {item.desc}
@@ -23,7 +23,7 @@ export default function ListItem({ item, onPress, isEven }) {
           style={styles.icon}
         />
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 }
 
@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f9b384',
   },
   evenItem: {
-    color: '#581c0c',
+    color: primary,
     fontSize: 18,
   },
   oddItem: {
-    color: '#ca5116',
+    color: secondary,
     fontSize: 18,
   },
   icon: {
