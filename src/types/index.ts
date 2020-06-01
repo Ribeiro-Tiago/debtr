@@ -2,7 +2,7 @@ export interface Item {
   id: string;
   isPaid: boolean;
   desc: string;
-  price: number;
+  amount: number;
   months: number[];
   isVisible: boolean;
 }

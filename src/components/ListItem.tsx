@@ -13,7 +13,7 @@ export default function ListItem({ item, onPress, isEven }) {
           {item.desc}
         </Text>
         <Text style={isEven ? styles.evenItem : styles.oddItem}>
-          {item.price}€
+          {item.amount}€
         </Text>
 
         <Icon
