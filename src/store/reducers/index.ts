@@ -1,3 +1,3 @@
-import list from './list';
+import items from './items';
 
-export default { list };
+export default { items };
