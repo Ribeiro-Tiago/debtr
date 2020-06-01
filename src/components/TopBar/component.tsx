@@ -1,12 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import dayjs from 'dayjs';
 
-export default function TopBar() {
+interface Props {
+  amountLeft: number;
+}
+
+export default function TopBar({ amountLeft }: Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Maio 2020</Text>
-      <Text style={styles.leftover}>20€ Left</Text>
+      <Text style={styles.title}>{dayjs().format('MMMM YYYY')}</Text>
+      <Text style={styles.leftover}>{amountLeft}€ Left</Text>
     </View>
   );
 }
