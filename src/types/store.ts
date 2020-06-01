@@ -5,7 +5,14 @@ export interface StoreState {
   amountLeft: number;
 }
 
-export interface ListReducerAction {
+interface ReducerAction {
   type: string;
+}
+
+export interface ListReducerAction extends ReducerAction {
   payload: string & Item;
+}
+
+export interface AmountLeftReducerAction extends ReducerAction {
+  payload: number;
 }
