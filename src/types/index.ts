@@ -8,6 +8,6 @@ export interface Item {
 }
 
 export interface StorageData {
-  currMonth: number;
+  amountLeft: number;
   items: Item[];
 }
