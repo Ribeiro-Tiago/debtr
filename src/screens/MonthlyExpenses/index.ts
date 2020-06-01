@@ -4,6 +4,7 @@ import component from './component';
 import { StoreState } from '../../types/store';
 import { Item } from '../../types';
 import { toggleItemStatus } from '../../store/actions/items';
+import { addAmount, subtractAmount } from '../../store/actions/amountLeft';
 
 const getMonthlyItems = (items: Item[]) => {
   const currMonth = new Date().getMonth();
@@ -20,6 +21,11 @@ const mapStateToProps = (state: StoreState) => {
 const mapDispatchToProps = (dispatch: Function) => {
   return {
     togglePaidStatus: (id: string) => dispatch(toggleItemStatus(id)),
+    updateAmountLeft: (amount: number, isPaid: boolean) => {
+      return isPaid
+        ? dispatch(addAmount(amount))
+        : dispatch(subtractAmount(amount));
+    },
   };
 };
 
