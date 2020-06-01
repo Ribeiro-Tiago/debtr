@@ -6,7 +6,7 @@ import { Item } from '../types';
 
 interface Props {
   data: Item[];
-  onItemPress: (id: string) => void;
+  onItemPress: (item: Item) => void;
 }
 export default function List({ data, onItemPress }: Props) {
   const renderItem = ({ item, index }) => {

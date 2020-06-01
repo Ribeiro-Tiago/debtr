@@ -2,12 +2,19 @@ import React from 'react';
 import { TouchableWithoutFeedback, View, StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import { Item } from '../types';
+
 const primary = '#581c0c';
 const secondary = '#ca5116';
 
+interface Props {
+  item: Item;
+  onPress: (item: Item) => void;
+  isEven: boolean;
+}
 export default function ListItem({ item, onPress, isEven }) {
   return (
-    <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item.id)}>
+    <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item)}>
       <View style={styles.container}>
         <Text style={isEven ? styles.evenItem : styles.oddItem}>
           {item.desc}
