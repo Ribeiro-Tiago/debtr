@@ -5,6 +5,7 @@ import {
   REMOVE_ITEM,
   UPDATE_ITEM,
   ADD_ITEM,
+  SET_ITEMS,
 } from '../actions/types';
 import { Item } from '../../types';
 import { ListReducerAction } from '../../types/store';
@@ -30,6 +31,10 @@ const initState: Item[] = [
 
 export default (state = initState, { type, payload }: ListReducerAction) => {
   switch (type) {
+    case SET_ITEMS: {
+      return payload;
+    }
+
     case ADD_ITEM: {
       return {
         ...state,

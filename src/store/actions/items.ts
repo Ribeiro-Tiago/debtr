@@ -1,10 +1,13 @@
 import {
+  SET_ITEMS,
   ADD_ITEM,
   UPDATE_ITEM,
   REMOVE_ITEM,
   TOGGLE_ITEM_STATUS,
 } from './types';
 import { Item } from '../../types';
+
+export const setItems = (payload: Item[]) => ({ type: SET_ITEMS, payload });
 
 export const addItem = (payload: Item) => ({ type: ADD_ITEM, payload });
 
