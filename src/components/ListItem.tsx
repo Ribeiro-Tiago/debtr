@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet, Text } from 'react-native';
+import { TouchableWithoutFeedback, View, StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const primary = '#581c0c';
@@ -7,7 +7,7 @@ const secondary = '#ca5116';
 
 export default function ListItem({ item, onPress, isEven }) {
   return (
-    <TouchableOpacity key={item.id} onPress={() => onPress(item.id)}>
+    <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item.id)}>
       <View style={styles.container}>
         <Text style={isEven ? styles.evenItem : styles.oddItem}>
           {item.desc}
@@ -23,7 +23,7 @@ export default function ListItem({ item, onPress, isEven }) {
           style={styles.icon}
         />
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 }
 
