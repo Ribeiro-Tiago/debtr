@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid/non-secure';
+
 import {
   TOGGLE_ITEM_STATUS,
   REMOVE_ITEM,
@@ -7,7 +9,24 @@ import {
 import { Item } from '../../types';
 import { ListReducerAction } from '../../types/store';
 
-const initState: Item[] = [];
+const initState: Item[] = [
+  {
+    id: nanoid(),
+    isPaid: false,
+    desc: 'something',
+    price: 1321.3,
+    months: [1, 2, 3, 4],
+    isVisible: true,
+  },
+  {
+    id: nanoid(),
+    isPaid: true,
+    desc: 'something',
+    price: 10,
+    months: [1, 2, 3, 4, 5],
+    isVisible: true,
+  },
+];
 
 export default (state = initState, { type, payload }: ListReducerAction) => {
   switch (type) {
