@@ -1,3 +1,4 @@
 import items from './items';
+import amountLeft from './amountLeft';
 
-export default { items };
+export default { items, amountLeft };
