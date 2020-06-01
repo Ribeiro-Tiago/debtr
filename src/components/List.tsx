@@ -18,7 +18,7 @@ export default function List({ data, onItemPress }: Props) {
   if (!data.length) {
     return (
       <View style={styles.noItems}>
-        <Text>You have no expenses this month</Text>
+        <Text>You have no expenses left this month 🥳🥳</Text>
       </View>
     );
   }
