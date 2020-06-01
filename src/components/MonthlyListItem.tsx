@@ -12,7 +12,7 @@ interface Props {
   onPress: (item: Item) => void;
   isEven: boolean;
 }
-export default function ListItem({ item, onPress, isEven }) {
+export default function MonthlyListItem({ item, onPress, isEven }: Props) {
   return (
     <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item)}>
       <View style={styles.container}>
