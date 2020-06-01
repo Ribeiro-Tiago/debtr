@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 
-import { List, TopBar } from '../../components';
+import { List, TopBar, MonthlyListItem as ListItem } from '../../components';
 import { Item } from '../../types';
 
 interface Props {
@@ -23,6 +23,22 @@ export default function MonthlyExpenses({
     updateAmountLeft(amount, isPaid);
   };
 
+  const renderItem = ({ item, index }) => {
+    return (
+      <ListItem onPress={onItemPress} item={item} isEven={index % 2 === 0} />
+    );
+  };
+
+  const renderEmptyList = () => {
+    return (
+      <View style={styles.emptyListContainer}>
+        <Text style={styles.emptyListText}>
+          You have no expenses left this month 🥳🥳
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <TopBar>
@@ -30,7 +46,11 @@ export default function MonthlyExpenses({
         <Text style={styles.leftover}>{amountLeft}€ Left</Text>
       </TopBar>
 
-      <List data={items} onItemPress={onItemPress} />
+      <List
+        data={items}
+        renderEmptyList={renderEmptyList}
+        renderListItem={renderItem}
+      />
     </View>
   );
 }
@@ -47,5 +67,17 @@ const styles = StyleSheet.create({
   leftover: {
     fontSize: 16,
     color: '#581c0c',
+  },
+  emptyListContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  emptyListText: {
+    fontSize: 26,
+    textAlign: 'center',
+    marginHorizontal: 30,
+    lineHeight: 40,
   },
 });

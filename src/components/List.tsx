@@ -1,33 +1,23 @@
 import React from 'react';
-import { FlatList, StyleSheet, View, Text } from 'react-native';
+import { FlatList, StyleSheet, ListRenderItemInfo } from 'react-native';
 
-import ListItem from './ListItem';
 import { Item } from '../types';
 
 interface Props {
   data: Item[];
-  onItemPress: (item: Item) => void;
+  renderEmptyList: () => React.ReactElement;
+  renderListItem: (info: ListRenderItemInfo<Item>) => React.ReactElement | null;
 }
-export default function List({ data, onItemPress }: Props) {
-  const renderItem = ({ item, index }) => {
-    return (
-      <ListItem onPress={onItemPress} item={item} isEven={index % 2 === 0} />
-    );
-  };
-
+export default function List({ data, renderEmptyList, renderListItem }: Props) {
   if (!data.length) {
-    return (
-      <View style={styles.noItems}>
-        <Text>You have no expenses left this month 🥳🥳</Text>
-      </View>
-    );
+    return renderEmptyList();
   }
 
   return (
     <FlatList<Item>
       keyExtractor={({ id }) => id}
       data={data}
-      renderItem={renderItem}
+      renderItem={renderListItem}
       style={styles.container}
     />
   );
@@ -35,10 +25,4 @@ export default function List({ data, onItemPress }: Props) {
 
 const styles = StyleSheet.create({
   container: { backgroundColor: '#eaeaea' },
-  noItems: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
 });
