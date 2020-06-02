@@ -1,30 +1,91 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import TopBar from '../../components/TopBar/component';
-import { List } from '../../components';
+import { TopBar, List, ListItem } from '../../components';
+import { Item } from '../../types';
 
-export default function AllExpenses({ items }) {
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+interface Props {
+  items: Item[];
+}
+
+export default function AllExpenses({ items }: Props) {
+  const navigation = useNavigation();
+
+  const goToForm = (id?: string) => {
+    navigation.navigate('ExpenseForm', { id });
+  };
+
   const renderEmptyList = () => {
     return (
-      <View>
-        <Text>Empty list</Text>
+      <View style={styles.emptyContainer}>
+        <TouchableWithoutFeedback onPress={() => goToForm()}>
+          <View style={styles.createExpenseContainer}>
+            <Text style={styles.createExpenseText}>
+              Create your first expense
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     );
   };
 
-  const renderListItem = ({ item }) => {
+  const renderMonths = (months: number[]) => {
+    if (!months.length || months.length === 11) {
+      return <Text style={styles.tag}>Happens every month</Text>;
+    }
+
+    return months.map((m) => (
+      <Text key={m} style={styles.tag}>
+        {monthNames[m]}
+      </Text>
+    ));
+  };
+
+  const renderListItem = ({ item, index }) => {
     return (
-      <View>
-        <Text>Text item </Text>
-      </View>
+      <ListItem
+        item={item}
+        iconName="ios-trash"
+        onPress={() => goToForm(item.id)}
+        isEven={index % 2 === 0}
+        renderTags={({ months }) => (
+          <View style={styles.tags}>{renderMonths(months)}</View>
+        )}
+      />
     );
+  };
+
+  const renderHeaderButton = () => {
+    if (items.length) {
+      return (
+        <Text onPress={() => goToForm()} style={styles.button}>
+          Create
+        </Text>
+      );
+    }
   };
 
   return (
     <View style={styles.container}>
       <TopBar>
         <Text style={styles.title}>All monthly expenses</Text>
+        {renderHeaderButton()}
       </TopBar>
 
       <List
@@ -45,8 +106,35 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#581c0c',
   },
-  leftover: {
-    fontSize: 16,
+  button: {
+    fontSize: 20,
+    color: '#581c0c',
+  },
+  tags: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  tag: {
+    fontSize: 12,
+    marginRight: 5,
+  },
+  emptyContainer: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  createExpenseContainer: {
+    borderRadius: 10,
+    backgroundColor: '#f1e3cb',
+    padding: 10,
+    borderColor: '#581c0c',
+    borderWidth: 1,
+  },
+  createExpenseText: {
+    fontSize: 24,
+    textAlign: 'center',
+    lineHeight: 40,
     color: '#581c0c',
   },
 });
