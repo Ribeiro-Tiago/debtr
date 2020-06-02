@@ -40,12 +40,8 @@ export default function ({ setAmountLeft, setItems }: Props) {
         if (data) {
           setAmountLeft(data.amountLeft);
           setItems(data.items);
-
           return;
         }
-
-        setAmountLeft(0);
-        setItems([]);
       })
       .catch(console.error);
   }, []);

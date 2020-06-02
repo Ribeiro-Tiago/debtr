@@ -10,24 +10,7 @@ import {
 import { Item } from '../../types';
 import { ListReducerAction } from '../../types/store';
 
-const initState: Item[] = [
-  {
-    id: nanoid(),
-    isPaid: false,
-    desc: 'something',
-    amount: 1321.3,
-    months: [1, 2, 3, 4],
-    isVisible: true,
-  },
-  {
-    id: nanoid(),
-    isPaid: true,
-    desc: 'something',
-    amount: 10,
-    months: [1, 2, 3, 4, 5],
-    isVisible: true,
-  },
-];
+const initState: Item[] = [];
 
 export default (state = initState, { type, payload }: ListReducerAction) => {
   switch (type) {
