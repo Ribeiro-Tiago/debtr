@@ -9,10 +9,18 @@ const secondary = '#ca5116';
 
 interface Props {
   item: Item;
-  onPress: (item: Item) => void;
   isEven: boolean;
+  iconName: string;
+  onPress: (item: Item) => void;
+  renderTags?: (item: Item) => React.ReactElement;
 }
-export default function MonthlyListItem({ item, onPress, isEven }: Props) {
+export default function ListItem({
+  item,
+  isEven,
+  iconName,
+  onPress,
+  renderTags,
+}: Props) {
   return (
     <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item)}>
       <View style={styles.container}>
@@ -24,11 +32,13 @@ export default function MonthlyListItem({ item, onPress, isEven }: Props) {
         </Text>
 
         <Icon
-          name="ios-checkmark"
+          name={iconName}
           size={48}
           color={!item.isPaid ? 'transparent' : isEven ? primary : secondary}
           style={styles.icon}
         />
+
+        {renderTags && renderTags(item)}
       </View>
     </TouchableWithoutFeedback>
   );

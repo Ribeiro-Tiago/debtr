@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 
-import { List, TopBar, MonthlyListItem as ListItem } from '../../components';
+import { List, TopBar, ListItem } from '../../components';
 import { Item } from '../../types';
 
 interface Props {
@@ -25,7 +25,12 @@ export default function MonthlyExpenses({
 
   const renderItem = ({ item, index }) => {
     return (
-      <ListItem onPress={onItemPress} item={item} isEven={index % 2 === 0} />
+      <ListItem
+        onPress={onItemPress}
+        item={item}
+        isEven={index % 2 === 0}
+        iconName="ios-checkmark"
+      />
     );
   };
 
