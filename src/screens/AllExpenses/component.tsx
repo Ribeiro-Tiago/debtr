@@ -1,5 +1,11 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Alert,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { TopBar, List, ListItem } from '../../components';
@@ -8,14 +14,28 @@ import { Item, Month } from '../../types';
 interface Props {
   items: Item[];
   updateCurrent: (item?: Item) => void;
+  removeItem: (id: string) => void;
 }
 
-export default function AllExpenses({ items, updateCurrent }: Props) {
+export default function AllExpenses({
+  items,
+  updateCurrent,
+  removeItem,
+}: Props) {
   const navigation = useNavigation();
 
   const goToForm = (item?: Item) => {
     updateCurrent(item);
     navigation.navigate('ExpenseForm');
+  };
+
+  const onRemove = (id: string) => {
+    Alert.alert(
+      'Confirm delete?',
+      'You are about to delete this expense. This action is irreversable',
+      [{ text: 'Confirm', onPress: () => removeItem(id) }, { text: 'Cancel' }],
+      { cancelable: true }
+    );
   };
 
   const renderEmptyList = () => {
@@ -51,6 +71,7 @@ export default function AllExpenses({ items, updateCurrent }: Props) {
         iconName="ios-trash"
         onPress={() => goToForm(item)}
         isEven={index % 2 === 0}
+        onIconPress={onRemove}
         renderTags={({ months }) => (
           <View style={styles.tags}>{renderMonths(months)}</View>
         )}
@@ -100,6 +121,7 @@ const styles = StyleSheet.create({
   tags: {
     display: 'flex',
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   tag: {
     fontSize: 12,
