@@ -132,7 +132,7 @@ export default function ExpenseForm({
         <FormItem
           label="Amount"
           error="Amount must be a valid number"
-          placeholder="E.g.: 14"
+          placeholder="E.g.: 14 (Just a number)"
           hasErr={!!errors.amount}
           keyboard="numeric"
           onChange={(val: number) => setValue('amount', val, true)}
