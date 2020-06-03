@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid/non-secure';
-
 import {
   TOGGLE_ITEM_STATUS,
   REMOVE_ITEM,
