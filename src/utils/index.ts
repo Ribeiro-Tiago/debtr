@@ -12,3 +12,13 @@ export const months = [
   { id: 10, label: 'November' },
   { id: 11, label: 'December' },
 ];
+
+export const sanitizeAmount = (amount: any) => {
+  try {
+    const sanitized = Math.abs(Number(amount.toString().replace(/\D/g, '')));
+
+    return isNaN(sanitized) ? 0 : sanitized;
+  } catch (ex) {
+    return 0;
+  }
+};

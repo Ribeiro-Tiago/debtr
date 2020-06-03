@@ -25,9 +25,7 @@ export default (state = initState, { type, payload }: ListReducerAction) => {
           ...(payload as ItemCreation),
           id: nanoid(),
           isPaid: false,
-          amount: Math.abs(
-            Number(payload.amount.toString().replace(/\D/g, ''))
-          ),
+          amount: sanitizeAmount(payload.amount),
         },
       ];
     }
