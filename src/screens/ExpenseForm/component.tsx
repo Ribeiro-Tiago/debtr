@@ -19,8 +19,8 @@ interface Props {
   item: Item | null;
   selectedMonths: Month[];
   create: (item: ItemCreation) => void;
-  update: (item: Item) => void;
-  remove: (id: string) => void;
+  update: (item: Item, amount: number) => void;
+  remove: (id: string, amount: number) => void;
 }
 
 interface Form {
@@ -35,12 +35,13 @@ export default function ExpenseForm({
   update,
   remove,
 }: Props) {
+  const initialValues = {
+    description: item && item.description,
+    amount: item && item.amount,
+  };
   const { goBack } = useNavigation();
   const { register, setValue, handleSubmit, errors } = useForm<Form>({
-    defaultValues: {
-      description: item && item.description,
-      amount: item && item.amount,
-    },
+    defaultValues: initialValues,
     reValidateMode: 'onBlur',
   });
   const isNew = !item;
@@ -54,14 +55,17 @@ export default function ExpenseForm({
     if (isNew) {
       create({ ...data, months: selectedMonths });
     } else {
-      update({ ...item, ...data, months: selectedMonths });
+      update(
+        { ...item, ...data, months: selectedMonths },
+        initialValues.amount
+      );
     }
 
     goBack();
   };
 
   const onDeleteConfirm = () => {
-    remove(item.id);
+    remove(item.id, item.amount);
     goBack();
   };
 

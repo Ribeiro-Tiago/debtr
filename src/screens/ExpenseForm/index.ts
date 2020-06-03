@@ -4,6 +4,7 @@ import component from './component';
 import { StoreState } from '../../types/store';
 import { addItem, updateItem, removeItem } from '../../store/actions/items';
 import { Item } from '../../types';
+import { addAmount, subtractAmount } from '../../store/actions/amountLeft';
 
 const mapStateToProps = (state: StoreState) => {
   const item = state.current.item;
@@ -17,9 +18,22 @@ const mapStateToProps = (state: StoreState) => {
 
 const mapDispatchToProps = (dispatch: Function) => {
   return {
-    create: (item: Item) => dispatch(addItem(item)),
-    update: (item: Item) => dispatch(updateItem(item)),
-    remove: (id: string) => dispatch(removeItem(id)),
+    create: (item: Item) => {
+      dispatch(addItem(item));
+      dispatch(addAmount(item.amount));
+    },
+    update: (item: Item, oldAmount: number) => {
+      dispatch(updateItem(item));
+
+      if (oldAmount !== undefined) {
+        dispatch(addAmount(item.amount));
+        dispatch(subtractAmount(oldAmount));
+      }
+    },
+    remove: (id: string, amount: number) => {
+      dispatch(removeItem(id));
+      dispatch(subtractAmount(amount));
+    },
   };
 };
 
