@@ -15,7 +15,7 @@ export default function AllExpenses({ items, updateCurrent }: Props) {
 
   const goToForm = (item?: Item) => {
     updateCurrent(item);
-    navigation.navigate('ExpenseForm', { id: item && item.id });
+    navigation.navigate('ExpenseForm');
   };
 
   const renderEmptyList = () => {
@@ -49,7 +49,7 @@ export default function AllExpenses({ items, updateCurrent }: Props) {
       <ListItem
         item={item}
         iconName="ios-trash"
-        onPress={() => goToForm(item.id)}
+        onPress={() => goToForm(item)}
         isEven={index % 2 === 0}
         renderTags={({ months }) => (
           <View style={styles.tags}>{renderMonths(months)}</View>
