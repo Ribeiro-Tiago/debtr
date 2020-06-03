@@ -9,6 +9,8 @@ import {
 } from '../actions/types';
 import { Item, ItemCreation } from '../../types';
 import { ListReducerAction } from '../../types/store';
+import { updateItems } from '../../services/storage/storage';
+import { sanitizeAmount } from '../../utils';
 
 const initState: Item[] = [];
 
@@ -19,7 +21,7 @@ export default (state = initState, { type, payload }: ListReducerAction) => {
     }
 
     case ADD_ITEM: {
-      return [
+      const items = [
         ...state,
         {
           ...(payload as ItemCreation),
@@ -28,20 +30,38 @@ export default (state = initState, { type, payload }: ListReducerAction) => {
           amount: sanitizeAmount(payload.amount),
         },
       ];
+
+      updateItems(items);
+
+      return items;
     }
 
     case UPDATE_ITEM: {
-      return state.map((item) => (item.id === payload.id ? payload : item));
+      const items = state.map((item) =>
+        item.id === payload.id ? payload : item
+      );
+
+      updateItems(items);
+
+      return items;
     }
 
     case TOGGLE_ITEM_STATUS: {
-      return state.map((item) => {
+      const items = state.map((item) => {
         return item.id === payload ? { ...item, isPaid: !item.isPaid } : item;
       });
+
+      updateItems(items);
+
+      return items;
     }
 
     case REMOVE_ITEM: {
-      return state.filter(({ id }) => id !== payload);
+      const items = state.filter(({ id }) => id !== payload);
+
+      updateItems(items);
+
+      return items;
     }
 
     default:
