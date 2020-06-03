@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid/non-secure';
+
 import {
   TOGGLE_ITEM_STATUS,
   REMOVE_ITEM,
@@ -5,7 +7,7 @@ import {
   ADD_ITEM,
   SET_ITEMS,
 } from '../actions/types';
-import { Item } from '../../types';
+import { Item, ItemCreation } from '../../types';
 import { ListReducerAction } from '../../types/store';
 
 const initState: Item[] = [];
@@ -17,10 +19,10 @@ export default (state = initState, { type, payload }: ListReducerAction) => {
     }
 
     case ADD_ITEM: {
-      return {
+      return [
         ...state,
-        payload,
-      };
+        { ...(payload as ItemCreation), id: nanoid(), isPaid: false },
+      ];
     }
 
     case UPDATE_ITEM: {
