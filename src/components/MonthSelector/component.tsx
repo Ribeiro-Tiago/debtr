@@ -48,8 +48,8 @@ export default function MonthSelector({
   };
 
   return (
-    <>
-      <View style={styles.wrapper}>
+    <View style={styles.wrapper}>
+      <View style={styles.container}>
         <Text style={styles.label}>Months</Text>
         <Icon
           name="ios-help-circle-outline"
@@ -80,12 +80,16 @@ export default function MonthSelector({
           />
         ))}
       </View>
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrapper: {
+    borderBottomColor: '#581c0c',
+    borderBottomWidth: 0.5,
+  },
+  container: {
     paddingTop: 15,
     display: 'flex',
     flexDirection: 'row',
