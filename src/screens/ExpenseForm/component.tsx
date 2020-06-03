@@ -47,9 +47,9 @@ export default function ExpenseForm({
 
   const onSubmit = (data: Form) => {
     if (isNew) {
-      create({ ...data, months: selectedMonths });
+      create({ ...data, months: selectedMonths || [] });
     } else {
-      update({ ...item, ...data, months: selectedMonths });
+      update({ ...item, ...data, months: selectedMonths || [] });
     }
 
     goBack();
