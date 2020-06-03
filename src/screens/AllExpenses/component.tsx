@@ -14,7 +14,7 @@ import { Item, Month } from '../../types';
 interface Props {
   items: Item[];
   updateCurrent: (item?: Item) => void;
-  removeItem: (id: string) => void;
+  removeItem: (id: string, amount: number) => void;
 }
 
 export default function AllExpenses({
@@ -29,11 +29,14 @@ export default function AllExpenses({
     navigation.navigate('ExpenseForm');
   };
 
-  const onRemove = (id: string) => {
+  const onRemove = ({ id, amount }: Item) => {
     Alert.alert(
       'Confirm delete?',
       'You are about to delete this expense. This action is irreversable',
-      [{ text: 'Confirm', onPress: () => removeItem(id) }, { text: 'Cancel' }],
+      [
+        { text: 'Confirm', onPress: () => removeItem(id, amount) },
+        { text: 'Cancel' },
+      ],
       { cancelable: true }
     );
   };
