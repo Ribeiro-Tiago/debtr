@@ -8,6 +8,7 @@ interface Props {
   hasErr: boolean;
   onChange: (val: string | number) => void;
   keyboard?: KeyboardTypeOptions;
+  initialValue?: string;
 }
 
 export default function FormItem({
@@ -16,6 +17,7 @@ export default function FormItem({
   hasErr,
   placeholder,
   onChange,
+  initialValue,
   keyboard = 'default',
 }: Props) {
   return (
@@ -26,6 +28,7 @@ export default function FormItem({
         onChangeText={onChange}
         placeholder={placeholder}
         keyboardType={keyboard}
+        value={initialValue}
       />
       {hasErr && <Text style={styles.error}>{error}</Text>}
     </>

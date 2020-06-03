@@ -117,6 +117,7 @@ export default function ExpenseForm({
           placeholder="E.g.: Netflix"
           hasErr={!!errors.description}
           onChange={(val: string) => setValue('description', val, true)}
+          initialValue={item && item.description}
         />
 
         <FormItem
@@ -126,6 +127,7 @@ export default function ExpenseForm({
           hasErr={!!errors.amount}
           keyboard="numeric"
           onChange={(val: number) => setValue('amount', val, true)}
+          initialValue={item && item.amount.toString()}
         />
 
         <MonthSelector />
