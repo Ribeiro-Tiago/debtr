@@ -30,6 +30,7 @@ export default function MonthlyExpenses({
         item={item}
         isEven={index % 2 === 0}
         iconName="ios-checkmark"
+        hideIcon={!item.isPaid}
       />
     );
   };
