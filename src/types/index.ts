@@ -11,6 +11,7 @@ export interface Item extends ItemCreation {
 
 export interface StorageData {
   amountLeft: number;
+  currMonth: number;
   items: Item[];
 }
 
