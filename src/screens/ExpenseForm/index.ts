@@ -17,7 +17,8 @@ const mapStateToProps = (state: StoreState, { params }: Nav) => {
 
   return {
     isNew: !id,
-    item: !!id ? state.items.find((item) => item.id === id) : null,
+    item: state.current.item,
+    selectedMonths: state.current.months,
   };
 };
 
