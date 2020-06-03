@@ -9,15 +9,15 @@ import { addAmount, subtractAmount } from '../../store/actions/amountLeft';
 const getMonthlyItems = (items: Item[]) => {
   const currMonth = new Date().getMonth();
 
-  return items.filter(
-    ({ months }) => !!months.find(({ id }) => id === currMonth)
-  );
+  return items.filter(({ months }) => {
+    return !months.length || !!months.find(({ id }) => id === currMonth);
+  });
 };
 
-const mapStateToProps = (state: StoreState) => {
+const mapStateToProps = ({ items, amountLeft }: StoreState) => {
   return {
-    items: getMonthlyItems(state.items),
-    amountLeft: state.amountLeft,
+    items: getMonthlyItems(items),
+    amountLeft: amountLeft,
   };
 };
 
@@ -26,8 +26,8 @@ const mapDispatchToProps = (dispatch: Function) => {
     togglePaidStatus: (id: string) => dispatch(toggleItemStatus(id)),
     updateAmountLeft: (amount: number, isPaid: boolean) => {
       return isPaid
-        ? dispatch(addAmount(amount))
-        : dispatch(subtractAmount(amount));
+        ? dispatch(subtractAmount(amount))
+        : dispatch(addAmount(amount));
     },
   };
 };
