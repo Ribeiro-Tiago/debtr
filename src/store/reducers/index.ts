@@ -1,5 +1,5 @@
 import items from './items';
 import amountLeft from './amountLeft';
-import currrent from './current';
+import current from './current';
 
-export default { items, amountLeft, currrent };
+export default { items, amountLeft, current };
