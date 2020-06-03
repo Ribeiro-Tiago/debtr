@@ -46,7 +46,7 @@ export default function ({ setAmountLeft, setItems }: Props) {
         const currMonth = new Date().getMonth();
 
         if (data) {
-          setAmountLeft(data.amountLeft);
+          setAmountLeft(Number(data.amountLeft));
 
           if (data.currMonth !== currMonth) {
             setItems(data.items.map((i) => ({ ...i, isPaid: false })));
