@@ -4,10 +4,14 @@ export interface Item {
   desc: string;
   amount: number;
   months: number[];
-  isVisible: boolean;
 }
 
 export interface StorageData {
   amountLeft: number;
   items: Item[];
+}
+
+export interface Month {
+  id: number;
+  label: string;
 }
