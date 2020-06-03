@@ -3,32 +3,19 @@ import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { TopBar, List, ListItem } from '../../components';
-import { Item } from '../../types';
-
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
+import { Item, Month } from '../../types';
 
 interface Props {
   items: Item[];
+  updateCurrent: (item?: Item) => void;
 }
 
-export default function AllExpenses({ items }: Props) {
+export default function AllExpenses({ items, updateCurrent }: Props) {
   const navigation = useNavigation();
 
-  const goToForm = (id?: string) => {
-    navigation.navigate('ExpenseForm', { id });
+  const goToForm = (item?: Item) => {
+    updateCurrent(item);
+    navigation.navigate('ExpenseForm', { id: item && item.id });
   };
 
   const renderEmptyList = () => {
@@ -45,14 +32,14 @@ export default function AllExpenses({ items }: Props) {
     );
   };
 
-  const renderMonths = (months: number[]) => {
-    if (!months.length || months.length === 11) {
+  const renderMonths = (months: Month[]) => {
+    if (!months.length || months.length === 12) {
       return <Text style={styles.tag}>Happens every month</Text>;
     }
 
     return months.map((m) => (
-      <Text key={m} style={styles.tag}>
-        {monthNames[m]}
+      <Text key={m.id} style={styles.tag}>
+        {m.label}
       </Text>
     ));
   };
