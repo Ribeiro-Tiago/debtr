@@ -14,6 +14,7 @@ interface Props {
   hideIcon?: boolean;
   onPress: (item: Item) => void;
   renderTags?: (item: Item) => React.ReactElement;
+  onIconPress?: (id: string) => void;
 }
 export default function ListItem({
   item,
@@ -22,6 +23,7 @@ export default function ListItem({
   hideIcon,
   onPress,
   renderTags,
+  onIconPress,
 }: Props) {
   return (
     <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item)}>
@@ -35,6 +37,7 @@ export default function ListItem({
           </Text>
 
           <Icon
+            onPress={() => onIconPress(item.id)}
             name={iconName}
             size={32}
             color={hideIcon ? 'transparent' : isEven ? primary : secondary}
