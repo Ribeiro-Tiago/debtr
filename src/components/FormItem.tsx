@@ -28,7 +28,7 @@ export default function FormItem({
         onChangeText={onChange}
         placeholder={placeholder}
         keyboardType={keyboard}
-        value={initialValue}
+        defaultValue={initialValue}
       />
       {hasErr && <Text style={styles.error}>{error}</Text>}
     </>
