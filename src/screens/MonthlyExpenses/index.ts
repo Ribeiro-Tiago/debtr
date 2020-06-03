@@ -9,7 +9,9 @@ import { addAmount, subtractAmount } from '../../store/actions/amountLeft';
 const getMonthlyItems = (items: Item[]) => {
   const currMonth = new Date().getMonth();
 
-  return items.filter(({ months }) => months.includes(currMonth));
+  return items.filter(
+    ({ months }) => !!months.find(({ id }) => id === currMonth)
+  );
 };
 
 const mapStateToProps = (state: StoreState) => {
