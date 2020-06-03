@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
@@ -11,7 +12,7 @@ import {
   MonthlyExpensesScreen,
   ExpenseFormScreen,
 } from '../../screens';
-import { getItems } from '../../services/storage/storage';
+import { getData, updateCurrMonth } from '../../services/storage/storage';
 import { StorageData, Item } from '../../types';
 
 interface Props {
@@ -40,15 +41,40 @@ const barOptions: MaterialTopTabBarOptions = {
 export default function ({ setAmountLeft, setItems }: Props) {
   // load stuff from local storage
   useEffect(() => {
-    getItems()
+    getData()
       .then((data: StorageData) => {
+        const currMonth = new Date().getMonth();
+
         if (data) {
           setAmountLeft(data.amountLeft);
-          setItems(data.items);
+
+          if (data.currMonth !== currMonth) {
+            setItems(data.items.map((i) => ({ ...i, isPaid: false })));
+
+            updateCurrMonth(currMonth);
+          } else {
+            setItems(data.items);
+          }
+
           return;
         }
+
+        updateCurrMonth(currMonth);
       })
-      .catch(console.error);
+      .catch((error) => {
+        let err: string;
+        try {
+          err = JSON.stringify(error);
+        } catch (ex) {
+          err = error;
+        }
+
+        Alert.alert(
+          'Error',
+          `An unexpected error ocurred retrieving your expenses. \n\nIf it persists contact support with the following message: \n\n${err}`,
+          [{ text: 'Close' }]
+        );
+      });
   }, []);
 
   const buildStackNav = () => {
