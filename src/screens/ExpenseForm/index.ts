@@ -5,19 +5,12 @@ import { StoreState } from '../../types/store';
 import { addItem, updateItem, removeItem } from '../../store/actions/items';
 import { Item } from '../../types';
 
-// don't know which react navigation typing this is, but it has params
-interface Nav {
-  params: {
-    id?: string;
-  };
-}
-
-const mapStateToProps = (state: StoreState, { params }: Nav) => {
-  const id = params && params.id;
+const mapStateToProps = (state: StoreState) => {
+  const item = state.current.item;
 
   return {
-    isNew: !id,
-    item: state.current.item,
+    item,
+    isNew: !item,
     selectedMonths: state.current.months,
   };
 };
