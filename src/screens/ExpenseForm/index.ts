@@ -2,13 +2,31 @@ import { connect } from 'react-redux';
 
 import component from './component';
 import { StoreState } from '../../types/store';
+import { addItem, updateItem, removeItem } from '../../store/actions/items';
+import { Item } from '../../types';
 
-const mapStateToProps = (state: StoreState) => {
-  return {};
+// don't know which react navigation typing this is, but it has params
+interface Nav {
+  params: {
+    id?: string;
+  };
+}
+
+const mapStateToProps = (state: StoreState, { params }: Nav) => {
+  const id = params && params.id;
+
+  return {
+    isNew: !id,
+    item: !!id ? state.items.find((item) => item.id === id) : null,
+  };
 };
 
 const mapDispatchToProps = (dispatch: Function) => {
-  return {};
+  return {
+    create: (item: Item) => dispatch(addItem(item)),
+    update: (item: Item) => dispatch(updateItem(item)),
+    remove: (id: string) => dispatch(removeItem(id)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(component);
