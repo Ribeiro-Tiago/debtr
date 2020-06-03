@@ -16,7 +16,6 @@ import { Item, Month, ItemCreation } from '../../types';
 import { TopBar, FormItem, MonthSelector } from '../../components';
 
 interface Props {
-  isNew: boolean;
   item: Item | null;
   selectedMonths: Month[];
   create: (item: ItemCreation) => void;
@@ -30,7 +29,6 @@ interface Form {
 }
 
 export default function ExpenseForm({
-  isNew,
   selectedMonths,
   item,
   create,
@@ -38,7 +36,14 @@ export default function ExpenseForm({
   remove,
 }: Props) {
   const { goBack } = useNavigation();
-  const { register, setValue, handleSubmit, errors } = useForm<Form>();
+  const { register, setValue, handleSubmit, errors } = useForm<Form>({
+    defaultValues: {
+      description: item && item.description,
+      amount: item && item.amount,
+    },
+    reValidateMode: 'onBlur',
+  });
+  const isNew = !item;
 
   useEffect(() => {
     register({ name: 'description' }, { required: true });
@@ -47,9 +52,9 @@ export default function ExpenseForm({
 
   const onSubmit = (data: Form) => {
     if (isNew) {
-      create({ ...data, months: selectedMonths || [] });
+      create({ ...data, months: selectedMonths });
     } else {
-      update({ ...item, ...data, months: selectedMonths || [] });
+      update({ ...item, ...data, months: selectedMonths });
     }
 
     goBack();
@@ -122,7 +127,7 @@ export default function ExpenseForm({
 
         <FormItem
           label="Amount"
-          error="Amount is required"
+          error="Amount must be a valid number"
           placeholder="E.g.: 14"
           hasErr={!!errors.amount}
           keyboard="numeric"
