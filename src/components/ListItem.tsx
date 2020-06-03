@@ -11,6 +11,7 @@ interface Props {
   item: Item;
   isEven: boolean;
   iconName: string;
+  hideIcon?: boolean;
   onPress: (item: Item) => void;
   renderTags?: (item: Item) => React.ReactElement;
 }
@@ -18,25 +19,28 @@ export default function ListItem({
   item,
   isEven,
   iconName,
+  hideIcon,
   onPress,
   renderTags,
 }: Props) {
   return (
     <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item)}>
       <View style={styles.container}>
-        <Text style={isEven ? styles.evenItem : styles.oddItem}>
-          {item.description}
-        </Text>
-        <Text style={isEven ? styles.evenItem : styles.oddItem}>
-          {item.amount}€
-        </Text>
+        <View style={styles.infoContainer}>
+          <Text style={isEven ? styles.evenItem : styles.oddItem}>
+            {item.description}
+          </Text>
+          <Text style={isEven ? styles.evenItem : styles.oddItem}>
+            {item.amount}€
+          </Text>
 
-        <Icon
-          name={iconName}
-          size={48}
-          color={!item.isPaid ? 'transparent' : isEven ? primary : secondary}
-          style={styles.icon}
-        />
+          <Icon
+            name={iconName}
+            size={32}
+            color={hideIcon ? 'transparent' : isEven ? primary : secondary}
+            style={styles.icon}
+          />
+        </View>
 
         {renderTags && renderTags(item)}
       </View>
@@ -46,11 +50,9 @@ export default function ListItem({
 
 const styles = StyleSheet.create({
   container: {
-    height: 70,
+    height: 80,
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#f9b384',
@@ -65,5 +67,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     textAlign: 'right',
+  },
+  infoContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
