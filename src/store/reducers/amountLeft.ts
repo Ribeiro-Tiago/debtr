@@ -9,11 +9,11 @@ export default (
 ) => {
   switch (type) {
     case ADD_AMOUNT_LEFT: {
-      return state + payload;
+      return Number(state) + Number(payload);
     }
 
     case SUBTRACT_AMOUNT_LEFT: {
-      return state - payload;
+      return Number(state) - Number(payload);
     }
 
     default:
