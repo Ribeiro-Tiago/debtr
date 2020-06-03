@@ -1,5 +1,6 @@
 import { UPDATE_SELECTED_MONTHS, UPDATE_SELECTED_ITEM } from '../actions/types';
 import { CurrentReducerAction } from '../../types/store';
+import { Item } from '../../types';
 
 const initState = {
   months: [],
@@ -13,7 +14,11 @@ export default (state = initState, { type, payload }: CurrentReducerAction) => {
     }
 
     case UPDATE_SELECTED_ITEM: {
-      return { ...state, item: payload };
+      if (!payload) {
+        return { item: null, months: [] };
+      }
+
+      return { item: payload, months: (payload as Item).months };
     }
 
     default:

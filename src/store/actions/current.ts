@@ -1,7 +1,7 @@
 import { UPDATE_SELECTED_ITEM, UPDATE_SELECTED_MONTHS } from './types';
 import { Item, Month } from '../../types';
 
-export const updateSelectedItem = (payload: Item) => ({
+export const updateSelected = (payload?: Item) => ({
   type: UPDATE_SELECTED_ITEM,
   payload,
 });
