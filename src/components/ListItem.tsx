@@ -25,7 +25,7 @@ export default function ListItem({
     <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item)}>
       <View style={styles.container}>
         <Text style={isEven ? styles.evenItem : styles.oddItem}>
-          {item.desc}
+          {item.description}
         </Text>
         <Text style={isEven ? styles.evenItem : styles.oddItem}>
           {item.amount}€
