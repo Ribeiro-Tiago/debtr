@@ -29,6 +29,7 @@ export default function FormItem({
         placeholder={placeholder}
         keyboardType={keyboard}
         defaultValue={initialValue}
+        returnKeyType="next"
       />
       {hasErr && <Text style={styles.error}>{error}</Text>}
     </>
