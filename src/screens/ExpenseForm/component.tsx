@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   Alert,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
@@ -119,30 +120,37 @@ export default function ExpenseForm({
 
   const renderForm = () => {
     return (
-      <ScrollView style={{ flex: 1, padding: 20 }}>
-        <FormItem
-          label="Description"
-          error="Description is required"
-          placeholder="E.g.: Netflix"
-          hasErr={!!errors.description}
-          onChange={(val: string) => setValue('description', val, true)}
-          initialValue={item && item.description}
-        />
+      <KeyboardAvoidingView
+        style={{ flex: 1, padding: 20 }}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        enabled
+        keyboardVerticalOffset={0}
+      >
+        <ScrollView style={{ flex: 1 }}>
+          <FormItem
+            label="Description"
+            error="Description is required"
+            placeholder="E.g.: Netflix"
+            hasErr={!!errors.description}
+            onChange={(val: string) => setValue('description', val, true)}
+            initialValue={item && item.description}
+          />
 
-        <FormItem
-          label="Amount"
-          error="Amount must be a valid number"
-          placeholder="E.g.: 14 (Just a number)"
-          hasErr={!!errors.amount}
-          keyboard="numeric"
-          onChange={(val: number) => setValue('amount', val, true)}
-          initialValue={item && item.amount.toString()}
-        />
+          <FormItem
+            label="Amount"
+            error="Amount must be a valid number"
+            placeholder="E.g.: 14 (Just a number)"
+            hasErr={!!errors.amount}
+            keyboard="numeric"
+            onChange={(val: number) => setValue('amount', val, true)}
+            initialValue={item && item.amount.toString()}
+          />
 
-        <MonthSelector />
+          <MonthSelector />
 
-        {renderButtons()}
-      </ScrollView>
+          {renderButtons()}
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   };
 
