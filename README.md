@@ -15,11 +15,12 @@ Icon and splash were created using https://github.com/bamlab/react-native-make
 
 Config for (android)[https://github.com/crazycodeboy/react-native-splash-screen] and (ios)[https://medium.com/@appstud/add-a-splash-screen-to-a-react-native-app-810492e773f9]
 
-# Todo
+# Todo (in no particular order)
 
 - add settings to choose the reset day
 - add tests
-- added i18n support
+- add i18n support
+- add support for reminder push notifications
 - better use of themes
 
 # Runing locally on ios
