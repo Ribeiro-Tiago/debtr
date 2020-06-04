@@ -1,6 +1,6 @@
 {
   "name": "MonthlyPayTracker",
-  "displayName": "Payment Tracker",
+  "displayName": "MonthlyPayTracker",
   "expo": {
     "name": "MonthlyPayTracker",
     "slug": "monthly-pay-tracker",

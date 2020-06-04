@@ -10,6 +10,7 @@
         android:layout_margin="0dp"
         android:contentDescription="Splashscreen"
         android:scaleType="fitCenter"
-        android:background="@color/splashprimary"
-        android:src="@drawable/splashscreen"/>
+        android:background="#f1e3cb"
+        android:src="@drawable/launch_screen"/>
+
 </RelativeLayout>
