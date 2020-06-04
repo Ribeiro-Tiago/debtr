@@ -15,7 +15,9 @@ export const months = [
 
 export const sanitizeAmount = (amount: any) => {
   try {
-    const sanitized = Math.abs(Number(amount.toString().replace(/\D/g, '')));
+    const sanitized = Number(
+      Math.abs(Number(amount.toString().replace(',', '.'))).toFixed(2)
+    );
 
     return isNaN(sanitized) ? 0 : sanitized;
   } catch (ex) {

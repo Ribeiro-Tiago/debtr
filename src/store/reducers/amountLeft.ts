@@ -5,6 +5,7 @@ import {
 } from '../actions/types';
 import { AmountLeftReducerAction } from '../../types/store';
 import { updateAmount } from '../../services/storage/storage';
+import { sanitizeAmount } from '../../utils';
 
 const initState = 0;
 
@@ -18,7 +19,7 @@ export default (
     }
 
     case ADD_AMOUNT_LEFT: {
-      const amount = Number(state) + Number(payload);
+      const amount = Number(state) + sanitizeAmount(payload);
 
       updateAmount(amount);
 
@@ -26,7 +27,7 @@ export default (
     }
 
     case SUBTRACT_AMOUNT_LEFT: {
-      const amount = Number(state) - Number(payload);
+      const amount = Number(state) - sanitizeAmount(payload);
 
       updateAmount(amount);
 

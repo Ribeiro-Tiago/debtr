@@ -26,8 +26,8 @@ const mapDispatchToProps = (dispatch: Function) => {
     togglePaidStatus: (id: string) => dispatch(toggleItemStatus(id)),
     updateAmountLeft: (amount: number, isPaid: boolean) => {
       return isPaid
-        ? dispatch(subtractAmount(amount))
-        : dispatch(addAmount(amount));
+        ? dispatch(addAmount(amount))
+        : dispatch(subtractAmount(amount));
     },
   };
 };
