@@ -25,7 +25,10 @@ export const updateCurrMonth = async (currMonth: number) => {
 export const updateAmount = async (amount: number) => {
   const data = await get();
 
-  set({ ...data, amountLeft: Number(data.amountLeft) + amount });
+  set({
+    ...data,
+    amountLeft: Number((Number(data.amountLeft) + amount).toFixed(2)),
+  });
 };
 
 export const updateItems = async (items: Item[]) => {
