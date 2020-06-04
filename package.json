@@ -28,6 +28,7 @@
     "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "^3.0.2",
     "react-native-screens": "^2.8.0",
+    "react-native-splash-screen": "^3.2.0",
     "react-native-status-bar-height": "^2.5.0",
     "react-native-tab-view": "^2.14.2",
     "react-native-unimodules": "~0.7.0",

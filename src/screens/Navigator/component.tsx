@@ -6,6 +6,7 @@ import {
   createMaterialTopTabNavigator,
   MaterialTopTabBarOptions,
 } from '@react-navigation/material-top-tabs';
+import SplashScreen from 'react-native-splash-screen';
 
 import {
   AllExpensesScreen,
@@ -56,12 +57,15 @@ export default function ({ setAmountLeft, setItems }: Props) {
             setItems(data.items);
           }
 
+          SplashScreen.hide();
           return;
         }
 
         updateCurrMonth(currMonth);
+        SplashScreen.hide();
       })
       .catch((error) => {
+        SplashScreen.hide();
         let err: string;
         try {
           err = JSON.stringify(error);
