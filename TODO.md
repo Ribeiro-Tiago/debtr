@@ -5,5 +5,6 @@
 - add i18n support
 - add support for reminder push notifications
 - add a tutorial
+- add currency config
 - add link to privacy policy and eula
 - better use of themes
