@@ -9,7 +9,9 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle && cd android && ./gradlew assembleRelease"
+    "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle",
+    "build:apk": "yarn build:android && cd android && ./gradlew assembleRelease",
+    "build:aab": "yarn build:android && cd android && ./gradlew bundleRelease"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
