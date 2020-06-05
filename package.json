@@ -1,14 +1,14 @@
 {
-  "name": "monthly-pay-tracker",
-  "description": "Simplistic app to help me keep track of what monthly expenses I have left to pay this month",
+  "name": "debtr",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "web": "expo start --web",
     "start": "react-native start",
     "test": "jest",
-    "deploy:android": "npx expo-optimize && expo build:android -t app-bundle",
-    "deploy:ios": "npx expo-optimize && expo build:ios -t archive"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res && cd android && ./gradlew assembleRelease"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
@@ -16,51 +16,49 @@
     "@react-navigation/material-top-tabs": "^5.2.9",
     "@react-navigation/native": "^5.5.0",
     "@react-navigation/stack": "^5.4.1",
-    "audit": "0.0.6",
-    "dayjs": "^1.8.20",
-    "expo": "~36.0.0",
-    "fix": "0.0.6",
+    "dayjs": "^1.8.28",
     "nanoid": "^3.1.9",
-    "react": "~16.9.0",
-    "react-dom": "~16.9.0",
+    "react": "16.11.0",
     "react-hook-form": "^5.7.2",
-    "react-native": "~0.61.4",
+    "react-native": "0.62.2",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "^3.0.2",
     "react-native-screens": "^2.8.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-status-bar-height": "^2.5.0",
-    "react-native-tab-view": "^2.14.2",
-    "react-native-unimodules": "~0.7.0",
+    "react-native-tab-view": "^2.14.4",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-web": "~0.11.7",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5"
   },
   "devDependencies": {
-    "@babel/core": "~7.6.0",
-    "@bam.tech/react-native-make": "^3.0.0",
+    "@babel/core": "^7.10.2",
+    "@babel/runtime": "^7.10.2",
+    "@react-native-community/eslint-config": "^1.1.0",
+    "@types/jest": "^24.0.24",
     "@types/nanoid": "^2.1.0",
-    "@types/react": "~16.9.0",
-    "@types/react-native": "~0.60.23",
-    "@types/react-native-vector-icons": "^6.4.5",
-    "@types/react-redux": "^7.1.9",
-    "babel-preset-expo": "~8.0.0",
-    "jest-expo": "~36.0.1",
-    "typescript": "~3.6.3"
+    "@types/react-native": "^0.62.13",
+    "@types/react-test-renderer": "16.9.2",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "babel-jest": "^26.0.1",
+    "eslint": "^7.1.0",
+    "jest": "^26.0.1",
+    "metro-react-native-babel-preset": "^0.59.0",
+    "prettier": "^2.0.4",
+    "react-test-renderer": "16.11.0",
+    "typescript": "^3.8.3"
   },
   "jest": {
-    "preset": "react-native"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Ribeiro-Tiago/monthly-pay-tracker.git"
-  },
-  "license": "ISC",
-  "author": {
-    "name": "Tiago Ribeiro",
-    "email": "tiagoribeiro.1803@gmail.com",
-    "url": "https://www.linkedin.com/in/ribeiro-tiago"
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }
