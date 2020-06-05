@@ -15,14 +15,7 @@ Icon and splash were created using https://github.com/bamlab/react-native-make
 - `react-native set-splash -h` to figure out how to create a new splash
 
 Config for (android)[https://github.com/crazycodeboy/react-native-splash-screen] and (ios)[https://medium.com/@appstud/add-a-splash-screen-to-a-react-native-app-810492e773f9]
-
-# Todo (in no particular order)
-
-- add settings to choose the reset day
-- add tests
-- add i18n support
-- add support for reminder push notifications
-- better use of themes
+s
 
 # Running locally on android
 
@@ -36,6 +29,10 @@ Config for (android)[https://github.com/crazycodeboy/react-native-splash-screen]
 - cd ios && pod install
 - <have ios emulator running>
 - yarn ios
+
+# Contribution
+
+Wanna contribute? Check the (how to)[https://github.com/Ribeiro-Tiago/debtr/edit/master/CONTRIBUTING.md] and then see what (needs to be done)[https://github.com/Ribeiro-Tiago/work-clocker/edit/master/TODO.md] or come up with new features yourself
 
 # Credits
 

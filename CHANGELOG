@@ -1,0 +1,12 @@
+2.0.0 (05/06/2020) 
+- Overhauled UI
+- Deployed to google store
+- Fixed issue with total left to pay with expenses that only occur on some months (top priority)
+- added liting 
+- added proper icon & splash screen
+- added listing of all existing expenses
+- added edit expense 
+- added delete expense
+
+1.0.0 (03/03/2020)
+- Initial release
