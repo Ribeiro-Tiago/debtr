@@ -1,9 +1,10 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import dayjs from 'dayjs';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import dayjs from "dayjs";
+import Emoji from "react-native-emoji";
 
-import { List, TopBar, ListItem } from '../../components';
-import { Item } from '../../types';
+import { List, TopBar, ListItem } from "../../components";
+import { Item } from "../../types";
 
 interface Props {
   items: Item[];
@@ -11,6 +12,7 @@ interface Props {
   togglePaidStatus: (id: string) => void;
   updateAmountLeft: (amount: number, isPaid: boolean) => void;
 }
+const emojis = "\\u+1F973 \\u+1F973";
 
 export default function MonthlyExpenses({
   items,
@@ -39,7 +41,8 @@ export default function MonthlyExpenses({
     return (
       <View style={styles.emptyListContainer}>
         <Text style={styles.emptyListText}>
-          You have no expenses left this month 🥳🥳
+          You have no expenses left this month <Emoji name="tada" />
+          <Emoji name="tada" />
         </Text>
       </View>
     );
@@ -48,7 +51,7 @@ export default function MonthlyExpenses({
   return (
     <View style={styles.container}>
       <TopBar>
-        <Text style={styles.title}>{dayjs().format('MMMM YYYY')}</Text>
+        <Text style={styles.title}>{dayjs().format("MMMM YYYY")}</Text>
         <Text style={styles.leftover}>{amountLeft}€ Left</Text>
       </TopBar>
 
@@ -66,23 +69,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 20,
-    color: '#581c0c',
+    color: "#581c0c",
   },
   leftover: {
     fontSize: 16,
-    color: '#581c0c',
+    color: "#581c0c",
   },
   emptyListContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
   },
   emptyListText: {
     fontSize: 26,
-    textAlign: 'center',
+    textAlign: "center",
     marginHorizontal: 30,
     lineHeight: 40,
   },
