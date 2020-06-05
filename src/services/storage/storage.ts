@@ -1,6 +1,6 @@
-import storage from '@react-native-community/async-storage';
+import storage from "@react-native-community/async-storage";
 
-import { StorageData, Item } from '../../types';
+import { StorageData, Item } from "../../types";
 
 type Metadata =
   | {
@@ -9,7 +9,7 @@ type Metadata =
     }
   | Item[];
 
-const key = 'MPT_DATA';
+const key = "MPT_DATA";
 
 const get = async () => {
   const items = JSON.parse(await storage.getItem(`${key}_items`));
@@ -25,8 +25,8 @@ const get = async () => {
   } as StorageData;
 };
 
-const set = async (key: 'items' | 'metadata', data: Metadata) => {
-  return await storage.setItem(key, JSON.stringify(data));
+const set = async (subkey: "items" | "metadata", data: Metadata) => {
+  return await storage.setItem(`${key}_${subkey}`, JSON.stringify(data));
 };
 
 export const getData = async () => get();
@@ -35,26 +35,17 @@ export const updateCurrMonth = async (currMonth: number) => {
   const data = await get();
 
   return !data
-    ? set('metadata', { amountLeft: 0, currMonth })
-    : set('metadata', { amountLeft: data.amountLeft, currMonth });
+    ? set("metadata", { amountLeft: 0, currMonth })
+    : set("metadata", { amountLeft: data.amountLeft, currMonth });
 };
 
 export const updateAmount = async (amount: number) => {
-  const data = await get();
-
-  if (data) {
-    return set('metadata', {
-      currMonth: data.currMonth,
-      amountLeft: Number((Number(data.amountLeft) + amount).toFixed(2)),
-    });
-  }
-
-  return set('metadata', {
+  return set("metadata", {
     currMonth: new Date().getMonth(),
     amountLeft: Number(amount.toFixed(2)),
   });
 };
 
 export const updateItems = async (items: Item[]) => {
-  return set('items', items);
+  return set("items", items);
 };
