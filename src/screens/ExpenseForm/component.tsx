@@ -141,7 +141,7 @@ export default function ExpenseForm({
             placeholder="E.g.: 14 (Just a number)"
             hasErr={!!errors.amount}
             keyboard="numeric"
-            onChange={(val: string) => setValue("amount", Number(val), true)}
+            onChange={(val: any) => setValue("amount", val, true)}
             initialValue={item && item.amount.toString()}
           />
 
