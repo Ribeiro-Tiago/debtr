@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
   Text,
   Animated,
   LayoutChangeEvent,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+} from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 
-import MonthSelectorItem from '../MonthSelectorItem';
-import { Month } from '../../types';
-import { months } from '../../utils';
+import MonthSelectorItem from "../MonthSelectorItem";
+import { Month } from "../../types";
+import { months } from "../../utils";
 
 interface Props {
   selectedMonths: Month[];
@@ -37,7 +37,11 @@ export default function MonthSelector({
     const final = isOpen ? 0 : maxHeight;
 
     setOpen(!isOpen);
-    Animated.spring(height, { toValue: final, bounciness: 0 }).start();
+    Animated.spring(height, {
+      toValue: final,
+      bounciness: 0,
+      useNativeDriver: false,
+    }).start();
   };
 
   const _setMaxHeight = (event: LayoutChangeEvent) => {
@@ -61,8 +65,7 @@ export default function MonthSelector({
 
       <Animated.View
         style={maxHeight !== undefined ? { height } : {}}
-        onLayout={_setMaxHeight}
-      >
+        onLayout={_setMaxHeight}>
         <Text style={styles.helper}>
           Does this expense only happen in certain months ? Leaving all
           unselected means it happens every month
@@ -86,32 +89,32 @@ export default function MonthSelector({
 
 const styles = StyleSheet.create({
   wrapper: {
-    borderBottomColor: '#581c0c',
+    borderBottomColor: "#581c0c",
     borderBottomWidth: 0.5,
   },
   container: {
     paddingTop: 15,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   label: {
     height: 30,
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#ca5116',
+    fontWeight: "bold",
+    color: "#ca5116",
     marginRight: 5,
   },
   monthWrapper: {
     marginTop: 20,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    flexWrap: "wrap",
   },
   helper: {
     fontSize: 16,
-    fontStyle: 'italic',
+    fontStyle: "italic",
   },
 });
