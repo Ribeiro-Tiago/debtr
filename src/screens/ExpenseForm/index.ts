@@ -1,10 +1,10 @@
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import component from './component';
-import { StoreState } from '../../types/store';
-import { addItem, updateItem, removeItem } from '../../store/actions/items';
-import { Item } from '../../types';
-import { addAmount, subtractAmount } from '../../store/actions/amountLeft';
+import component from "./component";
+import { StoreState } from "../../types/store";
+import { addItem, updateItem, removeItem } from "../../store/actions/items";
+import { Item, ItemCreation } from "../../types";
+import { addAmount, subtractAmount } from "../../store/actions/amountLeft";
 
 const mapStateToProps = (state: StoreState) => {
   const item = state.current.item;
@@ -18,7 +18,7 @@ const mapStateToProps = (state: StoreState) => {
 
 const mapDispatchToProps = (dispatch: Function) => {
   return {
-    create: (item: Item) => {
+    create: (item: ItemCreation) => {
       dispatch(addItem(item));
       dispatch(addAmount(item.amount));
     },

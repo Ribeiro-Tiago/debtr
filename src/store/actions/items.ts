@@ -4,12 +4,12 @@ import {
   UPDATE_ITEM,
   REMOVE_ITEM,
   TOGGLE_ITEM_STATUS,
-} from './types';
-import { Item } from '../../types';
+} from "./types";
+import { Item, ItemCreation } from "../../types";
 
 export const setItems = (payload: Item[]) => ({ type: SET_ITEMS, payload });
 
-export const addItem = (payload: Item) => ({ type: ADD_ITEM, payload });
+export const addItem = (payload: ItemCreation) => ({ type: ADD_ITEM, payload });
 
 export const updateItem = (payload: Item) => ({ type: UPDATE_ITEM, payload });
 
