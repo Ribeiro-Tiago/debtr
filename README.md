@@ -20,19 +20,19 @@ Config for [android](https://github.com/crazycodeboy/react-native-splash-screen)
 # Running locally on android
 
 - yarn install
-- <have android emulator running>
+- optional: if you want a specific android version have the emulator running
 - yarn android
 
 # Runing locally on ios
 
 - yarn install
 - cd ios && pod install
-- <have ios emulator running>
+- optional: if you want a specific iphone version have the emulator running
 - yarn ios
 
 # Contribution
 
-Wanna contribute? Check the [how to](https://github.com/Ribeiro-Tiago/debtr/edit/master/CONTRIBUTING.md) and then see what [needs to be done](https://github.com/Ribeiro-Tiago/work-clocker/edit/master/TODO.md) or come up with new features yourself
+Wanna contribute? Check the [how to](https://github.com/Ribeiro-Tiago/debtr/blob/master/CONTRIBUTING.md) and then see what [needs to be done](https://github.com/Ribeiro-Tiago/debtr/blob/master/TODO.md) or come up with new features yourself
 
 # Credits
 
