@@ -23,7 +23,7 @@ export default function MonthSelector({
 }: Props) {
   const [height, setHeight] = useState<Animated.Value>();
   const [isOpen, setOpen] = useState<boolean>(false);
-  const [maxHeight, setMaxHeight] = useState<number>(undefined);
+  const [maxHeight, setMaxHeight] = useState<number>(-1);
 
   const onUnselect = (id: number) => {
     updateSelected(selectedMonths.filter((item) => item.id !== id));
@@ -37,7 +37,7 @@ export default function MonthSelector({
     const final = isOpen ? 0 : maxHeight;
 
     setOpen(!isOpen);
-    Animated.spring(height, {
+    Animated.spring(height as Animated.Value, {
       toValue: final,
       bounciness: 0,
       useNativeDriver: false,
@@ -45,7 +45,7 @@ export default function MonthSelector({
   };
 
   const _setMaxHeight = (event: LayoutChangeEvent) => {
-    if (maxHeight === undefined) {
+    if (maxHeight === -1) {
       setMaxHeight(event.nativeEvent.layout.height + 10);
       setHeight(new Animated.Value(0));
     }
@@ -64,7 +64,11 @@ export default function MonthSelector({
       </View>
 
       <Animated.View
-        style={maxHeight !== undefined ? { height } : {}}
+        style={
+          maxHeight !== -1
+            ? { height, overflow: "hidden" }
+            : { overflow: "hidden" }
+        }
         onLayout={_setMaxHeight}>
         <Text style={styles.helper}>
           Does this expense only happen in certain months ? Leaving all

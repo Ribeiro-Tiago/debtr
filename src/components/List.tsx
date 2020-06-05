@@ -1,7 +1,7 @@
-import React from 'react';
-import { FlatList, StyleSheet, ListRenderItemInfo } from 'react-native';
+import React from "react";
+import { FlatList, StyleSheet, ListRenderItemInfo } from "react-native";
 
-import { Item } from '../types';
+import { Item } from "../types";
 
 interface Props {
   data: Item[];
@@ -24,5 +24,5 @@ export default function List({ data, renderEmptyList, renderListItem }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: '#eaeaea' },
+  container: { backgroundColor: "#eaeaea" },
 });
