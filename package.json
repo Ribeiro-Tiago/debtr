@@ -62,5 +62,15 @@
       "json",
       "node"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ribeiro-Tiago/monthly-pay-tracker.git"
+  },
+  "license": "ISC",
+  "author": {
+    "name": "Tiago Ribeiro",
+    "email": "tiagoribeiro.1803@gmail.com",
+    "url": "https://tiago-ribeiro.com"
   }
 }
