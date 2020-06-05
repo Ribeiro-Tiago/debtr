@@ -1,4 +1,4 @@
-# Monthly pay tracker
+# Debtr
 
 A very low effort app to help me keep track of the status of my monthly expenses, given that they're paid at different points in time throughout the month.
 Currently only available on android due to licensing costs
@@ -16,7 +16,6 @@ Icon and splash were created using https://github.com/bamlab/react-native-make
 - `react-native set-splash -h` to figure out how to create a new splash
 
 Config for [android](https://github.com/crazycodeboy/react-native-splash-screen) and [ios](https://medium.com/@appstud/add-a-splash-screen-to-a-react-native-app-810492e773f9)
-s
 
 # Running locally on android
 
@@ -38,4 +37,5 @@ Wanna contribute? Check the [how to](https://github.com/Ribeiro-Tiago/debtr/edit
 # Credits
 
 Icon from [smashicons](https://www.flaticon.com/authors/smashicons) @ flaticon.com
+
 Store image templates made with [app store screenshots](https://www.appstorescreenshot.com/)
