@@ -1,7 +1,8 @@
 # Debtr
 
 A very low effort app to help me keep track of the status of my monthly expenses, given that they're paid at different points in time throughout the month.
-Currently only available on android due to licensing costs
+
+Currently only available on [android](https://play.google.com/store/apps/details?id=com.debtr) due to licensing costs 
 
 ## Build android
 
