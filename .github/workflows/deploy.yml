@@ -3,8 +3,16 @@ name: "google play deploy"
 on:
   pull_request:
     branches: [master]
+    paths:
+      - src/**
+      - android/**
+      - ios/**
   push:
     branches: [master]
+    paths:
+      - src/**
+      - android/**
+      - ios/**
 
 jobs:
   upgrade-version:
