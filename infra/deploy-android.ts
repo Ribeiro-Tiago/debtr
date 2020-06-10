@@ -3,7 +3,6 @@ import playup from "playup";
 import { join } from "path";
 import { readFileSync, existsSync } from "fs";
 
-import configs from "./google-api.json";
 import { versionWithV } from "./regex";
 
 interface Response {
@@ -29,7 +28,7 @@ export default () => {
     throw `Path to .aab file is invalid: ${AAB_PATH}`;
   }
 
-  const { private_key, client_email } = configs;
+  const { GAPI_KEY: private_key, GAPI_EMAIL: client_email } = process.env;
 
   if (!private_key || !client_email) {
     throw `environment variables are invalid`;
