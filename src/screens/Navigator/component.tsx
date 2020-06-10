@@ -1,20 +1,21 @@
-import React, { useEffect } from 'react';
-import { Alert } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { useEffect } from "react";
+import { Alert } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBarOptions,
-} from '@react-navigation/material-top-tabs';
-import SplashScreen from 'react-native-splash-screen';
+} from "@react-navigation/material-top-tabs";
+import SplashScreen from "react-native-splash-screen";
 
 import {
   AllExpensesScreen,
   MonthlyExpensesScreen,
   ExpenseFormScreen,
-} from '../../screens';
-import { getData, updateCurrMonth } from '../../services/storage/storage';
-import { StorageData, Item } from '../../types';
+} from "../../screens";
+import { getData, updateCurrMonth } from "../../services/storage/storage";
+import { StorageData, Item } from "../../types";
+import { isCurrentMonth } from "../../utils";
 
 interface Props {
   setAmountLeft: (amount: number) => void;
@@ -24,18 +25,18 @@ interface Props {
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 const barOptions: MaterialTopTabBarOptions = {
-  activeTintColor: '#581c0c',
+  activeTintColor: "#581c0c",
   pressOpacity: 0.8,
   allowFontScaling: true,
   bounces: true,
   style: {
-    backgroundColor: '#f1e3cb',
-    borderTopColor: '#a6a6a6',
+    backgroundColor: "#f1e3cb",
+    borderTopColor: "#a6a6a6",
     borderTopWidth: 1,
   },
   indicatorStyle: {
-    borderBottomColor: '#581c0c',
-    backgroundColor: '#581c0c',
+    borderBottomColor: "#581c0c",
+    backgroundColor: "#581c0c",
   },
 };
 
@@ -47,13 +48,26 @@ export default function ({ setAmountLeft, setItems }: Props) {
         const currMonth = new Date().getMonth();
 
         if (data) {
-          setAmountLeft(Number(data.amountLeft));
-
           if (data.currMonth !== currMonth) {
-            setItems(data.items.map((i) => ({ ...i, isPaid: false })));
+            const { items, amountLeft } = data.items.reduce(
+              (accu, curr) => {
+                if (isCurrentMonth(curr.months)) {
+                  accu.amountLeft += curr.amount;
+                }
 
+                return {
+                  items: [...accu.items, { ...curr, isPaid: false }],
+                  amountLeft: accu.amountLeft,
+                };
+              },
+              { items: [], amountLeft: 0 },
+            );
+
+            setItems(items);
+            setAmountLeft(amountLeft);
             updateCurrMonth(currMonth);
           } else {
+            setAmountLeft(Number(data.amountLeft));
             setItems(data.items);
           }
 
@@ -74,9 +88,9 @@ export default function ({ setAmountLeft, setItems }: Props) {
         }
 
         Alert.alert(
-          'Error',
+          "Error",
           `An unexpected error ocurred retrieving your expenses. \n\nIf it persists contact support with the following message: \n\n${err}`,
-          [{ text: 'Close' }]
+          [{ text: "Close" }],
         );
       });
   }, []);
