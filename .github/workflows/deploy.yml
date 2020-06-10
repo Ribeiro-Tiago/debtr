@@ -20,11 +20,13 @@ jobs:
           echo "${{ secrets.KEYSTORE }}" > release.asc
           gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch release.asc > android/app/release.keystore
 
+      - name: Install dependencies
+        run: yarn install
+
       - name: Update app version
         run: yarn update-version
 
       - name: Build aab
         run: |
-          yarn install
           [ -d android/app/src/main/assets ] || mkdir android/app/src/main/assets
           yarn build:aab
