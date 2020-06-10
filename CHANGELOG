@@ -1,3 +1,6 @@
+2.0.1 (05/06/2020) 
+- fixed issues with "amount left" sometimes displaying wrong decimal values
+
 2.0.0 (05/06/2020) 
 - Overhauled UI
 - Deployed to google store
