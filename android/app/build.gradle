@@ -151,10 +151,10 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('debtr.keystore')
-            storePassword "password"
-            keyAlias "alias"
-            keyPassword "password"
+            storeFile file('release.keystore')
+            storePassword System.getenv('STORE_PASSWORD')
+            keyAlias System.getenv('STORE_ALIAS')
+            keyPassword System.getenv('ALIAS_PASSWORD')
         }
     }
     
