@@ -54,7 +54,7 @@ jobs:
           git config --local user.name ${{ secrets.USER_NAME }}
           yarn update-version
 
-      - uses: mikeal/publish-to-github-action@checkout
+      - uses: mikeal/publish-to-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ secrets.USER_NAME }}
