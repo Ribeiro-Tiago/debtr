@@ -20,7 +20,7 @@ const get = async () => {
   }
 
   return {
-    ...(items && { items }),
+    items: items || [],
     ...(metadata && { ...metadata }),
   } as StorageData;
 };
