@@ -9,9 +9,10 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle",
+    "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
     "build:apk": "yarn build:android && cd android && ./gradlew assembleRelease",
-    "build:aab": "yarn build:android && cd android && ./gradlew bundleRelease"
+    "build:aab": "yarn build:android && cd android && ./gradlew bundleRelease",
+    "update-version": "npx ts-node infra/update-versions.ts"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
@@ -53,6 +54,7 @@
     "eslint": "^7.1.0",
     "jest": "^26.0.1",
     "metro-react-native-babel-preset": "^0.59.0",
+    "playup": "^1.1.0",
     "prettier": "^2.0.4",
     "react-test-renderer": "16.11.0",
     "typescript": "^3.8.3"
