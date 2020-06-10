@@ -1,0 +1,17 @@
+name: "google play deploy"
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" > release.asc
+          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch release.asc > android/app/release.keystore
+      - name: Build aab
+        run: |
+          yarn install
+          yarn build:aab
