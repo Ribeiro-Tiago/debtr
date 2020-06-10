@@ -18,4 +18,5 @@ jobs:
       - name: Build aab
         run: |
           yarn install
-          ls -R
+          [ -d android/app/src/main/assets ] || mkdir android/app/src/main/assets
+          yarn build:aab
