@@ -1,17 +1,17 @@
-2.0.1 (05/06/2020) 
+v2.0.1
 - fixed issue with "left" on monthly expenses screen sometimes displaying wrong decimal values
 - fixed issue with error message that appeared sometimes on startup
 - fixed issue with "left" on monthly expenses screen where it was counting expenses not from the current month as well
 
-2.0.0 (05/06/2020) 
+v2.0.0 (05/06/2020)
 - Overhauled UI
 - Deployed to google store
 - Fixed issue with total left to pay with expenses that only occur on some months (top priority)
-- added liting 
+- added liting
 - added proper icon & splash screen
 - added listing of all existing expenses
-- added edit expense 
+- added edit expense
 - added delete expense
 
-1.0.0 (03/03/2020)
+v1.0.0 (03/03/2020)
 - Initial release
