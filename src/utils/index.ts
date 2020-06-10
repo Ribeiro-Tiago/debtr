@@ -15,12 +15,12 @@ export const months = [
 
 export const sanitizeAmount = (amount: any) => {
   try {
-    const sanitized = Number(
-      Math.abs(Number(amount.toString().replace(",", "."))).toFixed(2),
-    );
+    const sanitized = Math.abs(Number(amount.toString().replace(",", ".")));
 
     return isNaN(sanitized) ? 0 : sanitized;
   } catch (ex) {
     return 0;
   }
 };
+
+export const formatDecimal = (number: number) => Number(number.toFixed(2));
