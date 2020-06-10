@@ -10,7 +10,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+      env: 
+        STORE_ALIAS: ${{ secrets.STORE_ALIAS }}
+        STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+        ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
       - name: Setup keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" > release.asc
