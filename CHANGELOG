@@ -1,6 +1,7 @@
 2.0.1 (05/06/2020) 
-- fixed issues with "amount left" sometimes displaying wrong decimal values
-- fixed issues with error message that appeared sometimes on startup
+- fixed issue with "left" on monthly expenses screen sometimes displaying wrong decimal values
+- fixed issue with error message that appeared sometimes on startup
+- fixed issue with "left" on monthly expenses screen where it was counting expenses not from the current month as well
 
 2.0.0 (05/06/2020) 
 - Overhauled UI

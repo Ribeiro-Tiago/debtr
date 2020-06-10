@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import component from "./component";
 import { StoreState } from "../../types/store";
 import { addItem, updateItem, removeItem } from "../../store/actions/items";
-import { Item, ItemCreation } from "../../types";
+import { Item, ItemCreation, Month } from "../../types";
 import { addAmount, subtractAmount } from "../../store/actions/amountLeft";
+import { isCurrentMonth } from "../../utils";
 
 const mapStateToProps = (state: StoreState) => {
   const item = state.current.item;
@@ -20,19 +21,25 @@ const mapDispatchToProps = (dispatch: Function) => {
   return {
     create: (item: ItemCreation) => {
       dispatch(addItem(item));
-      dispatch(addAmount(item.amount));
+
+      if (isCurrentMonth(item.months)) {
+        dispatch(addAmount(item.amount));
+      }
     },
     update: (item: Item, oldAmount: number) => {
       dispatch(updateItem(item));
 
-      if (oldAmount !== undefined) {
+      if (isCurrentMonth(item.months) && oldAmount !== undefined) {
         dispatch(addAmount(item.amount));
         dispatch(subtractAmount(oldAmount));
       }
     },
-    remove: (id: string, amount: number) => {
+    remove: (id: string, months: Month[], amount: number) => {
       dispatch(removeItem(id));
-      dispatch(subtractAmount(amount));
+
+      if (isCurrentMonth(months)) {
+        dispatch(subtractAmount(amount));
+      }
     },
   };
 };
