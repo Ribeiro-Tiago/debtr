@@ -1,3 +1,5 @@
+import { Month } from "src/types";
+
 export const months = [
   { id: 0, label: "January" },
   { id: 1, label: "February" },
@@ -24,3 +26,13 @@ export const sanitizeAmount = (amount: any) => {
 };
 
 export const formatDecimal = (number: number) => Number(number.toFixed(2));
+
+export const isCurrentMonth = (months: Month[]) => {
+  const m = new Date().getMonth();
+
+  return (
+    !months.length ||
+    months.length === 11 ||
+    !!months.find(({ id }) => id === m)
+  );
+};

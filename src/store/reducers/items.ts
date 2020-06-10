@@ -37,9 +37,9 @@ export default (state = initState, { type, payload }: ListReducerAction) => {
     }
 
     case UPDATE_ITEM: {
-      const items = state.map((item) =>
-        item.id === payload.id ? payload : item,
-      );
+      const items = state.map((item) => {
+        return item.id === payload.id ? payload : item;
+      });
 
       updateItems(items);
 
