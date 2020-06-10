@@ -5,7 +5,7 @@ on:
     branches: [feat/automate-deploy]
 
 jobs:
-  setup:
+  setup-and-build:
     runs-on: ubuntu-latest
 
     env:
@@ -15,6 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Setup keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" > release.asc
