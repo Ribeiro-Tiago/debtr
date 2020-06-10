@@ -1,4 +1,4 @@
-v2.0.1
+v2.0.1 (10/06/2020)
 - fixed issue with "left" on monthly expenses screen sometimes displaying wrong decimal values
 - fixed issue with error message that appeared sometimes on startup
 - fixed issue with "left" on monthly expenses screen where it was counting expenses not from the current month as well
