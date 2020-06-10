@@ -1,6 +1,8 @@
 name: "google play deploy"
 
 on:
+  pull_request:
+    branches: [master]
   push:
     branches: [feat/automate-deploy]
 
@@ -29,6 +31,7 @@ jobs:
 
       - name: Commit files
         run: |
+          git pull
           git config --local user.email ${{ secrets.USER_EMAIL }}
           git config --local user.name ${{ secrets.USER_NAME }}
           git commit -m "Add changes" -a
