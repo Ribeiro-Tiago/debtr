@@ -9,7 +9,7 @@ If you want to help with the development of Debtr, please follow the following r
 - Describe the issue clearly and succinctly.
 - In case of bug reports:
   - describe the steps required to reproduce issue,
-  - attach a [backtrace](http://en.wikipedia.org/wiki/Stack_trace) if you have any,
+  - attach a [stacktrace](http://en.wikipedia.org/wiki/Stack_trace) if you have any,
   - post details about your setup:
     - application version,
     - system version
@@ -18,12 +18,25 @@ If you want to help with the development of Debtr, please follow the following r
 ## New features or fixes
 
 - Fork the repository on GitHub.
-- Create your feature branch (git checkout -b my-new-feature)
-- Commit your changes (git commit -am 'Add some feature')
-- Update the [CHANGELOG](https://github.com/Ribeiro-Tiago/debtr/edit/master/CONTRIBUTING.md) to reflect your change
-- Push to the branch (git push origin my-new-feature)
-- Create new Pull Request, describe what the issue was how your PR resolves it
+- Create your feature branch (check next step for naming rules)
+- Commit your changes
+- Update the [CHANGELOG](https://github.com/Ribeiro-Tiago/debtr/edit/master/CHANGELOG) to reflect your change
+- Push to the branch
+- Create new Pull Request,
+  - If it's to solve an issue
+    - Describe what the issue was and how your PR resolves it
+    - link it to the open issue
+  - If it's a feature / chore
+    - Describe what you want to implment or what chore you're doing
 - Patiently wait for the review.
+
+#### Branch naming rules
+
+Branch name must be prefix/name, where "name" is something succint that descrbies the purpose (e.g.: fix/issue-# or feat/auth) and prefix which is one of:
+
+- fix > your branch fixes some issue
+- feat > your branch implements a new feature
+- chore > something else
 
 ## Coding rules
 
