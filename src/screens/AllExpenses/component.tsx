@@ -1,20 +1,20 @@
-import React from 'react';
+import React from "react";
 import {
   Text,
   View,
   StyleSheet,
   TouchableWithoutFeedback,
   Alert,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-import { TopBar, List, ListItem } from '../../components';
-import { Item, Month } from '../../types';
+import { TopBar, List, ListItem } from "../../components";
+import { Item, Month } from "../../types";
 
 interface Props {
   items: Item[];
   updateCurrent: (item?: Item) => void;
-  removeItem: (id: string, amount: number) => void;
+  removeItem: (id: string, months: Month[], amount: number) => void;
 }
 
 export default function AllExpenses({
@@ -26,18 +26,18 @@ export default function AllExpenses({
 
   const goToForm = (item?: Item) => {
     updateCurrent(item);
-    navigation.navigate('ExpenseForm');
+    navigation.navigate("ExpenseForm");
   };
 
-  const onRemove = ({ id, amount }: Item) => {
+  const onRemove = ({ id, months, amount }: Item) => {
     Alert.alert(
-      'Confirm delete?',
-      'You are about to delete this expense. This action is irreversable',
+      "Confirm delete?",
+      "You are about to delete this expense. This action is irreversable",
       [
-        { text: 'Confirm', onPress: () => removeItem(id, amount) },
-        { text: 'Cancel' },
+        { text: "Confirm", onPress: () => removeItem(id, months, amount) },
+        { text: "Cancel" },
       ],
-      { cancelable: true }
+      { cancelable: true },
     );
   };
 
@@ -67,7 +67,7 @@ export default function AllExpenses({
     ));
   };
 
-  const renderListItem = ({ item, index }) => {
+  const renderListItem = ({ item, index }: { item: Item; index: number }) => {
     return (
       <ListItem
         item={item}
@@ -113,40 +113,40 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 20,
-    color: '#581c0c',
+    color: "#581c0c",
   },
   button: {
     fontSize: 20,
-    color: '#581c0c',
+    color: "#581c0c",
   },
   tags: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   tag: {
     fontSize: 12,
     marginRight: 5,
   },
   emptyContainer: {
-    display: 'flex',
+    display: "flex",
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   createExpenseContainer: {
     borderRadius: 10,
-    backgroundColor: '#f1e3cb',
+    backgroundColor: "#f1e3cb",
     padding: 10,
-    borderColor: '#581c0c',
+    borderColor: "#581c0c",
     borderWidth: 1,
   },
   createExpenseText: {
     fontSize: 24,
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: 40,
-    color: '#581c0c',
+    color: "#581c0c",
   },
 });

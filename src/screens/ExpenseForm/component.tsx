@@ -21,7 +21,7 @@ interface Props {
   selectedMonths: Month[];
   create: (item: ItemCreation) => void;
   update: (item: Item, amount: number) => void;
-  remove: (id: string, amount: number) => void;
+  remove: (id: string, months: Month[], amount: number) => void;
 }
 
 interface Form {
@@ -66,7 +66,7 @@ export default function ExpenseForm({
   };
 
   const onDeleteConfirm = () => {
-    remove(item.id, item.amount);
+    remove(item.id, item.months, item.amount);
     goBack();
   };
 
