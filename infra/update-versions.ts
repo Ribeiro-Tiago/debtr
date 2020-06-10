@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { join } from "path";
 import { readFileSync, writeFileSync } from "fs";
 import { versionWithDate, versionWithV, pkgJsonVersion } from "./regex";
@@ -37,10 +39,10 @@ const updatePackageJsonVersion = (version: string) => {
   writeFileSync(path, json);
 };
 
-export default () => {
+const update = () => {
   const version = updateChangelogDateAndGetVersion();
 
   updatePackageJsonVersion(version);
-
-  return version;
 };
+
+update();
