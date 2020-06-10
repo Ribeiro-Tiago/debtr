@@ -59,3 +59,4 @@ buck-out/
 /ios/Pods/
 
 index.android.bundle
+infra/google-api.json
