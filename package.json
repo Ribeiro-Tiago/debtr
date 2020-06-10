@@ -12,7 +12,8 @@
     "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
     "build:apk": "yarn build:android && cd android && ./gradlew assembleRelease",
     "build:aab": "yarn build:android && cd android && ./gradlew bundleRelease",
-    "update-version": "npx ts-node infra/update-versions.ts"
+    "update-version": "npx ts-node infra/update-versions.ts",
+    "deploy:android": "npx ts-node infra/deploy-android.ts"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
