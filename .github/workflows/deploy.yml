@@ -27,7 +27,12 @@ jobs:
       - name: Update app version
         run: yarn update-version
 
-      - name: Build aab
-        run: |
-          [ -d android/app/src/main/assets ] || mkdir android/app/src/main/assets
-          yarn build:aab
+      - name: Commit files
+          run: |
+            git config --local user.email ${{ secrets.USER_EMAIL }}
+            git config --local user.name ${{ secrets.USER_NAME }}
+            git commit -m "Add changes" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}      
