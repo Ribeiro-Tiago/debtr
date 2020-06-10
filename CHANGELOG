@@ -1,5 +1,6 @@
 2.0.1 (05/06/2020) 
 - fixed issues with "amount left" sometimes displaying wrong decimal values
+- fixed issues with error message that appeared sometimes on startup
 
 2.0.0 (05/06/2020) 
 - Overhauled UI
