@@ -28,6 +28,8 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
+        with:
+          id: cache-yarn
 
       - name: Cache keystore
         id: cache-keystore
