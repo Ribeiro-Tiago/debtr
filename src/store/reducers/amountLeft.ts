@@ -15,7 +15,7 @@ export default (
 ) => {
   switch (type) {
     case SET_AMOUNT_LEFT: {
-      return payload;
+      return formatDecimal(payload);
     }
 
     case ADD_AMOUNT_LEFT: {
