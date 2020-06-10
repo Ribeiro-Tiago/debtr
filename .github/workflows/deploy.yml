@@ -18,23 +18,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup keystore
-        run: |
-          echo "${{ secrets.KEYSTORE }}" > release.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch release.asc > android/app/release.keystore
-
       - name: Install dependencies
         run: yarn install
 
       - name: Update app version
-        run: yarn update-version
-
-      - name: Push changes
         run: |
           git config --local user.email ${{ secrets.USER_EMAIL }}
           git config --local user.name ${{ secrets.USER_NAME }}
-          git pull
-          git commit -m "Add changes" -a
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          yarn update-version
+
+      - uses: mikeal/publish-to-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
