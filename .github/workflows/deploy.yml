@@ -4,28 +4,9 @@ on:
   pull_request:
     branches: [master]
   push:
-    branches: [feat/automate-deploy]
+    branches: [master]
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Cache keystore
-        id: cache-keystore
-        uses: actions/cache@v2
-        with:
-          path: android/app/release.keystore
-          key: ${{ runner.os }}-keystore
-
-      - name: Rebuild keystore
-        if: steps.cache-keystore.outputs.cache-hit != 'true'
-        run: |
-          echo "${{ secrets.KEYSTORE }}" > release.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch release.asc > android/app/release.keystore
-
   upgrade-version:
     runs-on: ubuntu-latest
 
@@ -89,3 +70,6 @@ jobs:
         run: |
           [ -d android/app/src/main/assets ] || mkdir android/app/src/main/assets
           yarn build:aab
+
+      - name: Deploy to store
+        run: yarn deploy:android
