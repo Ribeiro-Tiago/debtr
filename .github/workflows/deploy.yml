@@ -7,8 +7,62 @@ on:
     branches: [feat/automate-deploy]
 
 jobs:
-  setup-and-build:
+  setup:
     runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache yarn
+        id: cache-yarn
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Cache keystore
+        id: cache-keystore
+        uses: actions/cache@v2
+        with:
+          path: android/app/release.keystore
+          key: ${{ runner.os }}-keystore
+
+      - name: Rebuild keystore
+        if: steps.cache-keystore.outputs.cache-hit != 'true'
+        run: |
+          echo "${{ secrets.KEYSTORE }}" > release.asc
+          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch release.asc > android/app/release.keystore
+
+  upgrade-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update app version
+        run: |
+          git config --local user.email ${{ secrets.USER_EMAIL }}
+          git config --local user.name ${{ secrets.USER_NAME }}
+          yarn update-version
+
+      - uses: mikeal/publish-to-github-action@checkout
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ secrets.USER_NAME }}
+
+  build:
+    runs-on: ubuntu-latest
+
+    needs: upgrade-version
 
     env:
       STORE_ALIAS: ${{ secrets.STORE_ALIAS }}
@@ -18,15 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Update app version
+      - name: Build aab
         run: |
-          git config --local user.email ${{ secrets.USER_EMAIL }}
-          git config --local user.name ${{ secrets.USER_NAME }}
-          yarn update-version
-
-      - uses: mikeal/publish-to-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          [ -d android/app/src/main/assets ] || mkdir android/app/src/main/assets
+          yarn build:aab
