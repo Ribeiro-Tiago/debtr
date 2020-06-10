@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid/non-secure';
+import { nanoid } from "nanoid/non-secure";
 
 import {
   TOGGLE_ITEM_STATUS,
@@ -6,11 +6,11 @@ import {
   UPDATE_ITEM,
   ADD_ITEM,
   SET_ITEMS,
-} from '../actions/types';
-import { Item, ItemCreation } from '../../types';
-import { ListReducerAction } from '../../types/store';
-import { updateItems } from '../../services/storage/storage';
-import { sanitizeAmount } from '../../utils';
+} from "../actions/types";
+import { Item, ItemCreation } from "../../types";
+import { ListReducerAction } from "../../types/store";
+import { updateItems } from "../../services/storage/storage";
+import { sanitizeAmount, formatDecimal } from "../../utils";
 
 const initState: Item[] = [];
 
@@ -27,7 +27,7 @@ export default (state = initState, { type, payload }: ListReducerAction) => {
           ...(payload as ItemCreation),
           id: nanoid(),
           isPaid: false,
-          amount: sanitizeAmount(payload.amount),
+          amount: formatDecimal(sanitizeAmount(payload.amount)),
         },
       ];
 
@@ -38,7 +38,7 @@ export default (state = initState, { type, payload }: ListReducerAction) => {
 
     case UPDATE_ITEM: {
       const items = state.map((item) =>
-        item.id === payload.id ? payload : item
+        item.id === payload.id ? payload : item,
       );
 
       updateItems(items);
