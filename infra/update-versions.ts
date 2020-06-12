@@ -2,7 +2,7 @@
 
 import { join } from "path";
 import { readFileSync, writeFileSync } from "fs";
-import { versionWithDate, versionWithV, pkgJsonVersion } from "./regex";
+import { versionWithDate, versionWithV, pkgJsonVersion, buildGradle } from "./regex";
 
 const getToday = () => {
   const addLeadZero = (num: number) => `0${num}`.substr(-2);
@@ -34,15 +34,24 @@ const updatePackageJsonVersion = (version: string) => {
 
   json = json.replace(pkgJsonVersion, `"version": "${version}"`);
 
-  console.log(path, json);
-
   writeFileSync(path, json);
 };
+
+const updateBuildGradleVersion = (version: string) => {
+  const path = join(__dirname, "../android/app/build.gradle");
+  let gradle = readFileSync(path, { encoding: "utf-8" });
+
+  gradle = gradle.replace(buildGradle.code, `versionCode ${version.split(".")[0]}`);
+  gradle = gradle.replace(buildGradle.name, `versionName "${version}"`);
+
+  writeFileSync(path, gradle);
+}
 
 const update = () => {
   const version = updateChangelogDateAndGetVersion();
 
   updatePackageJsonVersion(version);
+  updateBuildGradleVersion(version);
 };
 
 update();
