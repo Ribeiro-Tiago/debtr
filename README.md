@@ -40,3 +40,6 @@ Wanna contribute? Check the [how to](https://github.com/Ribeiro-Tiago/debtr/blob
 Icon from [smashicons](https://www.flaticon.com/authors/smashicons) @ flaticon.com
 
 Store image templates made with [app store screenshots](https://www.appstorescreenshot.com/)
+
+#
+<a href="https://www.buymeacoffee.com/ribeirotiago" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-violet.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
