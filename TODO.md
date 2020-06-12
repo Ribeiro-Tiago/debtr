@@ -10,3 +10,4 @@
 - better use of themes
 - optimize deploy workflow
 - add list ordering
+- update list item UI all amounts are aligned
