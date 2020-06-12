@@ -20,7 +20,7 @@ If you want to help with the development of Debtr, please follow the following r
 - Fork the repository on GitHub.
 - Create your feature branch (check next step for naming rules)
 - Commit your changes
-- Update the [CHANGELOG](https://github.com/Ribeiro-Tiago/debtr/edit/master/CHANGELOG) to reflect your change
+- Update the [CHANGELOG](https://github.com/Ribeiro-Tiago/debtr/master/CHANGELOG) to reflect your change
 - Push to the branch
 - Create new Pull Request,
   - If it's to solve an issue
