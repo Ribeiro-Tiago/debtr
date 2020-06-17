@@ -1,15 +1,9 @@
-import React, { useState } from "react";
-import {
-  TouchableWithoutFeedback,
-  View,
-  StyleSheet,
-  Text,
-  Animated,
-} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import React from "react";
+import { TouchableWithoutFeedback, View, StyleSheet, Text } from "react-native";
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import Ionicon from "react-native-vector-icons/Ionicons";
 
 import { Item } from "../types";
-import { getPlatformIcon } from "../utils";
 
 const primary = "#581c0c";
 const secondary = "#ca5116";
@@ -50,8 +44,8 @@ export default function ListItem({
       onLongPress={onDrag}
       onPress={() => onPress(item)}>
       <View style={[styles.wrapper, wrapperColor]}>
-        <Icon
-          name={getPlatformIcon("reorder")}
+        <MaterialIcon
+          name="drag"
           size={32}
           style={styles.reorder}
           color={iconColor}
@@ -64,7 +58,7 @@ export default function ListItem({
               {item.amount}€
             </Text>
 
-            <Icon
+            <Ionicon
               onPress={() => onIconPress(item)}
               name={iconName}
               size={32}
@@ -115,6 +109,7 @@ const styles = StyleSheet.create({
   },
   reorder: {
     marginLeft: 10,
+    width: "5%",
   },
   wrapper: {
     display: "flex",
