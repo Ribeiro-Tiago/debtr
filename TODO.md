@@ -9,4 +9,3 @@
 - add link to privacy policy and eula
 - better use of themes
 - optimize deploy workflow
-- add list ordering
