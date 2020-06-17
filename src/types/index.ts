@@ -19,3 +19,10 @@ export interface Month {
   id: number;
   label: string;
 }
+
+export interface RenderItemParams {
+  item: Item;
+  isBeingDragged: boolean;
+  isEven: boolean;
+  onDrag: () => void;
+}
