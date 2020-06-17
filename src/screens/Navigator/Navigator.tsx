@@ -12,7 +12,7 @@ import {
   AllExpensesScreen,
   MonthlyExpensesScreen,
   ExpenseFormScreen,
-} from "../../screens";
+} from "..";
 import { getData, updateCurrMonth } from "../../services/storage/storage";
 import { StorageData, Item } from "../../types";
 import { isCurrentMonth } from "../../utils";
