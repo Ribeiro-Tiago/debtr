@@ -1,12 +1,23 @@
 # Todo (in no particular order)
 
-- add settings to choose the reset day
-- add tests
+- add settings
+
+  - choose the reset day
+  - update language
+  - push notifs
+  - PP e EUlA
+  - app version
+  - repeat tutorial
+  - delete all local data
+  - update themes
+  - give feedback
+  - donate
+  - update currency config
+
 - add i18n support
+- add tests
 - add support for reminder push notifications
 - add a tutorial
 - add currency config
-- add link to privacy policy and eula
-- better use of themes
+- add light / dark theme
 - optimize deploy workflow
-- add list ordering

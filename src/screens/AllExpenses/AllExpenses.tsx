@@ -9,16 +9,18 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 import { TopBar, List, ListItem } from "../../components";
-import { Item, Month } from "../../types";
+import { Item, Month, RenderItemParams } from "../../types";
 
 interface Props {
   items: Item[];
+  reorderItems: (items: Item[]) => void;
   updateCurrent: (item?: Item) => void;
   removeItem: (id: string, months: Month[], amount: number) => void;
 }
 
 export default function AllExpenses({
   items,
+  reorderItems,
   updateCurrent,
   removeItem,
 }: Props) {
@@ -67,14 +69,12 @@ export default function AllExpenses({
     ));
   };
 
-  const renderListItem = ({ item, index }: { item: Item; index: number }) => {
+  const renderListItem = (props: RenderItemParams) => {
     return (
       <ListItem
-        item={item}
+        {...props}
         iconName="ios-trash"
-        onPress={() => goToForm(item)}
-        isEven={index % 2 === 0}
-        onIconPress={onRemove}
+        onPress={() => goToForm(props.item)}
         renderTags={({ months }) => (
           <View style={styles.tags}>{renderMonths(months)}</View>
         )}
@@ -101,6 +101,7 @@ export default function AllExpenses({
 
       <List
         data={items}
+        onItemReorder={reorderItems}
         renderEmptyList={renderEmptyList}
         renderListItem={renderListItem}
       />

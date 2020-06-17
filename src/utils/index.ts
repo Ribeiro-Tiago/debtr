@@ -1,4 +1,6 @@
-import { Month } from "src/types";
+import { Platform } from "react-native";
+
+import { Month } from "../types";
 
 export const months = [
   { id: 0, label: "January" },
@@ -35,4 +37,8 @@ export const isCurrentMonth = (months: Month[]) => {
     months.length === 11 ||
     !!months.find(({ id }) => id === m)
   );
+};
+
+export const getPlatformIcon = (name: string) => {
+  return Platform.OS === "ios" ? `ios-${name}` : `md-${name}`;
 };
