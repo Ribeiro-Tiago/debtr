@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableWithoutFeedback, View, StyleSheet, Text } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import Ionicon from "react-native-vector-icons/Ionicons";
 
 import { Item } from "../types";
 
@@ -9,53 +10,75 @@ const secondary = "#ca5116";
 
 interface Props {
   item: Item;
-  isEven: boolean;
   iconName: string;
   hideIcon?: boolean;
+  isBeingDragged: boolean;
   onPress: (item: Item) => void;
+  onDrag: () => void;
   renderTags?: (item: Item) => React.ReactElement;
   onIconPress?: (item: Item) => void;
 }
 export default function ListItem({
   item,
-  isEven,
   iconName,
   hideIcon,
+  isBeingDragged,
   onPress,
+  onDrag,
   renderTags,
   onIconPress,
 }: Props) {
-  const itemStyle = isEven ? styles.evenItem : styles.oddItem;
+  let wrapperColor = {};
+  let itemColor = {};
+  let iconColor = inactiveIcon;
+
+  if (isBeingDragged) {
+    wrapperColor = styles.activeWrapper;
+    itemColor = styles.activeItem;
+    iconColor = activeIcon;
+  }
 
   return (
-    <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item)}>
-      <View style={styles.container}>
-        <View style={styles.infoContainer}>
-          <Text style={itemStyle}>{item.description}</Text>
-          <Text style={{ ...itemStyle, ...styles.amount }}>{item.amount}€</Text>
+    <TouchableWithoutFeedback
+      key={item.id}
+      onLongPress={onDrag}
+      onPress={() => onPress(item)}>
+      <View style={[styles.wrapper, wrapperColor]}>
+        <MaterialIcon
+          name="drag"
+          size={32}
+          style={styles.reorder}
+          color={iconColor}
+        />
 
-          <Icon
-            onPress={() => onIconPress(item)}
-            name={iconName}
-            size={32}
-            color={hideIcon ? "transparent" : isEven ? primary : secondary}
-            style={styles.icon}
-          />
+        <View style={styles.container}>
+          <View style={styles.infoContainer}>
+            <Text style={[styles.item, itemColor]}>{item.description}</Text>
+            <Text style={[styles.item, styles.amount, itemColor]}>
+              {item.amount}€
+            </Text>
+
+            <Ionicon
+              onPress={() => onIconPress(item)}
+              name={iconName}
+              size={32}
+              color={hideIcon ? "transparent" : iconColor}
+              style={styles.icon}
+            />
+          </View>
+
+          {renderTags && renderTags(item)}
         </View>
-
-        {renderTags && renderTags(item)}
       </View>
     </TouchableWithoutFeedback>
   );
 }
 
-const infoItem = {
-  fontSize: 18,
-  flex: 1,
-};
-
+const inactiveIcon = primary;
+const activeIcon = secondary;
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     height: 80,
     display: "flex",
     justifyContent: "center",
@@ -63,12 +86,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#f9b384",
   },
-  evenItem: {
-    ...infoItem,
+  item: {
+    fontSize: 18,
+    flex: 1,
     color: primary,
   },
-  oddItem: {
-    ...infoItem,
+  activeItem: {
     color: secondary,
   },
   amount: {
@@ -83,5 +106,19 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
+  },
+  reorder: {
+    marginLeft: 10,
+    width: "5%",
+  },
+  wrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    flex: 1,
+  },
+  activeWrapper: {
+    backgroundColor: "#f0f0f0",
   },
 });
