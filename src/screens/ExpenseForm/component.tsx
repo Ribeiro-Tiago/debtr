@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import { Item, Month, ItemCreation } from "../../types";
 import { TopBar, FormItem, MonthSelector } from "../../components";
+import { getPlatformIcon } from "../../utils";
 
 interface Props {
   item: Item | null;
@@ -86,7 +87,7 @@ export default function ExpenseForm({
           <TouchableWithoutFeedback onPress={goBack}>
             <View style={styles.goBackWrapper}>
               <Icon
-                name={`${Platform.OS === "ios" ? "ios" : "md"}-arrow-back`}
+                name={getPlatformIcon("arrow-back")}
                 color="#581c0c"
                 size={24}
               />
