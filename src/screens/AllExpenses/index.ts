@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import component from "./component";
+import component from "./AllExpenses";
 import { StoreState } from "../../types/store";
 import { Item, Month } from "../../types";
 import { updateSelected } from "../../store/actions/current";
