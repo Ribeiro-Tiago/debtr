@@ -1,8 +1,15 @@
-import React from "react";
-import { TouchableWithoutFeedback, View, StyleSheet, Text } from "react-native";
+import React, { useState } from "react";
+import {
+  TouchableWithoutFeedback,
+  View,
+  StyleSheet,
+  Text,
+  Animated,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import { Item } from "../types";
+import { getPlatformIcon } from "../utils";
 
 const primary = "#581c0c";
 const secondary = "#ca5116";
@@ -12,7 +19,9 @@ interface Props {
   isEven: boolean;
   iconName: string;
   hideIcon?: boolean;
+  isBeingDragged: boolean;
   onPress: (item: Item) => void;
+  onDrag: () => void;
   renderTags?: (item: Item) => React.ReactElement;
   onIconPress?: (item: Item) => void;
 }
@@ -21,32 +30,50 @@ export default function ListItem({
   isEven,
   iconName,
   hideIcon,
+  isBeingDragged,
   onPress,
+  onDrag,
   renderTags,
   onIconPress,
 }: Props) {
+  const [animatedValue] = useState(new Animated.Value(0));
   const itemStyle = isEven ? styles.evenItem : styles.oddItem;
 
-  return (
-    <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item)}>
-      <View style={styles.container}>
-        <View style={styles.infoContainer}>
-          <Text style={itemStyle}>{item.description}</Text>
-          <Text style={{ ...itemStyle, ...styles.amount }}>{item.amount}€</Text>
-
+  const render = () => {
+    return (
+      <TouchableWithoutFeedback
+        key={item.id}
+        onLongPress={onDrag}
+        onPress={() => onPress(item)}>
+        <View style={styles.wrapper}>
           <Icon
-            onPress={() => onIconPress(item)}
-            name={iconName}
+            name={getPlatformIcon("reorder")}
             size={32}
-            color={hideIcon ? "transparent" : isEven ? primary : secondary}
-            style={styles.icon}
+            style={styles.reoder}
           />
-        </View>
 
-        {renderTags && renderTags(item)}
-      </View>
-    </TouchableWithoutFeedback>
-  );
+          <View style={styles.container}>
+            <View style={styles.infoContainer}>
+              <Text style={itemStyle}>{item.description}</Text>
+              <Text style={[itemStyle, styles.amount]}>{item.amount}€</Text>
+
+              <Icon
+                onPress={() => onIconPress(item)}
+                name={iconName}
+                size={32}
+                color={hideIcon ? "transparent" : isEven ? primary : secondary}
+                style={styles.icon}
+              />
+            </View>
+
+            {renderTags && renderTags(item)}
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  };
+
+  return render();
 }
 
 const infoItem = {
@@ -56,6 +83,7 @@ const infoItem = {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     height: 80,
     display: "flex",
     justifyContent: "center",
@@ -83,5 +111,15 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
+  },
+  reoder: {
+    marginLeft: 10,
+  },
+  wrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    flex: 1,
   },
 });

@@ -4,35 +4,35 @@ import dayjs from "dayjs";
 import Emoji from "react-native-emoji";
 
 import { List, TopBar, ListItem } from "../../components";
-import { Item } from "../../types";
+import { Item, RenderItemParams } from "../../types";
 
 interface Props {
   items: Item[];
   amountLeft: number;
+  reorderItems: (items: Item[]) => void;
   togglePaidStatus: (id: string) => void;
   updateAmountLeft: (amount: number, isPaid: boolean) => void;
 }
-const emojis = "\\u+1F973 \\u+1F973";
 
 export default function MonthlyExpenses({
   items,
   amountLeft,
   togglePaidStatus,
   updateAmountLeft,
+  reorderItems,
 }: Props) {
   const onItemPress = ({ id, isPaid, amount }: Item) => {
     togglePaidStatus(id);
     updateAmountLeft(amount, isPaid);
   };
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = (props: RenderItemParams) => {
     return (
       <ListItem
+        {...props}
         onPress={onItemPress}
-        item={item}
-        isEven={index % 2 === 0}
         iconName="ios-checkmark"
-        hideIcon={!item.isPaid}
+        hideIcon={!props.item.isPaid}
       />
     );
   };
@@ -57,6 +57,7 @@ export default function MonthlyExpenses({
 
       <List
         data={items}
+        onItemReorder={reorderItems}
         renderEmptyList={renderEmptyList}
         renderListItem={renderItem}
       />
