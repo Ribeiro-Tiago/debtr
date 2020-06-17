@@ -1,3 +1,10 @@
+v2.1.0 
+Features: 
+- list reoredering
+
+UI Changes: 
+- align "amounts" on lists
+
 v2.0.1 (10/06/2020)
 - fixed issue with "left" on monthly expenses screen sometimes displaying wrong decimal values
 - fixed issue with error message that appeared sometimes on startup
