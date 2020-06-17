@@ -23,6 +23,5 @@ export interface Month {
 export interface RenderItemParams {
   item: Item;
   isBeingDragged: boolean;
-  isEven: boolean;
   onDrag: () => void;
 }

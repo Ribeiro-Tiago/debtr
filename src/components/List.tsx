@@ -35,12 +35,10 @@ export default function List({
   const renderItem = ({
     drag,
     item,
-    index,
     isActive,
   }: DragableRenderItemParams<Item>) => {
     return renderListItem({
       item,
-      isEven: index % 2 === 0,
       isBeingDragged: isActive,
       onDrag: drag,
     });

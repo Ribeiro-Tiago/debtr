@@ -16,7 +16,6 @@ const secondary = "#ca5116";
 
 interface Props {
   item: Item;
-  isEven: boolean;
   iconName: string;
   hideIcon?: boolean;
   isBeingDragged: boolean;
@@ -27,7 +26,6 @@ interface Props {
 }
 export default function ListItem({
   item,
-  isEven,
   iconName,
   hideIcon,
   isBeingDragged,
@@ -36,50 +34,54 @@ export default function ListItem({
   renderTags,
   onIconPress,
 }: Props) {
-  const itemStyle = isEven ? styles.evenItem : styles.oddItem;
+  let wrapperColor = {};
+  let itemColor = {};
+  let iconColor = inactiveIcon;
 
-  const render = () => {
-    return (
-      <TouchableWithoutFeedback
-        key={item.id}
-        onLongPress={onDrag}
-        onPress={() => onPress(item)}>
-        <View style={isBeingDragged ? styles.activeWrapper : styles.wrapper}>
-          <Icon
-            name={getPlatformIcon("reorder")}
-            size={32}
-            style={styles.reoder}
-          />
+  if (isBeingDragged) {
+    wrapperColor = styles.activeWrapper;
+    itemColor = styles.activeItem;
+    iconColor = activeIcon;
+  }
 
-          <View style={styles.container}>
-            <View style={styles.infoContainer}>
-              <Text style={itemStyle}>{item.description}</Text>
-              <Text style={[itemStyle, styles.amount]}>{item.amount}€</Text>
+  return (
+    <TouchableWithoutFeedback
+      key={item.id}
+      onLongPress={onDrag}
+      onPress={() => onPress(item)}>
+      <View style={[styles.wrapper, wrapperColor]}>
+        <Icon
+          name={getPlatformIcon("reorder")}
+          size={32}
+          style={styles.reorder}
+          color={iconColor}
+        />
 
-              <Icon
-                onPress={() => onIconPress(item)}
-                name={iconName}
-                size={32}
-                color={hideIcon ? "transparent" : isEven ? primary : secondary}
-                style={styles.icon}
-              />
-            </View>
+        <View style={styles.container}>
+          <View style={styles.infoContainer}>
+            <Text style={[styles.item, itemColor]}>{item.description}</Text>
+            <Text style={[styles.item, styles.amount, itemColor]}>
+              {item.amount}€
+            </Text>
 
-            {renderTags && renderTags(item)}
+            <Icon
+              onPress={() => onIconPress(item)}
+              name={iconName}
+              size={32}
+              color={hideIcon ? "transparent" : iconColor}
+              style={styles.icon}
+            />
           </View>
-        </View>
-      </TouchableWithoutFeedback>
-    );
-  };
 
-  return render();
+          {renderTags && renderTags(item)}
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
+  );
 }
 
-const infoItem = {
-  fontSize: 18,
-  flex: 1,
-};
-
+const inactiveIcon = primary;
+const activeIcon = secondary;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -90,12 +92,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#f9b384",
   },
-  evenItem: {
-    ...infoItem,
+  item: {
+    fontSize: 18,
+    flex: 1,
     color: primary,
   },
-  oddItem: {
-    ...infoItem,
+  activeItem: {
     color: secondary,
   },
   amount: {
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
-  reoder: {
+  reorder: {
     marginLeft: 10,
   },
   wrapper: {
@@ -123,10 +125,5 @@ const styles = StyleSheet.create({
   },
   activeWrapper: {
     backgroundColor: "#f0f0f0",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    flex: 1,
   },
 });
