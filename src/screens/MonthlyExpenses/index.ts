@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import component from "./component";
+import component from "./MonthlyExpenses";
 import { StoreState } from "../../types/store";
 import { Item } from "../../types";
 import { toggleItemStatus, setItems } from "../../store/actions/items";
