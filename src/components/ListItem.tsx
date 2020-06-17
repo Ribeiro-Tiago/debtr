@@ -36,7 +36,6 @@ export default function ListItem({
   renderTags,
   onIconPress,
 }: Props) {
-  const [animatedValue] = useState(new Animated.Value(0));
   const itemStyle = isEven ? styles.evenItem : styles.oddItem;
 
   const render = () => {
@@ -45,7 +44,7 @@ export default function ListItem({
         key={item.id}
         onLongPress={onDrag}
         onPress={() => onPress(item)}>
-        <View style={styles.wrapper}>
+        <View style={isBeingDragged ? styles.activeWrapper : styles.wrapper}>
           <Icon
             name={getPlatformIcon("reorder")}
             size={32}
@@ -116,6 +115,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   wrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    flex: 1,
+  },
+  activeWrapper: {
+    backgroundColor: "#f0f0f0",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
