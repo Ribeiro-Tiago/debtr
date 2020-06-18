@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { Alert } from "react-native";
+import { Alert, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -8,6 +8,7 @@ import {
 } from "@react-navigation/material-top-tabs";
 import SplashScreen from "react-native-splash-screen";
 import { connect } from "react-redux";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import {
   AllExpensesScreen,
@@ -34,6 +35,9 @@ const barOptions: MaterialTopTabBarOptions = {
   pressOpacity: 0.8,
   allowFontScaling: true,
   bounces: true,
+  showIcon: true,
+  showLabel: false,
+  iconStyle: { width: 32, height: 32 },
   style: {
     backgroundColor: "#f1e3cb",
     borderTopColor: "#a6a6a6",
@@ -116,19 +120,54 @@ function Navigator({ setAmountLeft, setItems }: Props) {
     );
   };
 
+  const tabOptions = (icon: string, accessibilityLabel: string) => {
+    return {
+      tabBarAccessibilityLabel: accessibilityLabel,
+      tabBarIcon: ({ focused }: { focused: boolean }) => (
+        <Icon
+          style={styles.barIcon}
+          name={focused ? icon : `${icon}-outline`}
+        />
+      ),
+    };
+  };
+
   return (
     <NavigationContainer>
-      <Tab.Navigator tabBarOptions={barOptions} tabBarPosition="bottom">
+      <Tab.Navigator
+        tabBarOptions={barOptions}
+        tabBarPosition="bottom"
+        /* tabBar={MyTabBar} */
+      >
         <Tab.Screen
-          name={i18n.monthlyTabName}
+          key="monthly"
+          name="monthly expenses"
           component={MonthlyExpensesScreen}
+          options={tabOptions("home", "Monthly expenses")}
         />
-        <Tab.Screen name={i18n.allTabName} component={buildStackNav} />
-        <Tab.Screen name={i18n.settings} component={buildSettingsNav} />
+        <Tab.Screen
+          key="all"
+          name="all expesnes"
+          component={buildStackNav}
+          options={tabOptions("calendar", "All expenses")}
+        />
+        <Tab.Screen
+          key="settings"
+          name="settings"
+          component={buildSettingsNav}
+          options={tabOptions("settings", "Settings")}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  barIcon: {
+    color: "#581c0c",
+    fontSize: 32,
+  },
+});
 
 const mapDispatchToProps = (dispatch: Function) => {
   return {
