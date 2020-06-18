@@ -1,3 +1,5 @@
+export const name = "Português (Portugal)";
+
 export default {
   monthlyTabName: "Despesas mensais",
   allTabName: "Todas as despesas",
