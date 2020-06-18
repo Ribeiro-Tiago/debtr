@@ -12,7 +12,7 @@ import {
   AllExpensesScreen,
   MonthlyExpensesScreen,
   ExpenseFormScreen,
-} from "..";
+} from "../";
 import { getData, updateCurrMonth } from "../../services/storage/storage";
 import { StorageData, Item } from "../../types";
 import { isCurrentMonth } from "../../utils";
@@ -95,11 +95,7 @@ export default function ({ setAmountLeft, setItems }: Props) {
           err = error;
         }
 
-        Alert.alert(
-          "Error",
-          `An unexpected error ocurred retrieving your expenses. \n\nIf it persists contact support with the following message: \n\n${err}`,
-          [{ text: "Close" }],
-        );
+        Alert.alert(i18n.errorTitle, i18n.errMsg(err), [{ text: i18n.close }]);
       });
   }, []);
 
