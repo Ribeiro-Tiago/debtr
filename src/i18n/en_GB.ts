@@ -29,4 +29,7 @@ export default {
   emptyAllExpenses: "Create your first expense",
   monthlyExpense: "Happens every month",
   allExpensesTitle: "All monthly expenses",
+  months: "Months",
+  monthsHelper:
+    "Does this expense only happen in certain months ? Leaving all unselected means it happens every month",
 };
