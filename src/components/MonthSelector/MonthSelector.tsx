@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -11,6 +11,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import MonthSelectorItem from "../MonthSelectorItem";
 import { Month } from "../../types";
 import { months } from "../../utils";
+import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
   selectedMonths: Month[];
@@ -24,6 +25,7 @@ export default function MonthSelector({
   const [height, setHeight] = useState<Animated.Value>();
   const [isOpen, setOpen] = useState<boolean>(false);
   const [maxHeight, setMaxHeight] = useState<number>(-1);
+  const { i18n } = useContext(i18nContext);
 
   const onUnselect = (id: number) => {
     updateSelected(selectedMonths.filter((item) => item.id !== id));
@@ -54,7 +56,7 @@ export default function MonthSelector({
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
-        <Text style={styles.label}>Months</Text>
+        <Text style={styles.label}>{i18n.months}</Text>
         <Icon
           name="ios-help-circle-outline"
           size={26}
@@ -70,10 +72,7 @@ export default function MonthSelector({
             : { overflow: "hidden" }
         }
         onLayout={_setMaxHeight}>
-        <Text style={styles.helper}>
-          Does this expense only happen in certain months ? Leaving all
-          unselected means it happens every month
-        </Text>
+        <Text style={styles.helper}>{i18n.monthsHelper}</Text>
       </Animated.View>
 
       <View style={styles.monthWrapper}>
