@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Alert } from "react-native";
+import React, { useEffect, useContext, useState } from "react";
+import { Alert, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -16,6 +16,7 @@ import {
 import { getData, updateCurrMonth } from "../../services/storage/storage";
 import { StorageData, Item } from "../../types";
 import { isCurrentMonth } from "../../utils";
+import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
   setAmountLeft: (amount: number) => void;
@@ -41,7 +42,11 @@ const barOptions: MaterialTopTabBarOptions = {
 };
 
 export default function ({ setAmountLeft, setItems }: Props) {
+  const { i18n } = useContext(i18nContext);
+  const [isLoading, setLoading] = useState(true);
+
   // load stuff from local storage
+  // TODO: make this better
   useEffect(() => {
     getData()
       .then((data: StorageData) => {
@@ -72,14 +77,17 @@ export default function ({ setAmountLeft, setItems }: Props) {
           }
 
           SplashScreen.hide();
+          setLoading(false);
           return;
         }
 
         updateCurrMonth(currMonth);
         SplashScreen.hide();
+        setLoading(false);
       })
       .catch((error) => {
         SplashScreen.hide();
+        setLoading(false);
         let err: string;
         try {
           err = JSON.stringify(error);
@@ -104,11 +112,18 @@ export default function ({ setAmountLeft, setItems }: Props) {
     );
   };
 
+  if (isLoading) {
+    return <View />;
+  }
+
   return (
     <NavigationContainer>
       <Tab.Navigator tabBarOptions={barOptions} tabBarPosition="bottom">
-        <Tab.Screen name="Monthly expenses" component={MonthlyExpensesScreen} />
-        <Tab.Screen name="All expenses" component={buildStackNav} />
+        <Tab.Screen
+          name={i18n.monthlyTabName}
+          component={MonthlyExpensesScreen}
+        />
+        <Tab.Screen name={i18n.allTabName} component={buildStackNav} />
       </Tab.Navigator>
     </NavigationContainer>
   );
