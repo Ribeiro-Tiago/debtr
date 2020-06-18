@@ -18,6 +18,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/picker": "^1.6.3",
     "@react-navigation/material-top-tabs": "^5.2.9",
     "@react-navigation/native": "^5.5.0",
     "@react-navigation/stack": "^5.4.1",
