@@ -1,3 +1,3 @@
-import enGB from "./en_GB.json";
+import enGB from "./en_GB";
 
 export { enGB };

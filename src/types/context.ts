@@ -1,7 +1,7 @@
 export type SupportedLanguage = "en_GB" | "pt_PT";
 
 export interface I18n {
-  [key: string]: string;
+  [key: string]: string & Function;
 }
 
 export interface I18nContext {
