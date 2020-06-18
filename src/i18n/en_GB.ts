@@ -1,6 +1,7 @@
 export const name = "English (U.K.)";
 
 export default {
+  _locale: "en_GB",
   monthlyTabName: "Monthly expenses",
   allTabName: "All expenses",
   errTitle: "Error",
