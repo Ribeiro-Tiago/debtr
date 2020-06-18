@@ -1,5 +1,3 @@
-import amountLeft from "src/store/reducers/amountLeft";
-
 export default {
   monthlyTabName: "Monthly expenses",
   allTabName: "All expenses",
