@@ -54,8 +54,7 @@ export default function MonthlyExpenses({
 
   return (
     <View style={styles.container}>
-      <TopBar>
-        <Text style={styles.title}>{dayjs().format("MMMM YYYY")}</Text>
+      <TopBar title={dayjs().format("MMMM YYYY")}>
         <Text style={styles.leftover}>{i18n.amountLeft(amountLeft, "€")}</Text>
       </TopBar>
 
@@ -72,11 +71,6 @@ export default function MonthlyExpenses({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "#581c0c",
   },
   leftover: {
     fontSize: 16,
