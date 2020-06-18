@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Emoji from "react-native-emoji";
-import { Picker } from "@react-native-community/picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SplashScreen from "react-native-splash-screen";
 
 import { SupportedLocales } from "../types/context";
-import { metadata as locales } from "../i18n";
+import { LocalePicker } from "../components";
 
 interface Props {
   onLocaleSelect: (locale: SupportedLocales) => void;
@@ -35,13 +34,7 @@ export default function LocaleSelector({ onLocaleSelect }: Props) {
           Please select one of the available ones below:
         </Text>
 
-        <Picker
-          selectedValue={locale}
-          onValueChange={(val) => setLocale(val as SupportedLocales)}>
-          {locales.map(({ key, name }) => {
-            return <Picker.Item key={key} label={name} value={key} />;
-          })}
-        </Picker>
+        <LocalePicker initVal={locale} onChange={setLocale} />
       </View>
 
       <Text style={styles.button} onPress={() => onLocaleSelect(locale)}>
