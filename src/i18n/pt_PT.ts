@@ -2,8 +2,6 @@ export const name = "Português (Portugal)";
 
 export default {
   _locale: "pt_PT",
-  monthlyTabName: "Despesas mensais",
-  allTabName: "Todas as despesas",
   errTitle: "Erro",
   errMsg: (err: string) => {
     return `Ocorreu um erro inesperado a obter as suas despesas. \n\nSe o problema persistir contacte-nos com a seguinte mensagem: \n\n${err}`;
