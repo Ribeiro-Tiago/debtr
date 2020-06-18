@@ -97,10 +97,7 @@ export default function AllExpenses({
 
   return (
     <View style={styles.container}>
-      <TopBar>
-        <Text style={styles.title}>{i18n.allExpensesTitle}</Text>
-        {renderHeaderButton()}
-      </TopBar>
+      <TopBar title={i18n.allExpensesTitle}>{renderHeaderButton()}</TopBar>
 
       <List
         data={items}
@@ -115,11 +112,6 @@ export default function AllExpenses({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "#581c0c",
   },
   button: {
     fontSize: 20,
