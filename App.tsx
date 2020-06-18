@@ -3,7 +3,7 @@ import { NativeModules } from "react-native";
 import { Provider } from "react-redux";
 
 import store from "./src/store";
-import * as locales from "./src/i18n";
+import locales from "./src/i18n";
 import { i18nContext } from "./src/contexts/i18n";
 import { I18n, SupportedLocales } from "./src/types/context";
 import { getLocale, updateLocale } from "./src/services/storage/storage";
