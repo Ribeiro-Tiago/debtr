@@ -1,5 +1,5 @@
-import React, { useEffect, useContext, useState } from "react";
-import { Alert, View } from "react-native";
+import React, { useEffect, useContext } from "react";
+import { Alert } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -43,7 +43,6 @@ const barOptions: MaterialTopTabBarOptions = {
 
 export default function ({ setAmountLeft, setItems }: Props) {
   const { i18n } = useContext(i18nContext);
-  const [isLoading, setLoading] = useState(true);
 
   // load stuff from local storage
   // TODO: make this better
@@ -77,17 +76,14 @@ export default function ({ setAmountLeft, setItems }: Props) {
           }
 
           SplashScreen.hide();
-          setLoading(false);
           return;
         }
 
         updateCurrMonth(currMonth);
         SplashScreen.hide();
-        setLoading(false);
       })
       .catch((error) => {
         SplashScreen.hide();
-        setLoading(false);
         let err: string;
         try {
           err = JSON.stringify(error);
@@ -95,7 +91,7 @@ export default function ({ setAmountLeft, setItems }: Props) {
           err = error;
         }
 
-        Alert.alert(i18n.errorTitle, i18n.errMsg(err), [{ text: i18n.close }]);
+        Alert.alert(i18n.errTitle, i18n.errMsg(err), [{ text: i18n.close }]);
       });
   }, []);
 
@@ -107,10 +103,6 @@ export default function ({ setAmountLeft, setItems }: Props) {
       </Stack.Navigator>
     );
   };
-
-  if (isLoading) {
-    return <View />;
-  }
 
   return (
     <NavigationContainer>
