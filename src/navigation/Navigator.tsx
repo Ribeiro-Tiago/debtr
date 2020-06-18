@@ -13,6 +13,7 @@ import {
   AllExpensesScreen,
   MonthlyExpensesScreen,
   ExpenseFormScreen,
+  SettingsScreen,
 } from "../screens";
 import { getData, updateCurrMonth } from "../services/storage/storage";
 import { StorageData, Item } from "../types";
@@ -107,6 +108,14 @@ function Navigator({ setAmountLeft, setItems }: Props) {
     );
   };
 
+  const buildSettingsNav = () => {
+    return (
+      <Stack.Navigator headerMode="none">
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+      </Stack.Navigator>
+    );
+  };
+
   return (
     <NavigationContainer>
       <Tab.Navigator tabBarOptions={barOptions} tabBarPosition="bottom">
@@ -115,6 +124,7 @@ function Navigator({ setAmountLeft, setItems }: Props) {
           component={MonthlyExpensesScreen}
         />
         <Tab.Screen name={i18n.allTabName} component={buildStackNav} />
+        <Tab.Screen name={i18n.settings} component={buildSettingsNav} />
       </Tab.Navigator>
     </NavigationContainer>
   );
