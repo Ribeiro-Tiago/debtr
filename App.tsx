@@ -7,7 +7,8 @@ import * as locales from "./src/i18n";
 import { i18nContext } from "./src/contexts/i18n";
 import { I18n, SupportedLocales } from "./src/types/context";
 import { getLocale, updateLocale } from "./src/services/storage/storage";
-import { Navigator, LocaleSelectorScreen } from "./src/screens";
+import { LocaleSelectorScreen } from "./src/screens";
+import Navigator from "./src/navigation/Navigator";
 
 export default function App() {
   const [i18n, setI18n] = useState<I18n>();

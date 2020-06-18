@@ -7,16 +7,19 @@ import {
   MaterialTopTabBarOptions,
 } from "@react-navigation/material-top-tabs";
 import SplashScreen from "react-native-splash-screen";
+import { connect } from "react-redux";
 
 import {
   AllExpensesScreen,
   MonthlyExpensesScreen,
   ExpenseFormScreen,
-} from "../";
-import { getData, updateCurrMonth } from "../../services/storage/storage";
-import { StorageData, Item } from "../../types";
-import { isCurrentMonth } from "../../utils";
-import { i18nContext } from "../../contexts/i18n";
+} from "../screens";
+import { getData, updateCurrMonth } from "../services/storage/storage";
+import { StorageData, Item } from "../types";
+import { isCurrentMonth } from "../utils";
+import { i18nContext } from "../contexts/i18n";
+import { setAmount } from "../store/actions/amountLeft";
+import { setItems } from "../store/actions/items";
 
 interface Props {
   setAmountLeft: (amount: number) => void;
@@ -41,7 +44,7 @@ const barOptions: MaterialTopTabBarOptions = {
   },
 };
 
-export default function ({ setAmountLeft, setItems }: Props) {
+function Navigator({ setAmountLeft, setItems }: Props) {
   const { i18n } = useContext(i18nContext);
 
   // load stuff from local storage
@@ -116,3 +119,12 @@ export default function ({ setAmountLeft, setItems }: Props) {
     </NavigationContainer>
   );
 }
+
+const mapDispatchToProps = (dispatch: Function) => {
+  return {
+    setAmountLeft: (amount: number) => dispatch(setAmount(amount)),
+    setItems: (items: Item[]) => dispatch(setItems(items)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Navigator);
