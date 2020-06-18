@@ -34,4 +34,5 @@ export default {
   months: "Meses",
   monthsHelper:
     "Esta só existe nalguns meses ? Não selecionar nenhum significa que acontece em todos",
+  settings: "Definições",
 };
