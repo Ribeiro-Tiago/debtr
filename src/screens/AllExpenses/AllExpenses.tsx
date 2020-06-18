@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Text,
   View,
@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { TopBar, List, ListItem } from "../../components";
 import { Item, Month, RenderItemParams } from "../../types";
+import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
   items: Item[];
@@ -24,6 +25,7 @@ export default function AllExpenses({
   updateCurrent,
   removeItem,
 }: Props) {
+  const { i18n } = useContext(i18nContext);
   const navigation = useNavigation();
 
   const goToForm = (item?: Item) => {
@@ -33,11 +35,11 @@ export default function AllExpenses({
 
   const onRemove = ({ id, months, amount }: Item) => {
     Alert.alert(
-      "Confirm delete?",
-      "You are about to delete this expense. This action is irreversable",
+      i18n.confirmDeleteTitle,
+      i18n.confirmDeleteDesc,
       [
-        { text: "Confirm", onPress: () => removeItem(id, months, amount) },
-        { text: "Cancel" },
+        { text: i18n.confirm, onPress: () => removeItem(id, months, amount) },
+        { text: i18n.cancel },
       ],
       { cancelable: true },
     );
@@ -49,7 +51,7 @@ export default function AllExpenses({
         <TouchableWithoutFeedback onPress={() => goToForm()}>
           <View style={styles.createExpenseContainer}>
             <Text style={styles.createExpenseText}>
-              Create your first expense
+              {i18n.emptyAllExpenses}
             </Text>
           </View>
         </TouchableWithoutFeedback>
@@ -59,7 +61,7 @@ export default function AllExpenses({
 
   const renderMonths = (months: Month[]) => {
     if (!months.length || months.length === 12) {
-      return <Text style={styles.tag}>Happens every month</Text>;
+      return <Text style={styles.tag}>{i18n.monthlyExpense}</Text>;
     }
 
     return months.map((m) => (
@@ -73,6 +75,7 @@ export default function AllExpenses({
     return (
       <ListItem
         {...props}
+        onIconPress={onRemove}
         iconName="ios-trash"
         onPress={() => goToForm(props.item)}
         renderTags={({ months }) => (
@@ -95,7 +98,7 @@ export default function AllExpenses({
   return (
     <View style={styles.container}>
       <TopBar>
-        <Text style={styles.title}>All monthly expenses</Text>
+        <Text style={styles.title}>{i18n.allExpensesTitle}</Text>
         {renderHeaderButton()}
       </TopBar>
 
