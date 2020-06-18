@@ -1,3 +1,5 @@
+export const name = "English (U.K.)";
+
 export default {
   monthlyTabName: "Monthly expenses",
   allTabName: "All expenses",
