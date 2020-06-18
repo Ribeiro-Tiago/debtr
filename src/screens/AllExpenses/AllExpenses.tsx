@@ -89,7 +89,7 @@ export default function AllExpenses({
     if (items.length) {
       return (
         <Text onPress={() => goToForm()} style={styles.button}>
-          Create
+          {i18n.create}
         </Text>
       );
     }
