@@ -1,6 +1,7 @@
 export const name = "Português (Portugal)";
 
 export default {
+  _locale: "pt_PT",
   monthlyTabName: "Despesas mensais",
   allTabName: "Todas as despesas",
   errTitle: "Erro",
