@@ -1,7 +1,6 @@
 import storage from "@react-native-community/async-storage";
 
-import { StorageData, Item } from "../types";
-import { SupportedLocales } from "src/types/context";
+import { StorageData, Item, SupportedLocales } from "../types";
 
 type Metadata = {
   amountLeft: number;
@@ -55,7 +54,7 @@ export const updateItems = async (items: Item[]) => {
   return set("items", items);
 };
 
-export const getLocale = async () => {
+export const getLocale = async (): Promise<SupportedLocales> => {
   return (await storage.getItem(`${key}_locale`)) as SupportedLocales;
 };
 

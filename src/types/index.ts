@@ -25,3 +25,14 @@ export interface RenderItemParams {
   isBeingDragged: boolean;
   onDrag: () => void;
 }
+
+export enum SupportedCurrencies {
+  EUR = "EUR",
+  USD = "USD",
+  GDP = "GDP",
+}
+
+export enum SupportedLocales {
+  en_GB = "en_GB",
+  pt_PT = "pt_PT",
+}

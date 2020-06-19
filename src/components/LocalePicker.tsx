@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { StyleProp, TextStyle } from "react-native";
 import { Picker } from "@react-native-community/picker";
 
-import { locales } from "../i18n";
-import { SupportedLocales } from "../types/context";
+import { locales } from "../configs";
+import { SupportedLocales } from "../types";
 
 interface Props {
   initVal: SupportedLocales;
@@ -14,15 +14,15 @@ interface Props {
 export default function ({ initVal, onChange, itemStyle = {} }: Props) {
   const [value, setValue] = useState(initVal);
 
-  const onValChange = (val: React.ReactText) => {
-    setValue(val as SupportedLocales);
-    onChange(val as SupportedLocales);
+  const onValChange = (val: SupportedLocales) => {
+    setValue(val);
+    onChange(val);
   };
 
   return (
     <Picker
       selectedValue={value}
-      onValueChange={onValChange}
+      onValueChange={(val) => onValChange(val as SupportedLocales)}
       mode="dropdown"
       itemStyle={itemStyle}>
       {locales.map(({ key, name }) => {
