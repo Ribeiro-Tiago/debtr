@@ -35,4 +35,11 @@ export default {
     "Esta só existe nalguns meses ? Não selecionar nenhum significa que acontece em todos",
   settings: "Definições",
   create: "Criar",
+  about: "About",
+  langauge: "Linguagem",
+  version: "Versão da aplicação",
+  privacyPolicy: "Política de privacidade",
+  tos: "Termos de utilização",
+  webviewLoadErr:
+    "Ocorreu um erro ao tentar carregar o ficheiro. \n\nTente novamente mais tarde e se o problema persistir por favor entre em contacto connosco",
 };

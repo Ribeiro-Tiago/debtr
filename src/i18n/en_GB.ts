@@ -39,5 +39,5 @@ export default {
   privacyPolicy: "Privacy Policy",
   tos: "Terms of Service",
   webviewLoadErr:
-    "An error ocurred trying to load the privacy policy. \n\nTry again later and if the issue persists, please contact us",
+    "An error ocurred trying to load the file. \n\nTry again later and if the issue persists, please contact us",
 };
