@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleProp, TextStyle } from "react-native";
 import { Picker } from "@react-native-community/picker";
 
-import { metadata as locales } from "../i18n";
+import { locales } from "../i18n";
 import { SupportedLocales } from "../types/context";
 
 interface Props {
