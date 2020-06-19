@@ -8,13 +8,16 @@ import {
   SET_ITEMS,
 } from "../actions/types";
 import { Item, ItemCreation } from "../../types";
-import { ListReducerAction } from "../../types/store";
+import { ReducerAction } from "../../types/store";
 import { updateItems } from "../../services/storage";
 import { sanitizeAmount, formatDecimal } from "../../utils";
 
 const initState: Item[] = [];
 
-export default (state = initState, { type, payload }: ListReducerAction) => {
+export default (
+  state = initState,
+  { type, payload }: ReducerAction<string & Item>,
+) => {
   switch (type) {
     case SET_ITEMS: {
       return payload;
