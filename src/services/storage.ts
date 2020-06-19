@@ -1,13 +1,16 @@
 import storage from "@react-native-community/async-storage";
 
-import { StorageData, Item } from "../../types";
+import { StorageData, Item } from "../types";
+import { SupportedLocales } from "src/types/context";
 
-type Metadata =
-  | {
-      amountLeft: number;
-      currMonth: number;
-    }
-  | Item[];
+type Metadata = {
+  amountLeft: number;
+  currMonth: number;
+};
+
+type SetParams = Metadata | Item[] | SupportedLocales;
+
+type StorageKey = "items" | "metadata" | "locale";
 
 const key = "MPT_DATA";
 
@@ -25,8 +28,10 @@ const get = async () => {
   } as StorageData;
 };
 
-const set = async (subkey: "items" | "metadata", data: Metadata) => {
-  return await storage.setItem(`${key}_${subkey}`, JSON.stringify(data));
+const set = async (subkey: StorageKey, data: SetParams) => {
+  const stringified = typeof data === "string" ? data : JSON.stringify(data);
+
+  return await storage.setItem(`${key}_${subkey}`, stringified);
 };
 
 export const getData = async () => get();
@@ -48,4 +53,12 @@ export const updateAmount = async (amount: number) => {
 
 export const updateItems = async (items: Item[]) => {
   return set("items", items);
+};
+
+export const getLocale = async () => {
+  return (await storage.getItem(`${key}_locale`)) as SupportedLocales;
+};
+
+export const updateLocale = async (locale: SupportedLocales) => {
+  return await set("locale", locale);
 };

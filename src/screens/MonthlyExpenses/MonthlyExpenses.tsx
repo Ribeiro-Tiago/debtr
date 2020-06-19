@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import dayjs from "dayjs";
 import Emoji from "react-native-emoji";
 
 import { List, TopBar, ListItem } from "../../components";
 import { Item, RenderItemParams } from "../../types";
+import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
   items: Item[];
@@ -21,6 +22,8 @@ export default function MonthlyExpenses({
   updateAmountLeft,
   reorderItems,
 }: Props) {
+  const { i18n } = useContext(i18nContext);
+
   const onItemPress = ({ id, isPaid, amount }: Item) => {
     togglePaidStatus(id);
     updateAmountLeft(amount, isPaid);
@@ -41,7 +44,8 @@ export default function MonthlyExpenses({
     return (
       <View style={styles.emptyListContainer}>
         <Text style={styles.emptyListText}>
-          You have no expenses left this month <Emoji name="tada" />
+          {i18n.emptyMonthlyExpenses}
+          <Emoji name="tada" />
           <Emoji name="tada" />
         </Text>
       </View>
@@ -50,9 +54,8 @@ export default function MonthlyExpenses({
 
   return (
     <View style={styles.container}>
-      <TopBar>
-        <Text style={styles.title}>{dayjs().format("MMMM YYYY")}</Text>
-        <Text style={styles.leftover}>{amountLeft}€ Left</Text>
+      <TopBar title={dayjs().format("MMMM YYYY")}>
+        <Text style={styles.leftover}>{i18n.amountLeft(amountLeft, "€")}</Text>
       </TopBar>
 
       <List
@@ -68,11 +71,6 @@ export default function MonthlyExpenses({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "#581c0c",
   },
   leftover: {
     fontSize: 16,
