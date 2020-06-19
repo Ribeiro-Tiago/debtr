@@ -6,7 +6,7 @@ import store from "./src/store";
 import locales from "./src/i18n";
 import { i18nContext } from "./src/contexts/i18n";
 import { I18n, SupportedLocales } from "./src/types/context";
-import { getLocale, updateLocale } from "./src/services/storage/storage";
+import { getLocale, updateLocale } from "./src/services/storage";
 import { LocaleSelectorScreen } from "./src/screens";
 import Navigator from "./src/navigation/Navigator";
 

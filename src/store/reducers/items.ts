@@ -9,7 +9,7 @@ import {
 } from "../actions/types";
 import { Item, ItemCreation } from "../../types";
 import { ListReducerAction } from "../../types/store";
-import { updateItems } from "../../services/storage/storage";
+import { updateItems } from "../../services/storage";
 import { sanitizeAmount, formatDecimal } from "../../utils";
 
 const initState: Item[] = [];
