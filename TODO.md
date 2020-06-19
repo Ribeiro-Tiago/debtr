@@ -4,8 +4,6 @@
 
   - choose the reset day
   - push notifs
-  - PP e EUlA
-  - app version
   - repeat tutorial
   - delete all local data
   - update themes
