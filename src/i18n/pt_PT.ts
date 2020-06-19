@@ -42,4 +42,5 @@ export default {
   tos: "Termos de utilização",
   webviewLoadErr:
     "Ocorreu um erro ao tentar carregar o ficheiro. \n\nTente novamente mais tarde e se o problema persistir por favor entre em contacto connosco",
+  currency: "Moeda",
 };

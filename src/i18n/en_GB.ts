@@ -40,4 +40,5 @@ export default {
   tos: "Terms of Service",
   webviewLoadErr:
     "An error ocurred trying to load the file. \n\nTry again later and if the issue persists, please contact us",
+  currency: "Currency",
 };
