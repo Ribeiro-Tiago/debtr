@@ -1,6 +1,6 @@
 import storage from "@react-native-community/async-storage";
 
-import { StorageData, Item } from "../../types";
+import { StorageData, Item } from "../types";
 import { SupportedLocales } from "src/types/context";
 
 type Metadata = {

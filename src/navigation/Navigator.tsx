@@ -16,7 +16,7 @@ import {
   ExpenseFormScreen,
   SettingsScreen,
 } from "../screens";
-import { getData, updateCurrMonth } from "../services/storage/storage";
+import { getData, updateCurrMonth } from "../services/storage";
 import { StorageData, Item } from "../types";
 import { isCurrentMonth } from "../utils";
 import { i18nContext } from "../contexts/i18n";
