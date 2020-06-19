@@ -4,7 +4,7 @@ import { SupportedLocales } from "../types/context";
 
 export default { en_GB, pt_PT };
 
-export const metadata = [
+export const locales = [
   { key: SupportedLocales.en_GB, name: enGBName, flag: ":gb:" },
   { key: SupportedLocales.pt_PT, name: ptPTName, flag: ":flag-pt:" },
 ];

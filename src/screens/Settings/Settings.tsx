@@ -11,7 +11,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { TopBar, Webview, SettingsPicker } from "../../components";
 import { i18nContext } from "../../contexts/i18n";
 import { SupportedLocales } from "../../types/context";
-import locales, { metadata as localePickerData } from "../../i18n";
+import locales, { locales as localePickerData } from "../../i18n";
 import { updateLocale } from "../../services/storage";
 import pkgJson from "../../../package.json";
 
