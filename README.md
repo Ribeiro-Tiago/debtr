@@ -2,7 +2,7 @@
 
 A very low effort app to help me keep track of the status of my monthly expenses, given that they're paid at different points in time throughout the month.
 
-Currently only available on [android](https://play.google.com/store/apps/details?id=com.debtr) due to licensing costs 
+Currently only available on [android](https://play.google.com/store/apps/details?id=com.debtr) due to licensing costs
 
 ## Build android
 
@@ -41,5 +41,8 @@ Icon from [smashicons](https://www.flaticon.com/authors/smashicons) @ flaticon.c
 
 Store image templates made with [app store screenshots](https://www.appstorescreenshot.com/)
 
+ToS and PP PDFs generated with https://app-privacy-policy-generator.firebaseapp.com/
+
 #
+
 <a href="https://www.buymeacoffee.com/ribeirotiago" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-violet.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
