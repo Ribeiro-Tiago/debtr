@@ -10,10 +10,11 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import { TopBar, Webview, SettingsPicker } from "../../components";
 import { i18nContext } from "../../contexts/i18n";
-import { SupportedLocales } from "../../types/context";
-import locales, { locales as localePickerData } from "../../i18n";
+import locales from "../../i18n";
+import { locales as localePickerData } from "../../configs/locales";
 import { updateLocale } from "../../services/storage";
 import pkgJson from "../../../package.json";
+import { SupportedCurrencies, SupportedLocales } from "../../types";
 
 interface Props {}
 
@@ -21,7 +22,7 @@ const PDF_ASSET_URL = "https://tiago-ribeiro.com/debtr";
 
 export default function Settings({}: Props) {
   const { i18n, setI18n } = useContext(i18nContext);
-  const [locale, setLocale] = useState<SupportedLocales>(i18n._locale);
+  const [locale, setLocale] = useState(i18n._locale as SupportedLocales);
   const [webviewUri, setWebviewUri] = useState("");
 
   const renderSectionTitle = (title: string) => {
