@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
-import { NativeModules } from "react-native";
+import { NativeModules, Platform } from "react-native";
 import { Provider } from "react-redux";
 
 import store from "./src/store";
@@ -15,7 +15,10 @@ export default function App() {
   const i18nProviderValue = useMemo(() => ({ i18n, setI18n }), [i18n]);
 
   useEffect(() => {
-    const locale = NativeModules.SettingsManager.settings.AppleLocale;
+    const locale =
+      Platform.OS === "ios"
+        ? NativeModules.SettingsManager.settings.AppleLocale
+        : NativeModules.I18nManager.localeIdentifier;
 
     if (locale in SupportedLocales) {
       setI18n(locales[locale as SupportedLocales]);
