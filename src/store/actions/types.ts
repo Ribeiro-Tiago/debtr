@@ -11,4 +11,5 @@ export const SET_ITEMS = "set items";
 export const UPDATE_SELECTED_ITEM = "update selected item";
 export const UPDATE_SELECTED_MONTHS = "update selected months";
 
+export const SET_CURRENCY = "set currency";
 export const UPDATE_CURRENCY = "update currency";
