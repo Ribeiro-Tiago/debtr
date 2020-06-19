@@ -3,7 +3,6 @@
 - add settings
 
   - choose the reset day
-  - update language
   - push notifs
   - PP e EUlA
   - app version
@@ -13,8 +12,8 @@
   - give feedback
   - donate
   - update currency config
+  - update theme
 
-- add i18n support
 - add tests
 - add support for reminder push notifications
 - add a tutorial
