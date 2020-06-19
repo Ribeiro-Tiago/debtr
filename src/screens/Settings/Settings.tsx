@@ -6,10 +6,9 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from "react-native";
-import PickerSelect, { PickerStyle } from "react-native-picker-select";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import { TopBar, Webview } from "../../components";
+import { TopBar, Webview, SettingsPicker } from "../../components";
 import { i18nContext } from "../../contexts/i18n";
 import { SupportedLocales } from "../../types/context";
 import locales, { metadata as localePickerData } from "../../i18n";
@@ -25,39 +24,32 @@ export default function Settings({}: Props) {
   const [locale, setLocale] = useState<SupportedLocales>(i18n._locale);
   const [webviewUri, setWebviewUri] = useState("");
 
-  const onPickerClose = () => {
-    setI18n(locales[locale]);
-    updateLocale(locale);
-  };
-
   const renderSectionTitle = (title: string) => {
     return <Text style={styles.sectionTitle}>{title}</Text>;
   };
 
   const renderLanguage = () => {
+    const onPickerClose = () => {
+      setI18n(locales[locale]);
+      updateLocale(locale);
+    };
+
     return (
       <>
         {renderSectionTitle(i18n.langauge)}
 
-        <PickerSelect
+        <SettingsPicker<SupportedLocales>
           onClose={onPickerClose}
-          onValueChange={setLocale}
-          items={localePickerData.map((l) => ({
+          onChange={setLocale}
+          value={locale}
+          data={localePickerData.map((l) => ({
             key: l.key,
             value: l.key,
             label: l.name,
           }))}
-          style={localePickerStyles}
-          placeholder={{}}
-          value={locale}
-          useNativeAndroidPickerStyle={true}
         />
       </>
     );
-  };
-
-  const onPDFClick = (file: string) => {
-    setWebviewUri(`${PDF_ASSET_URL}/${file}`);
   };
 
   const renderAbout = () => {
