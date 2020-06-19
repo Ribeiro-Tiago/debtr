@@ -8,24 +8,25 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import { TopBar, Webview, SettingsPicker } from "../../components";
-import { i18nContext } from "../../contexts/i18n";
 import locales from "../../i18n";
-import { locales as localePickerData, currencies } from "../../configs";
-import { updateLocale } from "../../services/storage";
 import pkgJson from "../../../package.json";
+import { i18nContext } from "../../contexts/i18n";
+import { updateLocale } from "../../services/storage";
+import { TopBar, Webview, SettingsPicker } from "../../components";
 import { SupportedCurrencies, SupportedLocales } from "../../types";
+import { locales as localePickerData, currencies } from "../../configs";
 
 interface Props {
+  initCurrency: SupportedCurrencies;
   updateCurrency: (currency: SupportedCurrencies) => void;
 }
 
 const PDF_ASSET_URL = "https://tiago-ribeiro.com/debtr";
 
-export default function Settings({ updateCurrency }: Props) {
+export default function Settings({ initCurrency, updateCurrency }: Props) {
   const { i18n, setI18n } = useContext(i18nContext);
   const [locale, setLocale] = useState(i18n._locale as SupportedLocales);
-  const [currency, setCurrency] = useState(SupportedCurrencies.EUR);
+  const [currency, setCurrency] = useState(initCurrency);
   const [webviewUri, setWebviewUri] = useState("");
 
   const renderSectionTitle = (title: string) => {
