@@ -13,6 +13,7 @@ export interface StorageData {
   amountLeft: number;
   currMonth: number;
   items: Item[];
+  currency: SupportedCurrencies;
 }
 
 export interface Month {
@@ -29,7 +30,7 @@ export interface RenderItemParams {
 export enum SupportedCurrencies {
   EUR = "EUR",
   USD = "USD",
-  GDP = "GDP",
+  GBP = "GBP",
 }
 
 export enum SupportedLocales {
