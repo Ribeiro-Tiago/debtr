@@ -31,7 +31,7 @@ const get = async (): Promise<StorageData> => {
 
   return {
     items: JSON.parse(items) || [],
-    currency: JSON.parse(currency) || SupportedCurrencies.EUR,
+    currency: currency || SupportedCurrencies.EUR,
     ...(metadata && { ...JSON.parse(metadata) }),
   };
 };
