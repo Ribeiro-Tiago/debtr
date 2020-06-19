@@ -10,7 +10,6 @@
     "strict": true,
     "strictNullChecks": false,
     "moduleResolution": "node",
-    "baseUrl": "./",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true

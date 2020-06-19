@@ -1,9 +1,19 @@
 import React from "react";
-import { View, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet, Platform, Text } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
-export default function TopBar({ children }: any) {
-  return <View style={styles.container}>{children}</View>;
+interface Props {
+  children?: any;
+  title: string;
+}
+
+export default function TopBar({ children, title }: Props) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
+      {children}
+    </View>
+  );
 }
 
 const paddingTop = Platform.OS === "ios" ? getStatusBarHeight() : 0;
@@ -23,5 +33,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingLeft: 15,
     paddingTop: paddingTop,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "#581c0c",
   },
 });

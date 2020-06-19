@@ -4,7 +4,7 @@ import {
   SET_AMOUNT_LEFT,
 } from "../actions/types";
 import { AmountLeftReducerAction } from "../../types/store";
-import { updateAmount } from "../../services/storage/storage";
+import { updateAmount } from "../../services/storage";
 import { sanitizeAmount, formatDecimal } from "../../utils";
 
 const initState = 0;

@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Alert } from "react-native";
+import React, { useEffect, useContext } from "react";
+import { Alert, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -7,15 +7,21 @@ import {
   MaterialTopTabBarOptions,
 } from "@react-navigation/material-top-tabs";
 import SplashScreen from "react-native-splash-screen";
+import { connect } from "react-redux";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import {
   AllExpensesScreen,
   MonthlyExpensesScreen,
   ExpenseFormScreen,
-} from "../../screens";
-import { getData, updateCurrMonth } from "../../services/storage/storage";
-import { StorageData, Item } from "../../types";
-import { isCurrentMonth } from "../../utils";
+  SettingsScreen,
+} from "../screens";
+import { getData, updateCurrMonth } from "../services/storage";
+import { StorageData, Item } from "../types";
+import { isCurrentMonth } from "../utils";
+import { i18nContext } from "../contexts/i18n";
+import { setAmount } from "../store/actions/amountLeft";
+import { setItems } from "../store/actions/items";
 
 interface Props {
   setAmountLeft: (amount: number) => void;
@@ -29,6 +35,9 @@ const barOptions: MaterialTopTabBarOptions = {
   pressOpacity: 0.8,
   allowFontScaling: true,
   bounces: true,
+  showIcon: true,
+  showLabel: false,
+  iconStyle: { width: 32, height: 32 },
   style: {
     backgroundColor: "#f1e3cb",
     borderTopColor: "#a6a6a6",
@@ -40,8 +49,11 @@ const barOptions: MaterialTopTabBarOptions = {
   },
 };
 
-export default function ({ setAmountLeft, setItems }: Props) {
+function Navigator({ setAmountLeft, setItems }: Props) {
+  const { i18n } = useContext(i18nContext);
+
   // load stuff from local storage
+  // TODO: make this better
   useEffect(() => {
     getData()
       .then((data: StorageData) => {
@@ -87,11 +99,7 @@ export default function ({ setAmountLeft, setItems }: Props) {
           err = error;
         }
 
-        Alert.alert(
-          "Error",
-          `An unexpected error ocurred retrieving your expenses. \n\nIf it persists contact support with the following message: \n\n${err}`,
-          [{ text: "Close" }],
-        );
+        Alert.alert(i18n.errTitle, i18n.errMsg(err), [{ text: i18n.close }]);
       });
   }, []);
 
@@ -104,12 +112,68 @@ export default function ({ setAmountLeft, setItems }: Props) {
     );
   };
 
+  const buildSettingsNav = () => {
+    return (
+      <Stack.Navigator headerMode="none">
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+      </Stack.Navigator>
+    );
+  };
+
+  const tabOptions = (icon: string, accessibilityLabel: string) => {
+    return {
+      tabBarAccessibilityLabel: accessibilityLabel,
+      tabBarIcon: ({ focused }: { focused: boolean }) => (
+        <Icon
+          style={styles.barIcon}
+          name={focused ? icon : `${icon}-outline`}
+        />
+      ),
+    };
+  };
+
   return (
     <NavigationContainer>
-      <Tab.Navigator tabBarOptions={barOptions} tabBarPosition="bottom">
-        <Tab.Screen name="Monthly expenses" component={MonthlyExpensesScreen} />
-        <Tab.Screen name="All expenses" component={buildStackNav} />
+      <Tab.Navigator
+        tabBarOptions={barOptions}
+        tabBarPosition="bottom"
+        /* tabBar={MyTabBar} */
+      >
+        <Tab.Screen
+          key="monthly"
+          name="monthly expenses"
+          component={MonthlyExpensesScreen}
+          options={tabOptions("home", "Monthly expenses")}
+        />
+        <Tab.Screen
+          key="all"
+          name="all expesnes"
+          component={buildStackNav}
+          options={tabOptions("calendar", "All expenses")}
+        />
+        <Tab.Screen
+          key="settings"
+          name="settings"
+          component={buildSettingsNav}
+          options={tabOptions("settings", "Settings")}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  barIcon: {
+    color: "#581c0c",
+    fontSize: 32,
+  },
+});
+
+const mapDispatchToProps = (dispatch: Function) => {
+  return {
+    setAmountLeft: (amount: number) => dispatch(setAmount(amount)),
+    setItems: (items: Item[]) => dispatch(setItems(items)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Navigator);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -16,6 +16,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { Item, Month, ItemCreation } from "../../types";
 import { TopBar, FormItem, MonthSelector } from "../../components";
 import { getPlatformIcon } from "../../utils";
+import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
   item: Item | null;
@@ -41,6 +42,7 @@ export default function ExpenseForm({
     description: item && item.description,
     amount: item && item.amount,
   };
+  const { i18n } = useContext(i18nContext);
   const { goBack } = useNavigation();
   const { register, setValue, handleSubmit, errors } = useForm<Form>({
     defaultValues: initialValues,
@@ -73,9 +75,9 @@ export default function ExpenseForm({
 
   const onDelete = () => {
     Alert.alert(
-      "Confirm delete?",
-      "You are about to delete this expense. This action is irreversable",
-      [{ text: "Confirm", onPress: onDeleteConfirm }, { text: "Cancel" }],
+      i18n.confirmDeleteTitle,
+      i18n.confirmDeleteDesc,
+      [{ text: i18n.confirm, onPress: onDeleteConfirm }, { text: i18n.cancel }],
       { cancelable: true },
     );
   };
@@ -91,12 +93,12 @@ export default function ExpenseForm({
                 color="#581c0c"
                 size={24}
               />
-              <Text style={styles.goBackText}>Back</Text>
+              <Text style={styles.goBackText}>{i18n.back}</Text>
             </View>
           </TouchableWithoutFeedback>
 
           <Text style={styles.title}>
-            {isNew ? "New expense" : "Updating expense"}
+            {isNew ? i18n.createExpenseTitle : i18n.updateExpenseTitle}
           </Text>
         </View>
       </TopBar>
@@ -107,12 +109,12 @@ export default function ExpenseForm({
     return (
       <View style={styles.buttonWrapper}>
         <Text style={styles.buttonSubmit} onPress={handleSubmit(onSubmit)}>
-          Submit
+          {i18n.submit}
         </Text>
 
         {!isNew && (
           <Text style={styles.buttonDelete} onPress={onDelete}>
-            Delete
+            {i18n.delete}
           </Text>
         )}
       </View>
@@ -128,18 +130,18 @@ export default function ExpenseForm({
         keyboardVerticalOffset={0}>
         <ScrollView style={styles.wrapper}>
           <FormItem
-            label="Description"
-            error="Description is required"
-            placeholder="E.g.: Netflix"
+            label={i18n.description}
+            error={i18n.descriptionErr}
+            placeholder={i18n.descriptionPlaceholder}
             hasErr={!!errors.description}
             onChange={(val: string) => setValue("description", val, true)}
             initialValue={item && item.description}
           />
 
           <FormItem
-            label="Amount"
-            error="Amount must be a valid number"
-            placeholder="E.g.: 14 (Just a number)"
+            label={i18n.amount}
+            error={i18n.amountErr}
+            placeholder={i18n.amountPlaceholder}
             hasErr={!!errors.amount}
             keyboard="numeric"
             onChange={(val: any) => setValue("amount", val, true)}
