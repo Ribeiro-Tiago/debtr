@@ -11,18 +11,21 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { TopBar, Webview, SettingsPicker } from "../../components";
 import { i18nContext } from "../../contexts/i18n";
 import locales from "../../i18n";
-import { locales as localePickerData } from "../../configs/locales";
+import { locales as localePickerData, currencies } from "../../configs";
 import { updateLocale } from "../../services/storage";
 import pkgJson from "../../../package.json";
 import { SupportedCurrencies, SupportedLocales } from "../../types";
 
-interface Props {}
+interface Props {
+  updateCurrency: (currency: SupportedCurrencies) => void;
+}
 
 const PDF_ASSET_URL = "https://tiago-ribeiro.com/debtr";
 
-export default function Settings({}: Props) {
+export default function Settings({ updateCurrency }: Props) {
   const { i18n, setI18n } = useContext(i18nContext);
   const [locale, setLocale] = useState(i18n._locale as SupportedLocales);
+  const [currency, setCurrency] = useState(SupportedCurrencies.EUR);
   const [webviewUri, setWebviewUri] = useState("");
 
   const renderSectionTitle = (title: string) => {
@@ -82,6 +85,23 @@ export default function Settings({}: Props) {
     );
   };
 
+  const renderCurrency = () => {
+    const onPickerClose = () => updateCurrency(currency);
+
+    return (
+      <>
+        {renderSectionTitle(i18n.currency)}
+
+        <SettingsPicker<SupportedCurrencies>
+          onClose={onPickerClose}
+          onChange={setCurrency}
+          value={currency}
+          data={currencies.map((c) => ({
+            key: c.key,
+            value: c.key,
+            label: c.label,
+          }))}
+        />
       </>
     );
   };
@@ -96,6 +116,9 @@ export default function Settings({}: Props) {
 
       <ScrollView bounces={false}>
         {renderLanguage()}
+
+        {renderCurrency()}
+
         {renderAbout()}
       </ScrollView>
     </>
