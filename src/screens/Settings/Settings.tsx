@@ -53,7 +53,17 @@ export default function Settings({}: Props) {
   };
 
   const renderAbout = () => {
-    const render = () => {};
+    const renderWebviewItem = (file: string, label: string) => {
+      return (
+        <TouchableWithoutFeedback
+          onPress={() => setWebviewUri(`${PDF_ASSET_URL}/${file}`)}>
+          <View style={styles.group}>
+            <Text style={styles.groupText}>{label}</Text>
+            <Icon name="ios-arrow-forward" size={24} />
+          </View>
+        </TouchableWithoutFeedback>
+      );
+    };
 
     return (
       <>
@@ -64,19 +74,13 @@ export default function Settings({}: Props) {
           <Text style={styles.groupText}>{pkgJson.version}</Text>
         </View>
 
-        <TouchableWithoutFeedback onPress={() => onPDFClick("pp.pdf")}>
-          <View style={styles.group}>
-            <Text style={styles.groupText}>{i18n.privacyPolicy}</Text>
-            <Icon name="ios-arrow-forward" size={24} />
-          </View>
-        </TouchableWithoutFeedback>
+        {renderWebviewItem("pp.pdf", i18n.privacyPolicy)}
 
-        <TouchableWithoutFeedback onPress={() => onPDFClick("tos.pdf")}>
-          <View style={styles.group}>
-            <Text style={styles.groupText}>{i18n.tos}</Text>
-            <Icon name="ios-arrow-forward" size={24} />
-          </View>
-        </TouchableWithoutFeedback>
+        {renderWebviewItem("tos.pdf", i18n.tos)}
+      </>
+    );
+  };
+
       </>
     );
   };
