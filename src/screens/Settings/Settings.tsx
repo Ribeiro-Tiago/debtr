@@ -2,18 +2,22 @@ import React, { useContext, useState } from "react";
 import { View, StyleSheet, ScrollView, Text } from "react-native";
 import PickerSelect, { PickerStyle } from "react-native-picker-select";
 
-import { i18nContext } from "../../contexts/i18n";
 import { TopBar } from "../../components";
+import { i18nContext } from "../../contexts/i18n";
 import { SupportedLocales } from "../../types/context";
 import locales, { metadata as localePickerData } from "../../i18n";
+import { updateLocale } from "../../services/storage";
 
 interface Props {}
 
-export default function MonthlyExpenses({}: Props) {
+export default function Settings({}: Props) {
   const { i18n, setI18n } = useContext(i18nContext);
   const [locale, setLocale] = useState<SupportedLocales>(i18n._locale);
 
-  const updateLocale = () => setI18n(locales[locale]);
+  const onPickerClose = () => {
+    setI18n(locales[locale]);
+    updateLocale(locale);
+  };
 
   return (
     <View style={{}}>
@@ -31,7 +35,7 @@ export default function MonthlyExpenses({}: Props) {
         </Text>
 
         <PickerSelect
-          onClose={updateLocale}
+          onClose={onPickerClose}
           onValueChange={setLocale}
           items={localePickerData.map((l) => ({
             key: l.key,
