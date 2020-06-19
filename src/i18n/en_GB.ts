@@ -33,4 +33,11 @@ export default {
     "Does this expense only happen in certain months ? Leaving all unselected means it happens every month",
   settings: "Settings",
   create: "Create",
+  langauge: "Language",
+  about: "About",
+  version: "App version",
+  privacyPolicy: "Privacy Policy",
+  tos: "Terms of Service",
+  webviewLoadErr:
+    "An error ocurred trying to load the file. \n\nTry again later and if the issue persists, please contact us",
 };
