@@ -102,29 +102,6 @@ export default function Settings({}: Props) {
   );
 }
 
-const localePickerStyles: PickerStyle = {
-  placeholder: {
-    fontSize: 18,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  inputIOS: {
-    fontSize: 18,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  inputAndroid: {
-    fontSize: 18,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  chevronDown: {
-    display: "none",
-  },
-  chevronUp: {
-    display: "none",
-  },
-};
 const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
