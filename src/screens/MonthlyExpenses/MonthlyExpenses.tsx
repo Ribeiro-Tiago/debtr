@@ -4,12 +4,13 @@ import dayjs from "dayjs";
 import Emoji from "react-native-emoji";
 
 import { List, TopBar, ListItem } from "../../components";
-import { Item, RenderItemParams } from "../../types";
+import { Item, RenderItemParams, SupportedCurrencies } from "../../types";
 import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
   items: Item[];
   amountLeft: number;
+  currCurrency: SupportedCurrencies;
   reorderItems: (items: Item[]) => void;
   togglePaidStatus: (id: string) => void;
   updateAmountLeft: (amount: number, isPaid: boolean) => void;
@@ -18,6 +19,7 @@ interface Props {
 export default function MonthlyExpenses({
   items,
   amountLeft,
+  currCurrency,
   togglePaidStatus,
   updateAmountLeft,
   reorderItems,
@@ -36,6 +38,7 @@ export default function MonthlyExpenses({
         onPress={onItemPress}
         iconName="ios-checkmark"
         hideIcon={!props.item.isPaid}
+        currency={currCurrency}
       />
     );
   };
@@ -55,7 +58,9 @@ export default function MonthlyExpenses({
   return (
     <View style={styles.container}>
       <TopBar title={dayjs().format("MMMM YYYY")}>
-        <Text style={styles.leftover}>{i18n.amountLeft(amountLeft, "€")}</Text>
+        <Text style={styles.leftover}>
+          {i18n.amountLeft(amountLeft, currCurrency)}
+        </Text>
       </TopBar>
 
       <List

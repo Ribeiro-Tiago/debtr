@@ -14,10 +14,11 @@ const getMonthlyItems = (items: Item[]) => {
   });
 };
 
-const mapStateToProps = ({ items, amountLeft }: StoreState) => {
+const mapStateToProps = ({ items, amountLeft, currency }: StoreState) => {
   return {
     items: getMonthlyItems(items),
     amountLeft: amountLeft,
+    currCurrency: currency,
   };
 };
 
