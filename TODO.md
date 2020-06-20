@@ -9,12 +9,10 @@
   - update themes
   - give feedback
   - donate
-  - update currency config
   - update theme
 
 - add tests
 - add support for reminder push notifications
 - add a tutorial
-- add currency config
 - add light / dark theme
 - optimize deploy workflow
