@@ -5,6 +5,7 @@ import MonthSelector from "./MonthSelector";
 import FormItem from "./FormItem";
 import LocalePicker from "./LocalePicker";
 import Webview from "./Webview";
+import SettingsPicker from "./SettingsPicker";
 
 export {
   List,
@@ -14,4 +15,5 @@ export {
   FormItem,
   LocalePicker,
   Webview,
+  SettingsPicker,
 };

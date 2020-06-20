@@ -4,7 +4,7 @@ import Emoji from "react-native-emoji";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SplashScreen from "react-native-splash-screen";
 
-import { SupportedLocales } from "../types/context";
+import { SupportedLocales } from "../types";
 import { LocalePicker } from "../components";
 
 interface Props {

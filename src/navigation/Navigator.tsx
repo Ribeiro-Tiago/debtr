@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { Alert, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -16,16 +16,18 @@ import {
   ExpenseFormScreen,
   SettingsScreen,
 } from "../screens";
-import { getData, updateCurrMonth } from "../services/storage";
-import { StorageData, Item } from "../types";
+import { getData, updateCurrMonth as setCurrMonth } from "../services/storage";
+import { StorageData, Item, SupportedCurrencies } from "../types";
 import { isCurrentMonth } from "../utils";
 import { i18nContext } from "../contexts/i18n";
 import { setAmount } from "../store/actions/amountLeft";
 import { setItems } from "../store/actions/items";
+import { setCurrency } from "../store/actions/currency";
 
 interface Props {
   setAmountLeft: (amount: number) => void;
   setItems: (items: Item[]) => void;
+  setCurrency: (currency: SupportedCurrencies) => void;
 }
 
 const Stack = createStackNavigator();
@@ -49,7 +51,7 @@ const barOptions: MaterialTopTabBarOptions = {
   },
 };
 
-function Navigator({ setAmountLeft, setItems }: Props) {
+function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
   const { i18n } = useContext(i18nContext);
 
   // load stuff from local storage
@@ -59,36 +61,40 @@ function Navigator({ setAmountLeft, setItems }: Props) {
       .then((data: StorageData) => {
         const currMonth = new Date().getMonth();
 
-        if (data) {
-          if (data.currMonth !== currMonth) {
-            const { items, amountLeft } = data.items.reduce(
-              (accu, curr) => {
-                if (isCurrentMonth(curr.months)) {
-                  accu.amountLeft += curr.amount;
-                }
-
-                return {
-                  items: [...accu.items, { ...curr, isPaid: false }],
-                  amountLeft: accu.amountLeft,
-                };
-              },
-              { items: [], amountLeft: 0 },
-            );
-
-            setItems(items);
-            setAmountLeft(amountLeft);
-            updateCurrMonth(currMonth);
-          } else {
-            setAmountLeft(Number(data.amountLeft));
-            setItems(data.items);
-          }
-
+        if (!data) {
+          setCurrMonth(currMonth);
+          setCurrency(SupportedCurrencies.EUR);
           SplashScreen.hide();
           return;
         }
 
-        updateCurrMonth(currMonth);
+        if (data.currMonth !== currMonth) {
+          const { items, amountLeft } = data.items.reduce(
+            (accu, curr) => {
+              if (isCurrentMonth(curr.months)) {
+                accu.amountLeft += curr.amount;
+              }
+
+              return {
+                items: [...accu.items, { ...curr, isPaid: false }],
+                amountLeft: accu.amountLeft,
+              };
+            },
+            { items: [], amountLeft: 0 },
+          );
+
+          setItems(items);
+          setAmountLeft(amountLeft);
+          setCurrMonth(currMonth);
+        } else {
+          setAmountLeft(Number(data.amountLeft));
+          setItems(data.items);
+        }
+
+        setCurrency(data.currency);
+
         SplashScreen.hide();
+        return;
       })
       .catch((error) => {
         SplashScreen.hide();
@@ -99,6 +105,7 @@ function Navigator({ setAmountLeft, setItems }: Props) {
           err = error;
         }
 
+        console.error(error);
         Alert.alert(i18n.errTitle, i18n.errMsg(err), [{ text: i18n.close }]);
       });
   }, []);
@@ -173,6 +180,9 @@ const mapDispatchToProps = (dispatch: Function) => {
   return {
     setAmountLeft: (amount: number) => dispatch(setAmount(amount)),
     setItems: (items: Item[]) => dispatch(setItems(items)),
+    setCurrency: (currency: SupportedCurrencies) => {
+      return dispatch(setCurrency(currency));
+    },
   };
 };
 

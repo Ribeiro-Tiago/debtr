@@ -2,12 +2,17 @@ import { connect } from "react-redux";
 
 import Settings from "./Settings";
 import { StoreState } from "../../types/store";
-import { Item } from "../../types";
-import { toggleItemStatus, setItems } from "../../store/actions/items";
-import { addAmount, subtractAmount } from "../../store/actions/amountLeft";
+import { SupportedCurrencies } from "../../types";
+import { updateCurrency } from "../../store/actions/currency";
 
-const mapStateToProps = ({}: StoreState) => ({});
+const mapStateToProps = ({ currency }: StoreState) => ({
+  initCurrency: currency,
+});
 
-const mapDispatchToProps = (dispatch: Function) => ({});
+const mapDispatchToProps = (dispatch: Function) => ({
+  updateCurrency: (currency: SupportedCurrencies) => {
+    return dispatch(updateCurrency(currency));
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

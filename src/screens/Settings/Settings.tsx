@@ -6,62 +6,69 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from "react-native";
-import PickerSelect, { PickerStyle } from "react-native-picker-select";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import { TopBar, Webview } from "../../components";
-import { i18nContext } from "../../contexts/i18n";
-import { SupportedLocales } from "../../types/context";
-import locales, { metadata as localePickerData } from "../../i18n";
-import { updateLocale } from "../../services/storage";
+import locales from "../../i18n";
 import pkgJson from "../../../package.json";
+import { i18nContext } from "../../contexts/i18n";
+import { updateLocale } from "../../services/storage";
+import { TopBar, Webview, SettingsPicker } from "../../components";
+import { SupportedCurrencies, SupportedLocales } from "../../types";
+import { locales as localePickerData, currencies } from "../../configs";
 
-interface Props {}
+interface Props {
+  initCurrency: SupportedCurrencies;
+  updateCurrency: (currency: SupportedCurrencies) => void;
+}
 
 const PDF_ASSET_URL = "https://tiago-ribeiro.com/debtr";
 
-export default function Settings({}: Props) {
+export default function Settings({ initCurrency, updateCurrency }: Props) {
   const { i18n, setI18n } = useContext(i18nContext);
-  const [locale, setLocale] = useState<SupportedLocales>(i18n._locale);
+  const [locale, setLocale] = useState(i18n._locale as SupportedLocales);
+  const [currency, setCurrency] = useState(initCurrency);
   const [webviewUri, setWebviewUri] = useState("");
-
-  const onPickerClose = () => {
-    setI18n(locales[locale]);
-    updateLocale(locale);
-  };
 
   const renderSectionTitle = (title: string) => {
     return <Text style={styles.sectionTitle}>{title}</Text>;
   };
 
   const renderLanguage = () => {
+    const onPickerClose = () => {
+      setI18n(locales[locale]);
+      updateLocale(locale);
+    };
+
     return (
       <>
         {renderSectionTitle(i18n.langauge)}
 
-        <PickerSelect
+        <SettingsPicker<SupportedLocales>
           onClose={onPickerClose}
-          onValueChange={setLocale}
-          items={localePickerData.map((l) => ({
+          onChange={setLocale}
+          value={locale}
+          data={localePickerData.map((l) => ({
             key: l.key,
             value: l.key,
             label: l.name,
           }))}
-          style={localePickerStyles}
-          placeholder={{}}
-          value={locale}
-          useNativeAndroidPickerStyle={true}
         />
       </>
     );
   };
 
-  const onPDFClick = (file: string) => {
-    setWebviewUri(`${PDF_ASSET_URL}/${file}`);
-  };
-
   const renderAbout = () => {
-    const render = () => {};
+    const renderWebviewItem = (file: string, label: string) => {
+      return (
+        <TouchableWithoutFeedback
+          onPress={() => setWebviewUri(`${PDF_ASSET_URL}/${file}`)}>
+          <View style={styles.group}>
+            <Text style={styles.groupText}>{label}</Text>
+            <Icon name="ios-arrow-forward" size={24} />
+          </View>
+        </TouchableWithoutFeedback>
+      );
+    };
 
     return (
       <>
@@ -72,19 +79,30 @@ export default function Settings({}: Props) {
           <Text style={styles.groupText}>{pkgJson.version}</Text>
         </View>
 
-        <TouchableWithoutFeedback onPress={() => onPDFClick("pp.pdf")}>
-          <View style={styles.group}>
-            <Text style={styles.groupText}>{i18n.privacyPolicy}</Text>
-            <Icon name="ios-arrow-forward" size={24} />
-          </View>
-        </TouchableWithoutFeedback>
+        {renderWebviewItem("pp.pdf", i18n.privacyPolicy)}
 
-        <TouchableWithoutFeedback onPress={() => onPDFClick("tos.pdf")}>
-          <View style={styles.group}>
-            <Text style={styles.groupText}>{i18n.tos}</Text>
-            <Icon name="ios-arrow-forward" size={24} />
-          </View>
-        </TouchableWithoutFeedback>
+        {renderWebviewItem("tos.pdf", i18n.tos)}
+      </>
+    );
+  };
+
+  const renderCurrency = () => {
+    const onPickerClose = () => updateCurrency(currency);
+
+    return (
+      <>
+        {renderSectionTitle(i18n.currency)}
+
+        <SettingsPicker<SupportedCurrencies>
+          onClose={onPickerClose}
+          onChange={setCurrency}
+          value={currency}
+          data={currencies.map((c) => ({
+            key: c.key,
+            value: c.key,
+            label: c.label,
+          }))}
+        />
       </>
     );
   };
@@ -99,35 +117,15 @@ export default function Settings({}: Props) {
 
       <ScrollView bounces={false}>
         {renderLanguage()}
+
+        {renderCurrency()}
+
         {renderAbout()}
       </ScrollView>
     </>
   );
 }
 
-const localePickerStyles: PickerStyle = {
-  placeholder: {
-    fontSize: 18,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  inputIOS: {
-    fontSize: 18,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  inputAndroid: {
-    fontSize: 18,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  chevronDown: {
-    display: "none",
-  },
-  chevronUp: {
-    display: "none",
-  },
-};
 const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
