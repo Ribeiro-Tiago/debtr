@@ -4,13 +4,13 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 
 interface Props {
   children?: any;
-  title: string;
+  title?: string;
 }
 
 export default function TopBar({ children, title }: Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      {!!title && <Text style={styles.title}>{title}</Text>}
       {children}
     </View>
   );

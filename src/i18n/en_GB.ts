@@ -46,4 +46,18 @@ export default {
   webviewLoadErr:
     "An error ocurred trying to load the file. \n\nTry again later and if the issue persists, please contact us",
   currency: "Currency",
+  monthNames: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
 };

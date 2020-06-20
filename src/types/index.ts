@@ -1,7 +1,7 @@
 export interface ItemCreation {
   description: string;
   amount: number;
-  months: Month[];
+  months: number[];
 }
 
 export interface Item extends ItemCreation {
@@ -14,11 +14,6 @@ export interface StorageData {
   currMonth: number;
   items: Item[];
   currency: SupportedCurrencies;
-}
-
-export interface Month {
-  id: number;
-  label: string;
 }
 
 export interface RenderItemParams {
