@@ -1,6 +1,7 @@
 import { Platform } from "react-native";
 
 import { Month } from "../types";
+import { formatCurrency, formatDecimal } from "./formatters";
 
 export const months = [
   { id: 0, label: "January" },
@@ -27,8 +28,6 @@ export const sanitizeAmount = (amount: any) => {
   }
 };
 
-export const formatDecimal = (number: number) => Number(number.toFixed(2));
-
 export const isCurrentMonth = (months: Month[]) => {
   const m = new Date().getMonth();
 
@@ -42,3 +41,5 @@ export const isCurrentMonth = (months: Month[]) => {
 export const getPlatformIcon = (name: string) => {
   return Platform.OS === "ios" ? `ios-${name}` : `md-${name}`;
 };
+
+export { formatCurrency, formatDecimal };
