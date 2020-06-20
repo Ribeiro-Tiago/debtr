@@ -1,3 +1,6 @@
+import { SupportedCurrencies } from "../types";
+import { formatCurrency } from "../utils/formatters";
+
 export const name = "Português (Portugal)";
 
 export default {
@@ -8,8 +11,8 @@ export default {
   },
   close: "Fechar",
   emptyMonthlyExpenses: "You have no expenses left this month",
-  amountLeft: (amount: number, currency: string) => {
-    return `${amount}${currency} Restante`;
+  amountLeft: (amount: number, currency: SupportedCurrencies) => {
+    return `${formatCurrency(amount, currency)} restante`;
   },
   confirmDeleteTitle: "Confirmar remoção?",
   confirmDeleteDesc:
@@ -42,4 +45,5 @@ export default {
   tos: "Termos de utilização",
   webviewLoadErr:
     "Ocorreu um erro ao tentar carregar o ficheiro. \n\nTente novamente mais tarde e se o problema persistir por favor entre em contacto connosco",
+  currency: "Moeda",
 };

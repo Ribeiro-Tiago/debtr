@@ -1,31 +1,39 @@
 import storage from "@react-native-community/async-storage";
 
-import { StorageData, Item } from "../types";
-import { SupportedLocales } from "src/types/context";
+import {
+  StorageData,
+  Item,
+  SupportedLocales,
+  SupportedCurrencies,
+} from "../types";
 
 type Metadata = {
   amountLeft: number;
   currMonth: number;
 };
 
-type SetParams = Metadata | Item[] | SupportedLocales;
+type SetParams = Metadata | Item[] | SupportedLocales | SupportedCurrencies;
 
-type StorageKey = "items" | "metadata" | "locale";
+type StorageKey = "items" | "metadata" | "locale" | "currency";
 
 const key = "MPT_DATA";
 
-const get = async () => {
-  const items = JSON.parse(await storage.getItem(`${key}_items`));
-  const metadata = JSON.parse(await storage.getItem(`${key}_metadata`));
+const get = async (): Promise<StorageData> => {
+  const [items, metadata, currency] = await Promise.all([
+    storage.getItem(`${key}_items`),
+    storage.getItem(`${key}_metadata`),
+    storage.getItem(`${key}_currency`),
+  ]);
 
-  if (!items && !metadata) {
+  if (!items && !metadata && !currency) {
     return undefined;
   }
 
   return {
-    items: items || [],
-    ...(metadata && { ...metadata }),
-  } as StorageData;
+    items: JSON.parse(items) || [],
+    currency: currency || SupportedCurrencies.EUR,
+    ...(metadata && { ...JSON.parse(metadata) }),
+  };
 };
 
 const set = async (subkey: StorageKey, data: SetParams) => {
@@ -55,10 +63,14 @@ export const updateItems = async (items: Item[]) => {
   return set("items", items);
 };
 
-export const getLocale = async () => {
+export const getLocale = async (): Promise<SupportedLocales> => {
   return (await storage.getItem(`${key}_locale`)) as SupportedLocales;
 };
 
 export const updateLocale = async (locale: SupportedLocales) => {
   return await set("locale", locale);
+};
+
+export const updateCurrency = async (currency: SupportedCurrencies) => {
+  return await set("currency", currency);
 };

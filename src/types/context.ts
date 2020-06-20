@@ -1,9 +1,4 @@
-import { en_GB as i18nFile } from "../i18n";
-
-export enum SupportedLocales {
-  en_GB = "en_GB",
-  pt_PT = "pt_PT",
-}
+import i18nFile from "../i18n/en_GB";
 
 export type I18n = typeof i18nFile;
 

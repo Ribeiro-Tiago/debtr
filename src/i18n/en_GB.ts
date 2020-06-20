@@ -1,3 +1,6 @@
+import { formatCurrency } from "../utils/formatters";
+import { SupportedCurrencies } from "../types";
+
 export const name = "English (U.K.)";
 
 export default {
@@ -8,7 +11,9 @@ export default {
   },
   close: "Close",
   emptyMonthlyExpenses: "You have no expenses left this month",
-  amountLeft: (amount: number, currency: string) => `${amount}${currency} Left`,
+  amountLeft: (amount: number, currency: SupportedCurrencies) => {
+    return `${formatCurrency(amount, currency)} left`;
+  },
   confirmDeleteTitle: "Confirm delete?",
   confirmDeleteDesc:
     "You are about to delete this expense. This action is irreversable",
@@ -40,4 +45,5 @@ export default {
   tos: "Terms of Service",
   webviewLoadErr:
     "An error ocurred trying to load the file. \n\nTry again later and if the issue persists, please contact us",
+  currency: "Currency",
 };

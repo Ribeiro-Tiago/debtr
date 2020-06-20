@@ -3,7 +3,8 @@ import { TouchableWithoutFeedback, View, StyleSheet, Text } from "react-native";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicon from "react-native-vector-icons/Ionicons";
 
-import { Item } from "../types";
+import { Item, SupportedCurrencies } from "../types";
+import { formatCurrency } from "../utils/formatters";
 
 const primary = "#581c0c";
 const secondary = "#ca5116";
@@ -13,6 +14,7 @@ interface Props {
   iconName: string;
   hideIcon?: boolean;
   isBeingDragged: boolean;
+  currency: SupportedCurrencies;
   onPress: (item: Item) => void;
   onDrag: () => void;
   renderTags?: (item: Item) => React.ReactElement;
@@ -23,6 +25,7 @@ export default function ListItem({
   iconName,
   hideIcon,
   isBeingDragged,
+  currency,
   onPress,
   onDrag,
   renderTags,
@@ -55,7 +58,7 @@ export default function ListItem({
           <View style={styles.infoContainer}>
             <Text style={[styles.item, itemColor]}>{item.description}</Text>
             <Text style={[styles.item, styles.amount, itemColor]}>
-              {item.amount}€
+              {formatCurrency(item.amount, currency)}
             </Text>
 
             <Ionicon
