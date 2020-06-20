@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 
 import MonthSelector from "./MonthSelector";
 import { StoreState } from "../../types/store";
-import { Month } from "../../types";
 import { updateSelectedMonths } from "../../store/actions/current";
 
 const mapStateToProps = (state: StoreState) => ({
@@ -10,7 +9,7 @@ const mapStateToProps = (state: StoreState) => ({
 });
 
 const mapDispatchtoProps = (dispatch: Function) => ({
-  updateSelected: (payload: Month[]) => {
+  updateSelected: (payload: number[]) => {
     return dispatch(updateSelectedMonths(payload));
   },
 });

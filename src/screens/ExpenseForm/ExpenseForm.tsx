@@ -13,17 +13,17 @@ import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import { Item, Month, ItemCreation } from "../../types";
+import { Item, ItemCreation } from "../../types";
 import { TopBar, FormItem, MonthSelector } from "../../components";
 import { getPlatformIcon } from "../../utils";
 import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
   item: Item | null;
-  selectedMonths: Month[];
+  selectedMonths: number[];
   create: (item: ItemCreation) => void;
   update: (item: Item, amount: number) => void;
-  remove: (id: string, months: Month[], amount: number) => void;
+  remove: (id: string, months: number[], amount: number) => void;
 }
 
 interface Form {

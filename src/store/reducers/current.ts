@@ -3,7 +3,7 @@ import { ReducerAction } from "../../types/store";
 import { Item } from "../../types";
 
 interface State {
-  months: Item[];
+  months: number[];
   item: Item;
 }
 
@@ -14,7 +14,7 @@ const initState: State = {
 
 export default (
   state = initState,
-  { type, payload }: ReducerAction<Item | Item[]>,
+  { type, payload }: ReducerAction<Item | Item[] | number[]>,
 ) => {
   switch (type) {
     case UPDATE_SELECTED_MONTHS: {
