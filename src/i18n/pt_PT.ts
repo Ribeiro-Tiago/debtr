@@ -1,3 +1,6 @@
+import { SupportedCurrencies } from "../types";
+import { formatCurrency } from "../utils/formatters";
+
 export const name = "Português (Portugal)";
 
 export default {
@@ -8,8 +11,8 @@ export default {
   },
   close: "Fechar",
   emptyMonthlyExpenses: "You have no expenses left this month",
-  amountLeft: (amount: number, currency: string) => {
-    return `${amount}${currency} Restante`;
+  amountLeft: (amount: number, currency: SupportedCurrencies) => {
+    return `${formatCurrency(amount, currency)} restante`;
   },
   confirmDeleteTitle: "Confirmar remoção?",
   confirmDeleteDesc:

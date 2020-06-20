@@ -9,11 +9,17 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 import { TopBar, List, ListItem } from "../../components";
-import { Item, Month, RenderItemParams } from "../../types";
+import {
+  Item,
+  Month,
+  RenderItemParams,
+  SupportedCurrencies,
+} from "../../types";
 import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
   items: Item[];
+  currCurrency: SupportedCurrencies;
   reorderItems: (items: Item[]) => void;
   updateCurrent: (item?: Item) => void;
   removeItem: (id: string, months: Month[], amount: number) => void;
@@ -21,6 +27,7 @@ interface Props {
 
 export default function AllExpenses({
   items,
+  currCurrency,
   reorderItems,
   updateCurrent,
   removeItem,
@@ -77,6 +84,7 @@ export default function AllExpenses({
         {...props}
         onIconPress={onRemove}
         iconName="ios-trash"
+        currency={currCurrency}
         onPress={() => goToForm(props.item)}
         renderTags={({ months }) => (
           <View style={styles.tags}>{renderMonths(months)}</View>
