@@ -19,7 +19,7 @@ interface Props {
   onClose: () => void;
 }
 
-export default ({ uri, onClose }: Props) => {
+export default function ({ uri, onClose }: Props) {
   const { i18n } = useContext(i18nContext);
 
   const renderLoading = () => {
@@ -50,7 +50,7 @@ export default ({ uri, onClose }: Props) => {
       />
     </>
   );
-};
+}
 
 const paddingTop = Platform.OS === "ios" ? getStatusBarHeight() : 0;
 const styles = StyleSheet.create({

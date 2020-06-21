@@ -1,13 +1,6 @@
-export interface ItemCreation {
-  description: string;
-  amount: number;
-  months: number[];
-}
+import { Item } from "./item";
 
-export interface Item extends ItemCreation {
-  id: string;
-  isPaid: boolean;
-}
+export * from "./item";
 
 export interface StorageData {
   amountLeft: number;
