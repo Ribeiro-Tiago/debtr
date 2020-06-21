@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, StyleSheet, Text, Switch } from "react-native";
 import TimePicker from "react-native-modal-datetime-picker";
 import DatePicker from "react-native-calendar-picker";
@@ -6,8 +6,10 @@ import DatePicker from "react-native-calendar-picker";
 import FormLabel from "./FormLabel";
 import { i18nContext } from "../contexts/i18n";
 import CollapsableView from "./CollapsableView";
+import { ItemNotification } from "../types";
 
 interface Props {
+  initValue?: ItemNotification;
   onChange: (date?: Date) => void;
 }
 
@@ -16,15 +18,14 @@ interface Props {
 // Comes from react-native-calendar-picker
 type FakeMoment = any;
 
-export default function ({ onChange }: Props) {
-  const [isSwitchEnabled, setSwitchEnabled] = useState(false);
+export default function ({ onChange, initValue }: Props) {
+  const [isSwitchEnabled, setSwitchEnabled] = useState(!!initValue);
   const [isTimeVisible, setTimeVisible] = useState(false);
   const { i18n } = useContext(i18nContext);
-  const [datetime, setDatetime] = useState(new Date());
-  const [isDateSelected, setDateSelected] = useState(false);
-
-  let date = new Date();
-  let time = new Date();
+  const [datetime, setDatetime] = useState(
+    initValue ? new Date(initValue.date) : new Date(),
+  );
+  const [isDateSelected, setDateSelected] = useState(!!initValue);
 
   const dateLimits = () => {
     const date = new Date();
@@ -34,17 +35,15 @@ export default function ({ onChange }: Props) {
     return { minDate: min, maxDate: max };
   };
 
-  const onDateChange = (newDate: FakeMoment) => {
+  const onDateChange = (date: FakeMoment) => {
     setTimeVisible(true);
-    date = new Date(newDate.toISOString());
-    datetime.setDate(newDate.date());
+    datetime.setDate(new Date(date).getDate());
     setDatetime(datetime);
     onChange(datetime);
     !isDateSelected && setDateSelected(true);
   };
 
   const onTimeSelect = (newTime: Date) => {
-    time = newTime;
     datetime.setHours(newTime.getHours());
     datetime.setMinutes(newTime.getMinutes());
     setDatetime(datetime);
@@ -74,7 +73,6 @@ export default function ({ onChange }: Props) {
           value={isSwitchEnabled}
         />
       </View>
-
       <TimePicker
         isVisible={isTimeVisible}
         mode="time"
@@ -85,28 +83,32 @@ export default function ({ onChange }: Props) {
         confirmTextIOS={i18n.confirm}
         headerTextIOS={i18n.timePickerTitle}
       />
+      {console.log(datetime)}
+      {isSwitchEnabled && (
+        <View>
+          <Text style={styles.reminderText}>
+            {isDateSelected
+              ? i18n.reminderAt(datetime)
+              : i18n.undefinedReminder}
+          </Text>
 
-      <CollapsableView isOpen={isSwitchEnabled}>
-        <Text style={styles.reminderText}>
-          {isDateSelected ? i18n.reminderAt(datetime) : i18n.undefinedReminder}
-        </Text>
-
-        <DatePicker
-          onDateChange={onDateChange}
-          startFromMonday={true}
-          restrictMonthNavigation={true}
-          enableSwipe={false}
-          selectedDayColor="#f1e3cb"
-          selectedDayStyle={{ backgroundColor: "#f1e3cb" }}
-          weekdays={i18n.weekDays}
-          monthYearHeaderWrapperStyle={{ display: "none" }}
-          initialDate={date}
-          customDatesStyles={[
-            { style: { backgroundColor: "transparent" } } as any,
-          ]}
-          {...dateLimits()}
-        />
-      </CollapsableView>
+          <DatePicker
+            onDateChange={onDateChange}
+            startFromMonday={true}
+            restrictMonthNavigation={true}
+            enableSwipe={false}
+            selectedDayColor="#f1e3cb"
+            selectedDayStyle={{ backgroundColor: "#f1e3cb" }}
+            weekdays={i18n.weekDays}
+            monthYearHeaderWrapperStyle={{ display: "none" }}
+            initialDate={datetime}
+            selectedStartDate={datetime}
+            selectedEndDate={datetime}
+            todayBackgroundColor="transparent"
+            {...dateLimits()}
+          />
+        </View>
+      )}
     </>
   );
 }
