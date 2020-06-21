@@ -13,6 +13,7 @@ export interface ItemCreation {
 export interface Item extends ItemCreation {
   id: string;
   isPaid: boolean;
+  notification: ItemNotification;
 }
 
 export interface StorageData {

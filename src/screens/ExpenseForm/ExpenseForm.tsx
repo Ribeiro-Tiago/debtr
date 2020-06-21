@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { nanoid } from "nanoid/non-secure";
 
-import { Item, ItemCreation, ItemNotification } from "../../types";
+import { Item, ItemNotification } from "../../types";
 import {
   TopBar,
   FormItem,
@@ -23,14 +23,18 @@ import {
 } from "../../components";
 import { getPlatformIcon } from "../../utils";
 import { i18nContext } from "../../contexts/i18n";
-import { NotificationTexts } from "../../types/notification";
+import {
+  CreateItemParams,
+  RemoveItemParams,
+  UpdateItemParams,
+} from "../../types/item";
 
 interface Props {
   item: Item | null;
   selectedMonths: number[];
-  create: (item: ItemCreation, notifTexts: NotificationTexts) => void;
-  update: (item: Item, amount: number, notification: ItemNotification) => void;
-  remove: (id: string, months: number[], amount: number) => void;
+  create: (params: CreateItemParams) => void;
+  update: (params: UpdateItemParams) => void;
+  remove: (params: RemoveItemParams) => void;
 }
 
 interface Form {
@@ -55,7 +59,9 @@ export default function ExpenseForm({
     defaultValues: initialValues,
     reValidateMode: "onBlur",
   });
-  const [notif, setNotif] = useState<ItemNotification>(undefined);
+  const [notif, setNotif] = useState<ItemNotification>(
+    item && item.notification,
+  );
   const isNew = !item;
 
   useEffect(() => {
@@ -64,27 +70,34 @@ export default function ExpenseForm({
   }, [register]);
 
   const onSubmit = (data: Form) => {
+    const notifTexts = {
+      title: i18n.getNotifTitle(data.description),
+      message: i18n.getNotifDesc(data.description),
+    };
     if (isNew) {
-      create(
-        { ...data, months: selectedMonths, notification: notif },
-        {
-          title: i18n.getNotifTitle(data.description),
-          message: i18n.getNotifDesc(data.description),
-        },
-      );
+      create({
+        item: { ...data, months: selectedMonths, notification: notif },
+        notifTexts,
+      });
     } else {
-      update(
-        { ...item, ...data, months: selectedMonths, notification: notif },
-        initialValues.amount,
-        item.notification,
-      );
+      update({
+        item: { ...item, ...data, months: selectedMonths, notification: notif },
+        oldAmount: initialValues.amount,
+        oldNotif: item.notification,
+        notifTexts,
+      });
     }
 
     goBack();
   };
 
   const onDeleteConfirm = () => {
-    remove(item.id, item.months, item.amount);
+    remove({
+      id: item.id,
+      months: item.months,
+      amount: item.amount,
+      notifId: item.notification?.id,
+    });
     goBack();
   };
 
@@ -173,7 +186,10 @@ export default function ExpenseForm({
 
           <MonthSelector />
 
-          <NotificationController onChange={onNotifChange} />
+          <NotificationController
+            initValue={item?.notification}
+            onChange={onNotifChange}
+          />
 
           {renderButtons()}
         </ScrollView>
