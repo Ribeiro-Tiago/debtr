@@ -11,10 +11,10 @@ export default function ({ label }: Props) {
 
 const styles = StyleSheet.create({
   label: {
-    height: 30,
     fontSize: 20,
     fontWeight: "bold",
     color: "#ca5116",
     marginRight: 5,
+    marginVertical: 10,
   },
 });
