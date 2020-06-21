@@ -7,6 +7,7 @@ import {
   removeNotif,
   updateNotifs as updateStorageNotifs,
   addNotif,
+  getNotif,
 } from "./storage";
 
 interface RescheduleParams {
@@ -113,9 +114,13 @@ export default () => {
     onNotification: function (notification) {
       console.log("notification", notification.data);
 
-      rescheduleNotification((notification.data as any).data);
+      getNotif((notification.data as any).id).then((data) => {
+        if (data) {
+          rescheduleNotification(data);
+        }
 
-      notification.finish(PushNotificationIOS.FetchResult.NewData);
+        notification.finish(PushNotificationIOS.FetchResult.NewData);
+      });
     },
 
     // IOS ONLY (optional): default: all - Permissions to register.
