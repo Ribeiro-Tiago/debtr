@@ -10,8 +10,9 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
-    "build:apk": "yarn build:android && cd android && ./gradlew assembleRelease",
-    "build:aab": "yarn build:android && cd android && ./gradlew bundleRelease",
+    "release:apk": "yarn build:android && cd android && ./gradlew assembleRelease",
+    "release:aab": "yarn build:android && cd android && ./gradlew bundleRelease",
+    "debug:apk": "yarn build:android && cd android && ./gradlew assembleDebug",
     "update-version": "npx ts-node infra/update-versions.ts",
     "deploy:android": "npx ts-node infra/deploy-android.ts"
   },
