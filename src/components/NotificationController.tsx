@@ -8,7 +8,7 @@ import { i18nContext } from "../contexts/i18n";
 import CollapsableView from "./CollapsableView";
 
 interface Props {
-  onChange: (date: Date) => void;
+  onChange: (date?: Date) => void;
 }
 
 // This is supposed to be a moment object but there's no reason
@@ -38,6 +38,7 @@ export default function ({ onChange }: Props) {
     datetime.setDate(newDate.date());
     setDatetime(datetime);
     setTimeVisible(true);
+    onChange(datetime);
   };
 
   const onTimeSelect = (newTime: Date) => {
@@ -46,9 +47,16 @@ export default function ({ onChange }: Props) {
     datetime.setMinutes(newTime.getMinutes());
     setDatetime(datetime);
     setTimeVisible(false);
+    onChange(datetime);
   };
 
-  const togglePickers = () => setSwitchEnabled(!isSwitchEnabled);
+  const togglePickers = (newValue: boolean) => {
+    if (!newValue) {
+      onChange(undefined);
+    }
+
+    setSwitchEnabled(newValue);
+  };
 
   return (
     <>
