@@ -3,6 +3,11 @@ import PushNotification from "react-native-push-notification";
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 
 import { Notification } from "../types/notification";
+import {
+  removeNotif,
+  updateNotifs as updateStorageNotifs,
+  addNotif,
+} from "./storage";
 
 interface RescheduleParams {
   data: Notification;
@@ -48,15 +53,19 @@ const rescheduleNotification = ({ data, months }: RescheduleParams) => {
   const currMonth = new Date().getMonth();
 
   if (!months.length || months.length === 11 || months.includes(currMonth)) {
-    return registerNotif(data, months);
+    return registerNotif(data, months, true);
   }
 
   const date = getNextNotifDate(data.date, months);
 
-  registerNotif({ ...data, date }, months);
+  registerNotif({ ...data, date }, months, true);
 };
 
-export const registerNotif = (notification: Notification, months: number[]) => {
+export const registerNotif = (
+  notification: Notification,
+  months: number[],
+  isReschedule = false,
+) => {
   const date = getNextNotifDate(notification.date, months);
 
   PushNotification.localNotificationSchedule({
@@ -74,10 +83,18 @@ export const registerNotif = (notification: Notification, months: number[]) => {
     ...notification,
     date,
   });
+
+  if (isReschedule) {
+    updateStorageNotifs({ ...notification, months });
+  } else {
+    addNotif({ ...notification, months });
+  }
 };
 
 export const unregisterNotif = (id: string) => {
   PushNotification.cancelLocalNotifications({ id });
+
+  removeNotif(id);
 };
 
 export const updateNotif = (notification: Notification, months: number[]) => {
@@ -85,6 +102,8 @@ export const updateNotif = (notification: Notification, months: number[]) => {
 
   if (notification) {
     registerNotif(notification, months);
+  } else {
+    removeNotif(notification.id);
   }
 };
 
