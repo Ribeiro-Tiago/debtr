@@ -136,7 +136,20 @@ export const addNotif = async (notif: StoredNotification) => {
 };
 
 export const getNotif = async (notifId: string) => {
+  if (!notifId) {
+    return undefined;
+  }
+
   const notifs: StoredNotification[] = await getNotifs();
 
-  return notifs.find(({ id }) => id === notifId);
+  const notif = notifs.find(({ id }) => id === notifId);
+
+  if (!notif) {
+    return undefined;
+  }
+
+  return {
+    data: { ...notif },
+    months: notif.months,
+  };
 };
