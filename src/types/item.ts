@@ -1,5 +1,22 @@
 import { NotificationTexts } from "./notification";
-import { Item, ItemCreation, ItemNotification } from "./";
+
+export interface ItemNotification {
+  id: string;
+  date: Date;
+}
+
+export interface ItemCreation {
+  description: string;
+  amount: number;
+  months: number[];
+  notification?: ItemNotification;
+}
+
+export interface Item extends ItemCreation {
+  id: string;
+  isPaid: boolean;
+  notification: ItemNotification;
+}
 
 export interface UpdateItemParams {
   item: Item;
