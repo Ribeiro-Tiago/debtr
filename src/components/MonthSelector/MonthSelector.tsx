@@ -1,15 +1,10 @@
 import React, { useState, useContext } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Animated,
-  LayoutChangeEvent,
-} from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import FormLabel from "../FormLabel";
 import MonthSelectorItem from "../MonthSelectorItem";
+import CollapsableView from "../CollapsableView";
 import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
@@ -23,9 +18,7 @@ export default function MonthSelector({
   selectedMonths,
   updateSelected,
 }: Props) {
-  const [height, setHeight] = useState<Animated.Value>();
   const [isOpen, setOpen] = useState<boolean>(false);
-  const [maxHeight, setMaxHeight] = useState<number>(-1);
   const { i18n } = useContext(i18nContext);
 
   const onUnselect = (month: number) => {
@@ -36,23 +29,7 @@ export default function MonthSelector({
     updateSelected([...selectedMonths, month]);
   };
 
-  const toggleHelper = () => {
-    const final = isOpen ? 0 : maxHeight;
-
-    setOpen(!isOpen);
-    Animated.spring(height as Animated.Value, {
-      toValue: final,
-      bounciness: 0,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const _setMaxHeight = (event: LayoutChangeEvent) => {
-    if (maxHeight === -1) {
-      setMaxHeight(event.nativeEvent.layout.height + 10);
-      setHeight(new Animated.Value(0));
-    }
-  };
+  const toggleHelper = () => setOpen(!isOpen);
 
   return (
     <View style={styles.wrapper}>
@@ -66,15 +43,9 @@ export default function MonthSelector({
         />
       </View>
 
-      <Animated.View
-        style={
-          maxHeight !== -1
-            ? { height, overflow: "hidden" }
-            : { overflow: "hidden" }
-        }
-        onLayout={_setMaxHeight}>
+      <CollapsableView isOpen={isOpen}>
         <Text style={styles.helper}>{i18n.monthsHelper}</Text>
-      </Animated.View>
+      </CollapsableView>
 
       <View style={styles.monthWrapper}>
         {months.map((m) => (
