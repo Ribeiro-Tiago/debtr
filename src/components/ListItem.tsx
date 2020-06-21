@@ -62,7 +62,7 @@ export default function ListItem({
             </Text>
 
             <Ionicon
-              onPress={() => onIconPress(item)}
+              onPress={() => onIconPress && onIconPress(item)}
               name={iconName}
               size={32}
               color={hideIcon ? "transparent" : iconColor}
