@@ -18,6 +18,25 @@ type StorageKey = "items" | "metadata" | "locale" | "currency";
 
 const key = "MPT_DATA";
 
+// backwards compatible fix. If months on items were in the old way, formats them to new way
+// added in v2.1.0, to remove asap
+const handleItems = (items: string) => {
+  if (!items) {
+    return [];
+  }
+
+  const newItems: Item[] = JSON.parse(items).map((item: Item) => ({
+    ...item,
+    months: item.months.map((m: any) => {
+      return typeof m === "number" ? m : m.id;
+    }),
+  }));
+
+  set("items", newItems);
+
+  return newItems;
+};
+
 const get = async (): Promise<StorageData> => {
   const [items, metadata, currency] = await Promise.all([
     storage.getItem(`${key}_items`),
@@ -30,7 +49,7 @@ const get = async (): Promise<StorageData> => {
   }
 
   return {
-    items: JSON.parse(items) || [],
+    items: handleItems(items),
     currency: currency || SupportedCurrencies.EUR,
     ...(metadata && { ...JSON.parse(metadata) }),
   };

@@ -1,10 +1,10 @@
-import { Item, Month, SupportedCurrencies } from "./";
+import { Item, SupportedCurrencies } from "./";
 
 export interface StoreState {
   items: Item[];
   current: {
     item: Item;
-    months: Month[];
+    months: number[];
   };
   amountLeft: number;
   currency: SupportedCurrencies;

@@ -9,12 +9,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 import { TopBar, List, ListItem } from "../../components";
-import {
-  Item,
-  Month,
-  RenderItemParams,
-  SupportedCurrencies,
-} from "../../types";
+import { Item, RenderItemParams, SupportedCurrencies } from "../../types";
 import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
@@ -22,7 +17,7 @@ interface Props {
   currCurrency: SupportedCurrencies;
   reorderItems: (items: Item[]) => void;
   updateCurrent: (item?: Item) => void;
-  removeItem: (id: string, months: Month[], amount: number) => void;
+  removeItem: (id: string, months: number[], amount: number) => void;
 }
 
 export default function AllExpenses({
@@ -66,14 +61,14 @@ export default function AllExpenses({
     );
   };
 
-  const renderMonths = (months: Month[]) => {
+  const renderMonths = (months: number[]) => {
     if (!months.length || months.length === 12) {
       return <Text style={styles.tag}>{i18n.monthlyExpense}</Text>;
     }
 
     return months.map((m) => (
-      <Text key={m.id} style={styles.tag}>
-        {m.label}
+      <Text key={m} style={styles.tag}>
+        {i18n.monthNames[m]}
       </Text>
     ));
   };

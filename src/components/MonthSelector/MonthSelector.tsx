@@ -9,14 +9,14 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 
 import MonthSelectorItem from "../MonthSelectorItem";
-import { Month } from "../../types";
-import { months } from "../../utils";
 import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
-  selectedMonths: Month[];
-  updateSelected: (months: Month[]) => void;
+  selectedMonths: number[];
+  updateSelected: (months: number[]) => void;
 }
+
+const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 export default function MonthSelector({
   selectedMonths,
@@ -27,11 +27,11 @@ export default function MonthSelector({
   const [maxHeight, setMaxHeight] = useState<number>(-1);
   const { i18n } = useContext(i18nContext);
 
-  const onUnselect = (id: number) => {
-    updateSelected(selectedMonths.filter((item) => item.id !== id));
+  const onUnselect = (month: number) => {
+    updateSelected(selectedMonths.filter((item) => item !== month));
   };
 
-  const onSelect = (month: Month) => {
+  const onSelect = (month: number) => {
     updateSelected([...selectedMonths, month]);
   };
 
@@ -78,10 +78,10 @@ export default function MonthSelector({
       <View style={styles.monthWrapper}>
         {months.map((m) => (
           <MonthSelectorItem
-            key={m.id}
-            label={m.label}
-            initialSelected={!!selectedMonths.find(({ id }) => id === m.id)}
-            onUnselect={() => onUnselect(m.id)}
+            key={m}
+            label={i18n.monthNames[m]}
+            initialSelected={!!selectedMonths.includes(m)}
+            onUnselect={() => onUnselect(m)}
             onSelect={() => onSelect(m)}
           />
         ))}
