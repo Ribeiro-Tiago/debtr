@@ -46,7 +46,7 @@ const barOptions: MaterialTopTabBarOptions = {
     borderTopWidth: 1,
   },
   indicatorStyle: {
-    borderBottomColor: "#581c0c",
+    top: 0,
     backgroundColor: "#581c0c",
   },
 };
@@ -141,11 +141,7 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        tabBarOptions={barOptions}
-        tabBarPosition="bottom"
-        /* tabBar={MyTabBar} */
-      >
+      <Tab.Navigator tabBarOptions={barOptions} tabBarPosition="bottom">
         <Tab.Screen
           key="monthly"
           name="monthly expenses"
