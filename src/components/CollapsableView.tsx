@@ -11,7 +11,11 @@ export default function CollapsableView({ children, isOpen }: Props) {
   const [maxHeight, setMaxHeight] = useState<number>(-1);
 
   useEffect(() => {
-    const final = isOpen ? 0 : maxHeight;
+    if (!height) {
+      return;
+    }
+
+    const final = isOpen ? maxHeight : 0;
 
     Animated.spring(height as Animated.Value, {
       toValue: final,
@@ -22,8 +26,8 @@ export default function CollapsableView({ children, isOpen }: Props) {
 
   const _setMaxHeight = (event: LayoutChangeEvent) => {
     if (maxHeight === -1) {
-      setMaxHeight(event.nativeEvent.layout.height + 10);
       setHeight(new Animated.Value(0));
+      setMaxHeight(event.nativeEvent.layout.height + 10);
     }
   };
 
