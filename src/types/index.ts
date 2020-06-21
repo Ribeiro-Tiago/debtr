@@ -1,5 +1,7 @@
 import { Item } from "./item";
 
+export * from "./item";
+
 export interface StorageData {
   amountLeft: number;
   currMonth: number;
