@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function LocaleSelector({ onLocaleSelect }: Props) {
-  const [locale, setLocale] = useState(SupportedLocales.en_GB);
+  const [locale, setLocale] = useState(SupportedLocales.en);
 
   SplashScreen.hide();
 

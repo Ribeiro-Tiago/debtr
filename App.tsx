@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { NativeModules, Platform } from "react-native";
 import { Provider } from "react-redux";
+import SplashScreen from "react-native-splash-screen";
 
 import store from "./src/store";
 import locales from "./src/i18n";
@@ -16,22 +17,35 @@ export default function App() {
   const i18nProviderValue = useMemo(() => ({ i18n, setI18n }), [i18n]);
 
   useEffect(() => {
+    const locale = getDeviceLocale();
+
+    if (locale in SupportedLocales) {
+      setI18n(locales[locale as SupportedLocales]);
+      SplashScreen.hide();
+      return;
+    }
+
+    getLocale()
+      .then((locale) => {
+        if (locale) {
+          setI18n(locales[locale]);
+        }
+      })
+      .finally(() => SplashScreen.hide());
+  }, []);
+
+  const getDeviceLocale = (): string | undefined => {
     const locale =
       Platform.OS === "ios"
         ? NativeModules.SettingsManager.settings.AppleLocale
         : NativeModules.I18nManager.localeIdentifier;
 
-    if (locale in SupportedLocales) {
-      setI18n(locales[locale as SupportedLocales]);
-      return;
+    if (!locale) {
+      return undefined;
     }
 
-    getLocale().then((locale) => {
-      if (locale) {
-        setI18n(locales[locale]);
-      }
-    });
-  }, []);
+    return locale.split("_")[0];
+  };
 
   const onLocaleSelect = (locale: SupportedLocales) => {
     setI18n(locales[locale]);

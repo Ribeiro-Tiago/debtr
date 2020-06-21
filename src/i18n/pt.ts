@@ -1,10 +1,10 @@
 import { SupportedCurrencies } from "../types";
 import { formatCurrency } from "../utils/formatters";
 
-export const name = "Português (Portugal)";
+export const name = "Português";
 
 export default {
-  _locale: "pt_PT",
+  _locale: "pt",
   errTitle: "Erro",
   errMsg: (err: string) => {
     return `Ocorreu um erro inesperado a obter as suas despesas. \n\nSe o problema persistir contacte-nos com a seguinte mensagem: \n\n${err}`;

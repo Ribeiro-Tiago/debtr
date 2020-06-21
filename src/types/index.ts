@@ -29,6 +29,6 @@ export enum SupportedCurrencies {
 }
 
 export enum SupportedLocales {
-  en_GB = "en_GB",
-  pt_PT = "pt_PT",
+  en = "en",
+  pt = "pt",
 }
