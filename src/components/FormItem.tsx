@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native";
+import FormLabel from "./FormLabel";
 
 interface Props {
   label: string;
@@ -22,7 +23,7 @@ export default function FormItem({
 }: Props) {
   return (
     <>
-      <Text style={styles.label}>{label}</Text>
+      <FormLabel label={label} />
       <TextInput
         style={styles.input}
         onChangeText={onChange}
@@ -37,13 +38,6 @@ export default function FormItem({
 }
 
 const styles = StyleSheet.create({
-  label: {
-    height: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 15,
-    color: "#ca5116",
-  },
   input: {
     fontSize: 18,
     paddingBottom: 10,
