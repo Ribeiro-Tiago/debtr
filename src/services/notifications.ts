@@ -83,7 +83,9 @@ export const unregisterNotif = (id: string) => {
 export const updateNotif = (notification: Notification, months: number[]) => {
   PushNotification.cancelLocalNotifications({ id: notification.id });
 
-  registerNotif(notification, months);
+  if (notification) {
+    registerNotif(notification, months);
+  }
 };
 
 export default () => {
