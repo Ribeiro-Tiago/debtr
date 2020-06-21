@@ -9,10 +9,10 @@
   - update themes
   - give feedback
   - donate
-  - update theme
 
 - add tests
 - add support for reminder push notifications
 - add a tutorial
 - add light / dark theme
 - optimize deploy workflow
+- replace delete confirms with undo (e.g.: google stuff)
