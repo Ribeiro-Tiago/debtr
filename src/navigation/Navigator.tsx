@@ -17,6 +17,7 @@ import {
   SettingsScreen,
 } from "../screens";
 import { getData, updateCurrMonth as setCurrMonth } from "../services/storage";
+import setupNofis from "../services/notifications";
 import { StorageData, Item, SupportedCurrencies } from "../types";
 import { isCurrentMonth } from "../utils";
 import { i18nContext } from "../contexts/i18n";
@@ -59,6 +60,7 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
   useEffect(() => {
     getData()
       .then((data: StorageData) => {
+        setupNofis();
         const currMonth = new Date().getMonth();
 
         if (!data) {

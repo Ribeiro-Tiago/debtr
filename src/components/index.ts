@@ -6,14 +6,18 @@ import FormItem from "./FormItem";
 import LocalePicker from "./LocalePicker";
 import Webview from "./Webview";
 import SettingsPicker from "./SettingsPicker";
+import FormLabel from "./FormLabel";
+import NotificationController from "./NotificationController";
 
 export {
-  List,
-  ListItem,
   TopBar,
   MonthSelector,
+  List,
+  ListItem,
   FormItem,
   LocalePicker,
   Webview,
   SettingsPicker,
+  FormLabel,
+  NotificationController,
 };
