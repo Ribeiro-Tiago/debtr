@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import component from "./ExpenseForm";
 import { StoreState } from "../../types/store";
 import { addItem, updateItem, removeItem } from "../../store/actions/items";
-import { Item, ItemCreation, Month } from "../../types";
+import { Item, ItemCreation } from "../../types";
 import { addAmount, subtractAmount } from "../../store/actions/amountLeft";
 import { isCurrentMonth } from "../../utils";
 
@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch: Function) => {
         dispatch(subtractAmount(oldAmount));
       }
     },
-    remove: (id: string, months: Month[], amount: number) => {
+    remove: (id: string, months: number[], amount: number) => {
       dispatch(removeItem(id));
 
       if (isCurrentMonth(months)) {

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import dayjs from "dayjs";
 import Emoji from "react-native-emoji";
 
 import { List, TopBar, ListItem } from "../../components";
@@ -31,6 +30,12 @@ export default function MonthlyExpenses({
     updateAmountLeft(amount, isPaid);
   };
 
+  const getTitle = () => {
+    const d = new Date();
+
+    return `${i18n.monthNames[d.getMonth()]} ${d.getFullYear()}`;
+  };
+
   const renderItem = (props: RenderItemParams) => {
     return (
       <ListItem
@@ -57,7 +62,7 @@ export default function MonthlyExpenses({
 
   return (
     <View style={styles.container}>
-      <TopBar title={dayjs().format("MMMM YYYY")}>
+      <TopBar title={getTitle()}>
         <Text style={styles.leftover}>
           {i18n.amountLeft(amountLeft, currCurrency)}
         </Text>
