@@ -9,6 +9,7 @@
   - update themes
   - give feedback
   - donate
+  - add date & time format customization
 
 - add tests
 - add support for reminder push notifications
