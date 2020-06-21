@@ -14,7 +14,7 @@
 
       <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="ignoreInForeground"/>
 
-      <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="#f1e3cb"/>
+      <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/primary"/>
 
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
