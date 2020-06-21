@@ -1,4 +1,4 @@
-import i18nFile from "../i18n/en_GB";
+import i18nFile from "../i18n/en";
 
 export type I18n = typeof i18nFile;
 
