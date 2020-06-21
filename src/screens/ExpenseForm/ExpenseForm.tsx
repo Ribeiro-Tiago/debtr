@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -12,8 +12,9 @@ import {
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { nanoid } from "nanoid/non-secure";
 
-import { Item, ItemCreation } from "../../types";
+import { Item, ItemCreation, ItemNotification } from "../../types";
 import {
   TopBar,
   FormItem,
@@ -22,12 +23,13 @@ import {
 } from "../../components";
 import { getPlatformIcon } from "../../utils";
 import { i18nContext } from "../../contexts/i18n";
+import { NotificationTexts } from "../../types/notification";
 
 interface Props {
   item: Item | null;
   selectedMonths: number[];
-  create: (item: ItemCreation) => void;
-  update: (item: Item, amount: number) => void;
+  create: (item: ItemCreation, notifTexts: NotificationTexts) => void;
+  update: (item: Item, amount: number, notification: ItemNotification) => void;
   remove: (id: string, months: number[], amount: number) => void;
 }
 
@@ -53,6 +55,7 @@ export default function ExpenseForm({
     defaultValues: initialValues,
     reValidateMode: "onBlur",
   });
+  const [notif, setNotif] = useState<ItemNotification>(undefined);
   const isNew = !item;
 
   useEffect(() => {
@@ -62,11 +65,18 @@ export default function ExpenseForm({
 
   const onSubmit = (data: Form) => {
     if (isNew) {
-      create({ ...data, months: selectedMonths });
+      create(
+        { ...data, months: selectedMonths, notification: notif },
+        {
+          title: i18n.getNotifTitle(data.description),
+          message: i18n.getNotifDesc(data.description),
+        },
+      );
     } else {
       update(
-        { ...item, ...data, months: selectedMonths },
+        { ...item, ...data, months: selectedMonths, notification: notif },
         initialValues.amount,
+        item.notification,
       );
     }
 
@@ -85,6 +95,14 @@ export default function ExpenseForm({
       [{ text: i18n.confirm, onPress: onDeleteConfirm }, { text: i18n.cancel }],
       { cancelable: true },
     );
+  };
+
+  const onNotifChange = (date?: Date) => {
+    if (!date) {
+      return setNotif(undefined);
+    }
+
+    setNotif({ id: nanoid(), date });
   };
 
   const renderTopBar = () => {
@@ -155,7 +173,7 @@ export default function ExpenseForm({
 
           <MonthSelector />
 
-          <NotificationController onChange={() => console.log("changed")} />
+          <NotificationController onChange={onNotifChange} />
 
           {renderButtons()}
         </ScrollView>
