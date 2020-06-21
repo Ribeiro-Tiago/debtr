@@ -22,7 +22,7 @@ type SetParams =
 
 type StorageKey = "items" | "metadata" | "locale" | "currency" | "notifs";
 
-const key = "MPT_DATA";
+const PREFIX = "MPT_DATA";
 
 // backwards compatible fix. If months on items were in the old way, formats them to new way
 // added in v2.1.0, to remove asap
@@ -44,13 +44,13 @@ const handleItems = (items: string) => {
 };
 
 const get = async (key: StorageKey) => {
-  return await storage.getItem(`${key}_${key}`);
+  return await storage.getItem(`${PREFIX}_${key}`);
 };
 
-const set = async (subkey: StorageKey, data: SetParams) => {
+const set = async (key: StorageKey, data: SetParams) => {
   const stringified = typeof data === "string" ? data : JSON.stringify(data);
 
-  return await storage.setItem(`${key}_${subkey}`, stringified);
+  return await storage.setItem(`${PREFIX}_${key}`, stringified);
 };
 
 const getNotifs = async (): Promise<StoredNotification[]> => {
@@ -99,7 +99,7 @@ export const updateItems = async (items: Item[]) => {
 };
 
 export const getLocale = async (): Promise<SupportedLocales> => {
-  return (await storage.getItem(`${key}_locale`)) as SupportedLocales;
+  return (await get("locale")) as SupportedLocales;
 };
 
 export const updateLocale = async (locale: SupportedLocales) => {
