@@ -5,13 +5,10 @@ import { StoreState } from "../../types/store";
 import { Item } from "../../types";
 import { toggleItemStatus, setItems } from "../../store/actions/items";
 import { addAmount, subtractAmount } from "../../store/actions/amountLeft";
+import { isCurrentMonth } from "../../utils";
 
 const getMonthlyItems = (items: Item[]) => {
-  const currMonth = new Date().getMonth();
-
-  return items.filter(({ months }) => {
-    return !months.length || !!months.find(({ id }) => id === currMonth);
-  });
+  return items.filter(({ months }) => isCurrentMonth(months));
 };
 
 const mapStateToProps = ({ items, amountLeft, currency }: StoreState) => {
