@@ -6,14 +6,16 @@ import FormItem from "./FormItem";
 import LocalePicker from "./LocalePicker";
 import Webview from "./Webview";
 import SettingsPicker from "./SettingsPicker";
+import FormLabel from "./FormLabel";
 
 export {
-  List,
-  ListItem,
   TopBar,
   MonthSelector,
+  List,
+  ListItem,
   FormItem,
   LocalePicker,
   Webview,
   SettingsPicker,
+  FormLabel,
 };

@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
+import FormLabel from "../FormLabel";
 import MonthSelectorItem from "../MonthSelectorItem";
 import { i18nContext } from "../../contexts/i18n";
 
@@ -56,7 +57,7 @@ export default function MonthSelector({
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
-        <Text style={styles.label}>{i18n.months}</Text>
+        <FormLabel label={i18n.months} />
         <Icon
           name="ios-help-circle-outline"
           size={26}
@@ -100,14 +101,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-  },
-
-  label: {
-    height: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#ca5116",
-    marginRight: 5,
   },
   monthWrapper: {
     marginTop: 20,
