@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { NativeModules, Platform } from "react-native";
 import { Provider } from "react-redux";
+import SplashScreen from "react-native-splash-screen";
 
 import store from "./src/store";
 import locales from "./src/i18n";
@@ -20,6 +21,7 @@ export default function App() {
 
     if (locale in SupportedLocales) {
       setI18n(locales[locale as SupportedLocales]);
+      SplashScreen.hide();
       return;
     }
 
@@ -29,7 +31,7 @@ export default function App() {
           setI18n(locales[locale]);
         }
       })
-    });
+      .finally(() => SplashScreen.hide());
   }, []);
 
   const getDeviceLocale = (): string | undefined => {
