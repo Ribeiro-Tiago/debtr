@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
 
-import { formatCurrency, formatDecimal } from "./formatters";
+export * from "./formatters";
 
 export const sanitizeAmount = (amount: any) => {
   try {
@@ -22,4 +22,4 @@ export const getPlatformIcon = (name: string) => {
   return Platform.OS === "ios" ? `ios-${name}` : `md-${name}`;
 };
 
-export { formatCurrency, formatDecimal };
+export const addLeadZero = (num: number) => `0${num}`.substr(-2);

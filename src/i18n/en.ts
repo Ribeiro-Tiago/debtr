@@ -1,4 +1,4 @@
-import { formatCurrency, formatDatetime } from "../utils/formatters";
+import { formatCurrency, addLeadZero } from "../utils";
 import { SupportedCurrencies } from "../types";
 
 export const getDayTh = (digit: string) => {
@@ -82,12 +82,14 @@ export default {
   timePickerTitle: "Pick a times for the notification to go off",
   undefinedReminder:
     "Select the day and time you'd like to be reminded of this expense",
-  reminderAt: (datetime: Date) => {
-    const { day, time } = formatDatetime(datetime);
-    const lastDayDigit = day.split("").pop();
-    const dayTh = getDayTh(lastDayDigit);
+  reminderAt: (date: Date, time: Date) => {
+    const day = addLeadZero(date.getDate());
+    const hours = `${addLeadZero(time.getHours())}:${addLeadZero(
+      time.getMinutes(),
+    )}`;
+    const dayTh = getDayTh(day.split("").pop());
 
-    return `You'll be reminded on the ${day}${dayTh} at ${time} of every month this expense happens`;
+    return `You'll be reminded on the ${day}${dayTh} at ${hours} of every month this expense happens`;
   },
   getNotifTitle: (expense: string) => `${expense} payment reminder`,
   getNotifDesc: (expense: string) => `Don't forget to pay ${expense}`,

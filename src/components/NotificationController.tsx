@@ -1,11 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, Text, Switch } from "react-native";
 import TimePicker from "react-native-modal-datetime-picker";
 import DatePicker from "react-native-calendar-picker";
 
 import FormLabel from "./FormLabel";
 import { i18nContext } from "../contexts/i18n";
-import CollapsableView from "./CollapsableView";
 import { ItemNotification } from "../types";
 
 interface Props {
@@ -18,14 +17,17 @@ interface Props {
 // Comes from react-native-calendar-picker
 type FakeMoment = any;
 
+const getInitDate = (initVal?: { date: Date }) => {
+  return !!initVal ? new Date(initVal.date) : new Date();
+};
+
 export default function ({ onChange, initValue }: Props) {
-  const [isSwitchEnabled, setSwitchEnabled] = useState(!!initValue);
-  const [isTimeVisible, setTimeVisible] = useState(false);
   const { i18n } = useContext(i18nContext);
-  const [datetime, setDatetime] = useState(
-    initValue ? new Date(initValue.date) : new Date(),
-  );
+  const [isTimeVisible, setTimeVisible] = useState(false);
+  const [isSwitchEnabled, setSwitchEnabled] = useState(!!initValue);
   const [isDateSelected, setDateSelected] = useState(!!initValue);
+  const [date, setDate] = useState(getInitDate());
+  const [time, setTime] = useState(getInitDate());
 
   const dateLimits = () => {
     const date = new Date();
@@ -35,20 +37,16 @@ export default function ({ onChange, initValue }: Props) {
     return { minDate: min, maxDate: max };
   };
 
-  const onDateChange = (date: FakeMoment) => {
+  const onDateChange = (newDate: FakeMoment) => {
+    setDate(new Date(newDate));
     setTimeVisible(true);
-    datetime.setDate(new Date(date).getDate());
-    setDatetime(datetime);
-    onChange(datetime);
-    !isDateSelected && setDateSelected(true);
   };
 
   const onTimeSelect = (newTime: Date) => {
-    datetime.setHours(newTime.getHours());
-    datetime.setMinutes(newTime.getMinutes());
-    setDatetime(datetime);
+    setTime(newTime);
     setTimeVisible(false);
-    onChange(datetime);
+    onDateTimeChange();
+
     !isDateSelected && setDateSelected(true);
   };
 
@@ -58,6 +56,18 @@ export default function ({ onChange, initValue }: Props) {
     }
 
     setSwitchEnabled(newValue);
+  };
+
+  const onDateTimeChange = () => {
+    onChange(
+      new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        time.getHours(),
+        time.getMinutes(),
+      ),
+    );
   };
 
   return (
@@ -87,7 +97,7 @@ export default function ({ onChange, initValue }: Props) {
         <View>
           <Text style={styles.reminderText}>
             {isDateSelected
-              ? i18n.reminderAt(datetime)
+              ? i18n.reminderAt(date, time)
               : i18n.undefinedReminder}
           </Text>
 
@@ -100,9 +110,8 @@ export default function ({ onChange, initValue }: Props) {
             selectedDayStyle={{ backgroundColor: "#f1e3cb" }}
             weekdays={i18n.weekDays}
             monthYearHeaderWrapperStyle={{ display: "none" }}
-            initialDate={datetime}
-            selectedStartDate={datetime}
-            selectedEndDate={datetime}
+            initialDate={date}
+            selectedStartDate={date}
             todayBackgroundColor="transparent"
             {...dateLimits()}
           />

@@ -22,12 +22,3 @@ export const formatCurrency = (
     }
   }
 };
-
-export const formatDatetime = (date: Date) => {
-  const addLeadZero = (num: number) => `0${num}`.substr(-2);
-
-  return {
-    day: addLeadZero(date.getDate()),
-    time: `${addLeadZero(date.getHours())}:${addLeadZero(date.getMinutes())}`,
-  };
-};
