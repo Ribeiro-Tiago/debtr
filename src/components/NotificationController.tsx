@@ -21,6 +21,7 @@ export default function ({ onChange }: Props) {
   const [isTimeVisible, setTimeVisible] = useState(false);
   const { i18n } = useContext(i18nContext);
   const [datetime, setDatetime] = useState(new Date());
+  const [isDateSelected, setDateSelected] = useState(false);
 
   let date = new Date();
   let time = new Date();
@@ -34,11 +35,12 @@ export default function ({ onChange }: Props) {
   };
 
   const onDateChange = (newDate: FakeMoment) => {
+    setTimeVisible(true);
     date = new Date(newDate.toISOString());
     datetime.setDate(newDate.date());
     setDatetime(datetime);
-    setTimeVisible(true);
     onChange(datetime);
+    !isDateSelected && setDateSelected(true);
   };
 
   const onTimeSelect = (newTime: Date) => {
@@ -48,6 +50,7 @@ export default function ({ onChange }: Props) {
     setDatetime(datetime);
     setTimeVisible(false);
     onChange(datetime);
+    !isDateSelected && setDateSelected(true);
   };
 
   const togglePickers = (newValue: boolean) => {
@@ -84,7 +87,9 @@ export default function ({ onChange }: Props) {
       />
 
       <CollapsableView isOpen={isSwitchEnabled}>
-        <Text style={styles.reminderText}>{i18n.reminderAt(datetime)}</Text>
+        <Text style={styles.reminderText}>
+          {isDateSelected ? i18n.reminderAt(datetime) : i18n.undefinedReminder}
+        </Text>
 
         <DatePicker
           onDateChange={onDateChange}
