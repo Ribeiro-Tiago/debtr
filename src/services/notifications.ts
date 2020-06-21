@@ -4,6 +4,7 @@ import PushNotificationIOS from "@react-native-community/push-notification-ios";
 
 import { Notification } from "../types/notification";
 import { removeNotif, addNotif, getNotif } from "./storage";
+import { isCurrentMonth, isMonthly } from "../utils";
 
 interface RescheduleParams {
   data: Notification;
@@ -16,7 +17,7 @@ const getNextNotifDate = (notifDate: Date, months: number[]) => {
 
   // if it happens in every month, there's no need to calculate
   // the next recurring month
-  if (!months.length || months.length === 11) {
+  if (isMonthly(months)) {
     if (currMonth === 11) {
       nextDate.setMonth(0);
       nextDate.setFullYear(notifDate.getFullYear() + 1);

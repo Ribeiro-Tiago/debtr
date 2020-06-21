@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { TopBar, List, ListItem } from "../../components";
 import { Item, RenderItemParams, SupportedCurrencies } from "../../types";
 import { i18nContext } from "../../contexts/i18n";
+import { isMonthly } from "../../utils";
 
 interface Props {
   items: Item[];
@@ -62,7 +63,7 @@ export default function AllExpenses({
   };
 
   const renderMonths = (months: number[]) => {
-    if (!months.length || months.length === 12) {
+    if (isMonthly(months)) {
       return <Text style={styles.tag}>{i18n.monthlyExpense}</Text>;
     }
 

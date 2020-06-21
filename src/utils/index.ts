@@ -15,7 +15,11 @@ export const sanitizeAmount = (amount: any) => {
 export const isCurrentMonth = (months: number[]) => {
   const m = new Date().getMonth();
 
-  return !months.length || months.length === 11 || !months.includes(m);
+  return isMonthly(months) || !months.includes(m);
+};
+
+export const isMonthly = (months: number[]) => {
+  return !months.length || months.length === 11;
 };
 
 export const getPlatformIcon = (name: string) => {
