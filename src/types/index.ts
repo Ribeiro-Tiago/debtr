@@ -1,7 +1,13 @@
+export interface ItemNotification {
+  id: string;
+  date: Date;
+}
+
 export interface ItemCreation {
   description: string;
   amount: number;
   months: number[];
+  notification?: ItemNotification;
 }
 
 export interface Item extends ItemCreation {
