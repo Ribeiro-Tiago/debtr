@@ -1,5 +1,22 @@
-import { formatCurrency } from "../utils/formatters";
+import { formatCurrency, formatDatetime } from "../utils/formatters";
 import { SupportedCurrencies } from "../types";
+
+export const getDayTh = (digit: string) => {
+  switch (digit) {
+    case "1": {
+      return "st";
+    }
+    case "2": {
+      return "nd";
+    }
+    case "3": {
+      return "rd";
+    }
+    default: {
+      return "th";
+    }
+  }
+};
 
 export const name = "English";
 
@@ -60,4 +77,14 @@ export default {
     "November",
     "December",
   ],
+  expenseNotif: "Notification reminder",
+  weekDays: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  timePickerTitle: "Pick a times for the notification to go off",
+  reminderAt: (datetime: Date) => {
+    const { day, time } = formatDatetime(datetime);
+    const lastDayDigit = day.split("").pop();
+    const dayTh = getDayTh(lastDayDigit);
+
+    return `You'll be reminded on the ${day}${dayTh} at ${time} of every month this expense happens`;
+  },
 };

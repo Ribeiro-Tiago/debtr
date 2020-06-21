@@ -14,7 +14,12 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import { Item, ItemCreation } from "../../types";
-import { TopBar, FormItem, MonthSelector } from "../../components";
+import {
+  TopBar,
+  FormItem,
+  MonthSelector,
+  NotificationController,
+} from "../../components";
 import { getPlatformIcon } from "../../utils";
 import { i18nContext } from "../../contexts/i18n";
 
@@ -149,6 +154,8 @@ export default function ExpenseForm({
           />
 
           <MonthSelector />
+
+          <NotificationController onChange={() => console.log("changed")} />
 
           {renderButtons()}
         </ScrollView>

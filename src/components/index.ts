@@ -7,6 +7,7 @@ import LocalePicker from "./LocalePicker";
 import Webview from "./Webview";
 import SettingsPicker from "./SettingsPicker";
 import FormLabel from "./FormLabel";
+import NotificationController from "./NotificationController";
 
 export {
   TopBar,
@@ -18,4 +19,5 @@ export {
   Webview,
   SettingsPicker,
   FormLabel,
+  NotificationController,
 };
