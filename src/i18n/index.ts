@@ -1,4 +1,4 @@
-import en_GB from "./en_GB";
-import pt_PT from "./pt_PT";
+import en from "./en";
+import pt from "./pt";
 
-export default { en_GB, pt_PT };
+export default { en, pt };
