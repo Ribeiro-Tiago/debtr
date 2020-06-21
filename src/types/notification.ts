@@ -8,6 +8,7 @@ export interface Notification extends NotificationTexts {
   id: string;
 }
 
-export interface StoredNotification extends Notification {
+export interface StoredNotification {
+  notif: Notification;
   months: number[];
 }

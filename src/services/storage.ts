@@ -55,7 +55,9 @@ const set = async (key: StorageKey, data: SetParams) => {
 
 const getNotifs = async (): Promise<StoredNotification[]> => {
   try {
-    return JSON.parse(await get("notifs"));
+    const results = await get("notifs");
+
+    return !!results ? JSON.parse(results) : [];
   } catch (err) {
     return [];
   }
@@ -115,7 +117,7 @@ export const updateNotifs = async (notif: StoredNotification) => {
 
   set(
     "notifs",
-    notifs.map((n) => (n.id === notif.id ? notif : n)),
+    notifs.map((n) => (n.notif.id === notif.notif.id ? notif : n)),
   );
 };
 
@@ -124,7 +126,7 @@ export const removeNotif = async (notifId: string) => {
 
   set(
     "notifs",
-    notifs.filter(({ id }) => id !== notifId),
+    notifs.filter(({ notif }) => notif.id !== notifId),
   );
 };
 
@@ -142,14 +144,7 @@ export const getNotif = async (notifId: string) => {
 
   const notifs: StoredNotification[] = await getNotifs();
 
-  const notif = notifs.find(({ id }) => id === notifId);
+  const notif = notifs.find(({ notif }) => notif.id === notifId);
 
-  if (!notif) {
-    return undefined;
-  }
-
-  return {
-    data: { ...notif },
-    months: notif.months,
-  };
+  return notif ? notif : undefined;
 };
