@@ -83,7 +83,6 @@ export default function ({ onChange, initValue }: Props) {
         confirmTextIOS={i18n.confirm}
         headerTextIOS={i18n.timePickerTitle}
       />
-      {console.log(datetime)}
       {isSwitchEnabled && (
         <View>
           <Text style={styles.reminderText}>
