@@ -1,20 +1,26 @@
 import storage from "@react-native-community/async-storage";
 
 import {
-  StorageData,
   Item,
+  StorageData,
   SupportedLocales,
   SupportedCurrencies,
 } from "../types";
+import { Notification, StoredNotification } from "../types/notification";
 
 type Metadata = {
   amountLeft: number;
   currMonth: number;
 };
 
-type SetParams = Metadata | Item[] | SupportedLocales | SupportedCurrencies;
+type SetParams =
+  | Metadata
+  | Item[]
+  | SupportedLocales
+  | SupportedCurrencies
+  | StoredNotification[];
 
-type StorageKey = "items" | "metadata" | "locale" | "currency";
+type StorageKey = "items" | "metadata" | "locale" | "currency" | "notifs";
 
 const key = "MPT_DATA";
 
@@ -37,11 +43,29 @@ const handleItems = (items: string) => {
   return newItems;
 };
 
-const get = async (): Promise<StorageData> => {
+const get = async (key: StorageKey) => {
+  return await storage.getItem(`${key}_${key}`);
+};
+
+const set = async (subkey: StorageKey, data: SetParams) => {
+  const stringified = typeof data === "string" ? data : JSON.stringify(data);
+
+  return await storage.setItem(`${key}_${subkey}`, stringified);
+};
+
+const getNotifs = async (): Promise<StoredNotification[]> => {
+  try {
+    return JSON.parse(await get("notifs"));
+  } catch (err) {
+    return [];
+  }
+};
+
+export const getData = async (): Promise<StorageData> => {
   const [items, metadata, currency] = await Promise.all([
-    storage.getItem(`${key}_items`),
-    storage.getItem(`${key}_metadata`),
-    storage.getItem(`${key}_currency`),
+    get("items"),
+    get("metadata"),
+    get("currency"),
   ]);
 
   if (!items && !metadata && !currency) {
@@ -55,16 +79,8 @@ const get = async (): Promise<StorageData> => {
   };
 };
 
-const set = async (subkey: StorageKey, data: SetParams) => {
-  const stringified = typeof data === "string" ? data : JSON.stringify(data);
-
-  return await storage.setItem(`${key}_${subkey}`, stringified);
-};
-
-export const getData = async () => get();
-
 export const updateCurrMonth = async (currMonth: number) => {
-  const data = await get();
+  const data = JSON.parse(await get("metadata")) as Metadata;
 
   return !data
     ? set("metadata", { amountLeft: 0, currMonth })
@@ -92,4 +108,35 @@ export const updateLocale = async (locale: SupportedLocales) => {
 
 export const updateCurrency = async (currency: SupportedCurrencies) => {
   return await set("currency", currency);
+};
+
+export const updateNotifs = async (notif: StoredNotification) => {
+  const notifs: StoredNotification[] = await getNotifs();
+
+  set(
+    "notifs",
+    notifs.map((n) => (n.id === notif.id ? notif : n)),
+  );
+};
+
+export const removeNotif = async (notifId: string) => {
+  const notifs: StoredNotification[] = await getNotifs();
+
+  set(
+    "notifs",
+    notifs.filter(({ id }) => id !== notifId),
+  );
+};
+
+export const addNotif = async (notif: StoredNotification) => {
+  const notifs: StoredNotification[] = await getNotifs();
+  notifs.push(notif);
+
+  set("notifs", notifs);
+};
+
+export const getNotif = async (notifId: string) => {
+  const notifs: StoredNotification[] = await getNotifs();
+
+  return notifs.find(({ id }) => id === notifId);
 };
