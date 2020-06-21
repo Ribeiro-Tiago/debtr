@@ -1,10 +1,10 @@
 import { formatCurrency } from "../utils/formatters";
 import { SupportedCurrencies } from "../types";
 
-export const name = "English (U.K.)";
+export const name = "English";
 
 export default {
-  _locale: "en_GB",
+  _locale: "en",
   errTitle: "Error",
   errMsg: (err: string) => {
     return `An unexpected error ocurred retrieving your expenses. \n\nIf it persists contact support with the following message: \n\n${err}`;

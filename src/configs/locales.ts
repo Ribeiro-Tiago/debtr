@@ -1,9 +1,9 @@
-import { name as enGBName } from "../i18n/en_GB";
-import { name as ptPTName } from "../i18n/pt_PT";
+import { name as enGBName } from "../i18n/en";
+import { name as ptPTName } from "../i18n/pt";
 
 import { SupportedLocales } from "../types";
 
 export const locales = [
-  { key: SupportedLocales.en_GB, name: enGBName, flag: ":gb:" },
-  { key: SupportedLocales.pt_PT, name: ptPTName, flag: ":flag-pt:" },
+  { key: SupportedLocales.en, name: enGBName, flag: ":gb:" },
+  { key: SupportedLocales.pt, name: ptPTName, flag: ":flag-pt:" },
 ];

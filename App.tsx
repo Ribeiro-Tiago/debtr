@@ -16,22 +16,34 @@ export default function App() {
   const i18nProviderValue = useMemo(() => ({ i18n, setI18n }), [i18n]);
 
   useEffect(() => {
-    const locale =
-      Platform.OS === "ios"
-        ? NativeModules.SettingsManager.settings.AppleLocale
-        : NativeModules.I18nManager.localeIdentifier;
+    const locale = getDeviceLocale();
 
     if (locale in SupportedLocales) {
       setI18n(locales[locale as SupportedLocales]);
       return;
     }
 
-    getLocale().then((locale) => {
-      if (locale) {
-        setI18n(locales[locale]);
-      }
+    getLocale()
+      .then((locale) => {
+        if (locale) {
+          setI18n(locales[locale]);
+        }
+      })
     });
   }, []);
+
+  const getDeviceLocale = (): string | undefined => {
+    const locale =
+      Platform.OS === "ios"
+        ? NativeModules.SettingsManager.settings.AppleLocale
+        : NativeModules.I18nManager.localeIdentifier;
+
+    if (!locale) {
+      return undefined;
+    }
+
+    return locale.split("_")[0];
+  };
 
   const onLocaleSelect = (locale: SupportedLocales) => {
     setI18n(locales[locale]);
