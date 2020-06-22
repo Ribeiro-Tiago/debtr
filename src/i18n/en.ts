@@ -82,10 +82,10 @@ export default {
   timePickerTitle: "Pick a times for the notification to go off",
   undefinedReminder:
     "Select the day and time you'd like to be reminded of this expense",
-  reminderAt: (date: Date, time: Date) => {
+  reminderAt: (date: Date) => {
     const day = addLeadZero(date.getDate());
-    const hours = `${addLeadZero(time.getHours())}:${addLeadZero(
-      time.getMinutes(),
+    const hours = `${addLeadZero(date.getHours())}:${addLeadZero(
+      date.getMinutes(),
     )}`;
     const dayTh = getDayTh(day.split("").pop());
 
