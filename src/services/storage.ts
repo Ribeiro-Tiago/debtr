@@ -112,15 +112,6 @@ export const updateCurrency = async (currency: SupportedCurrencies) => {
   return await set("currency", currency);
 };
 
-export const updateNotifs = async (notif: StoredNotification) => {
-  const notifs: StoredNotification[] = await getNotifs();
-
-  set(
-    "notifs",
-    notifs.map((n) => (n.notif.id === notif.notif.id ? notif : n)),
-  );
-};
-
 export const removeNotif = async (notifId: string) => {
   const notifs: StoredNotification[] = await getNotifs();
 
