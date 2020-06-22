@@ -115,7 +115,10 @@ export default function ExpenseForm({
       return setNotif(undefined);
     }
 
-    setNotif({ id: nanoid(), date });
+    setNotif({
+      id: Math.pow(2, 30).toString(),
+      date,
+    });
   };
 
   const renderTopBar = () => {
