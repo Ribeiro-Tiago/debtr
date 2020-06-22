@@ -6,8 +6,9 @@ import { Notification } from "../types/notification";
 import { removeNotif, addNotif, getNotif } from "./storage";
 import { isCurrentMonth, isMonthly } from "../utils";
 
-interface RescheduleParams {
-  data: Notification;
+interface NotifData {
+  id: string;
+  notif: Notification;
   months: number[];
 }
 
@@ -46,18 +47,9 @@ const getNextNotifDate = (notifDate: Date, months: number[]) => {
   return nextDate;
 };
 
-const rescheduleNotification = ({ data, months }: RescheduleParams) => {
-  const currMonth = new Date().getMonth();
+export const checkForNotifReschedule = () => {};
 
-  if (!months.length || months.length === 11 || months.includes(currMonth)) {
-    return registerNotif(data, months, true);
-  }
-
-  const date = getNextNotifDate(data.date, months);
-
-  registerNotif({ ...data, date }, months, true);
-};
-
+// TODO: update date handling
 export const registerNotif = (
   notification: Notification,
   months: number[],
@@ -72,50 +64,40 @@ export const registerNotif = (
 
   PushNotification.localNotificationSchedule({
     playSound: true,
-    priority: "high",
     vibrate: true,
-    visibility: "private",
-    importance: "high",
-    // ignoreInForeground: false,
     userInfo: {
-      id: notification.id, // used to cancel notif on ios
-      data: notification,
+      id: notification.id,
+      notif: { ...notification, date: date.toString() },
       months,
     },
     ...notification,
-    date,
+    date, //: new Date(Date.now() + 5 * 1000),
   });
 
   addNotif({ notif: notification, months });
 };
 
 export const unregisterNotif = (id: string) => {
-  PushNotification.cancelLocalNotifications({ id });
+  try {
+    PushNotification.cancelLocalNotifications({ id });
 
-  removeNotif(id);
-};
-
-export const updateNotif = (notification: Notification, months: number[]) => {
-  unregisterNotif(notification.id);
-
-  if (notification) {
-    registerNotif(notification, months);
-  }
+    removeNotif(id);
+  } catch (err) {}
 };
 
 export default () => {
   PushNotification.configure({
     // (required) Called when a remote is received or opened, or local notification is opened
     onNotification: function (notification) {
-      console.log("notification", notification.data);
+      const data: NotifData = (notification as any).userInfo;
 
-      getNotif((notification.data as any).id).then((data) => {
-        if (data) {
-          registerNotif(data.notif, data.months, true);
-        }
+      if (!data?.id) {
+        return;
+      }
 
-        notification.finish(PushNotificationIOS.FetchResult.NewData);
-      });
+      registerNotif(data.notif, data.months, true);
+
+      notification.finish(PushNotificationIOS.FetchResult.NewData);
     },
 
     // IOS ONLY (optional): default: all - Permissions to register.
