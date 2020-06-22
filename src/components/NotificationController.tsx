@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, StyleSheet, Text, Switch } from "react-native";
 import TimePicker from "react-native-modal-datetime-picker";
 import DatePicker from "react-native-calendar-picker";
@@ -18,56 +18,54 @@ interface Props {
 type FakeMoment = any;
 
 const getInitDate = (initVal?: { date: Date }) => {
-  return !!initVal ? new Date(initVal.date) : new Date();
+  if (!!initVal) {
+    return new Date(initVal.date);
+  }
+
+  const d = new Date();
+
+  d.setHours(20);
+  d.setMinutes(0);
+  d.setSeconds(0);
+
+  return d;
 };
 
+const dateLimits = () => {
+  const date = new Date();
+  const min = new Date(date.getFullYear(), date.getMonth(), 1);
+  const max = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  return { minDate: min, maxDate: max };
+};
+
+// TODO: add time picker
 export default function ({ onChange, initValue }: Props) {
   const { i18n } = useContext(i18nContext);
-  const [isTimeVisible, setTimeVisible] = useState(false);
   const [isSwitchEnabled, setSwitchEnabled] = useState(!!initValue);
   const [isDateSelected, setDateSelected] = useState(!!initValue);
-  const [date, setDate] = useState(getInitDate());
-  const [time, setTime] = useState(getInitDate());
-
-  const dateLimits = () => {
-    const date = new Date();
-    const min = new Date(date.getFullYear(), date.getMonth(), 1);
-    const max = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-
-    return { minDate: min, maxDate: max };
-  };
+  const [date, setDate] = useState(!!initValue ? initValue.date : null);
 
   const onDateChange = (newDate: FakeMoment) => {
-    setDate(new Date(newDate));
-    setTimeVisible(true);
-  };
-
-  const onTimeSelect = (newTime: Date) => {
-    setTime(newTime);
-    setTimeVisible(false);
-    onDateTimeChange();
-
+    const d = new Date(
+      newDate.year(),
+      newDate.month(),
+      newDate.date(),
+      20,
+      0,
+      0,
+    );
+    setDate(d);
+    onChange(d);
     !isDateSelected && setDateSelected(true);
   };
 
-  const togglePickers = (newValue: boolean) => {
+  const onSwitchChange = (newValue: boolean) => {
     if (!newValue) {
       onChange(undefined);
     }
 
     setSwitchEnabled(newValue);
-  };
-
-  const onDateTimeChange = () => {
-    onChange(
-      new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        time.getHours(),
-        time.getMinutes(),
-      ),
-    );
   };
 
   return (
@@ -79,26 +77,15 @@ export default function ({ onChange, initValue }: Props) {
           trackColor={{ false: "#ccc", true: "#581c0c" }}
           thumbColor={isSwitchEnabled ? "#f1e3cb" : "#f4f3f4"}
           ios_backgroundColor="#ccc"
-          onValueChange={togglePickers}
+          onValueChange={onSwitchChange}
           value={isSwitchEnabled}
         />
       </View>
-      <TimePicker
-        isVisible={isTimeVisible}
-        mode="time"
-        is24Hour={true}
-        onConfirm={onTimeSelect}
-        onCancel={() => setTimeVisible(false)}
-        cancelTextIOS={i18n.cancel}
-        confirmTextIOS={i18n.confirm}
-        headerTextIOS={i18n.timePickerTitle}
-      />
+
       {isSwitchEnabled && (
         <View>
           <Text style={styles.reminderText}>
-            {isDateSelected
-              ? i18n.reminderAt(date, time)
-              : i18n.undefinedReminder}
+            {isDateSelected ? i18n.reminderAt(date) : i18n.undefinedReminder}
           </Text>
 
           <DatePicker
@@ -110,7 +97,6 @@ export default function ({ onChange, initValue }: Props) {
             selectedDayStyle={{ backgroundColor: "#f1e3cb" }}
             weekdays={i18n.weekDays}
             monthYearHeaderWrapperStyle={{ display: "none" }}
-            initialDate={date}
             selectedStartDate={date}
             todayBackgroundColor="transparent"
             {...dateLimits()}
