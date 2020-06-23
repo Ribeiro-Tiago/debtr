@@ -9,6 +9,7 @@ Features:
 
 UI Changes: 
 - align "amounts" on lists
+- bottom menu bar now has icons instead of texts
 
 Fixes:
 - Fixed issue where click on "✓" on monthly expenses list would crash the app
