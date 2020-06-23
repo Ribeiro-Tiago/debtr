@@ -18,3 +18,4 @@
 - optimize deploy workflow
 - replace delete confirms with undo (e.g.: google stuff)
 - add workflow to gen debug with different identifier so it doesnt clash with prod version on the same device
+- update splashscreen so it fits well on bigger screens (tablets, chromebooks)

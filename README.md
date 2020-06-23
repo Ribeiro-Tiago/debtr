@@ -1,6 +1,6 @@
 # Debtr
 
-A very low effort app to help me keep track of the status of my monthly expenses, given that they're paid at different points in time throughout the month.
+A mobile app to help me keep track of the status of my monthly expenses, given that they're paid at different points in time throughout the month.
 
 Currently only available on [android](https://play.google.com/store/apps/details?id=com.debtr) due to licensing costs
 
@@ -33,7 +33,7 @@ Config for [android](https://github.com/crazycodeboy/react-native-splash-screen)
 
 # Contribution
 
-Wanna contribute? Check the [how to](https://github.com/Ribeiro-Tiago/debtr/blob/master/CONTRIBUTING.md) and then see what [needs to be done](https://github.com/Ribeiro-Tiago/debtr/blob/master/TODO.md) or come up with new features yourself
+Wanna contribute? Check the [how to](https://github.com/Ribeiro-Tiago/debtr/blob/master/CONTRIBUTING.md) and then see what [needs to be done](https://github.com/Ribeiro-Tiago/debtr/blob/master/TODO.md), look for `TODO:` comments in the code of stuff I have to do but haven't gotten around to it yet, or come up with new features yourself
 
 # Credits
 
