@@ -42,6 +42,7 @@ interface Form {
   amount: number;
 }
 
+// TODO: move notif values to redux
 export default function ExpenseForm({
   selectedMonths,
   item,
@@ -62,6 +63,11 @@ export default function ExpenseForm({
   const [notif, setNotif] = useState<ItemNotification>(
     item && item.notification,
   );
+  const [isNotifEnabled, setNotifEnabled] = useState(
+    !!item ? !!item.notification : false,
+  );
+  const [notifErr, setNotifErr] = useState(false);
+  const [isSubmitting, setSubmitting] = useState(false);
   const isNew = !item;
 
   useEffect(() => {
@@ -69,7 +75,18 @@ export default function ExpenseForm({
     register({ name: "amount" }, { required: true });
   }, [register]);
 
+  // TODO: add validation for when switch is enabled but datetime isn't selected
   const onSubmit = (data: Form) => {
+    if (isSubmitting) {
+      return;
+    }
+
+    if (isNotifEnabled && (!notif || isNaN(notif.date?.getTime()))) {
+      return setNotifErr(true);
+    }
+
+    setSubmitting(true);
+
     const notifTexts = {
       title: i18n.getNotifTitle(data.description),
       message: i18n.getNotifDesc(data.description),
@@ -110,7 +127,8 @@ export default function ExpenseForm({
     );
   };
 
-  const onNotifChange = (date?: Date) => {
+  // TODO: move this to redux
+  const onNotifDateChange = (date?: Date) => {
     if (!date) {
       return setNotif(undefined);
     }
@@ -144,15 +162,21 @@ export default function ExpenseForm({
     );
   };
 
+  // TODO: add indication that the button is clicked
+  // TODO: make button disabled if errors or as soon as it's clicked to avoid multiple creation
   const renderButtons = () => {
     return (
       <View style={styles.buttonWrapper}>
-        <Text style={styles.buttonSubmit} onPress={handleSubmit(onSubmit)}>
+        <Text
+          style={styles.buttonSubmit}
+          onPress={() => !isSubmitting && handleSubmit(onSubmit)()}>
           {i18n.submit}
         </Text>
 
         {!isNew && (
-          <Text style={styles.buttonDelete} onPress={onDelete}>
+          <Text
+            style={styles.buttonDelete}
+            onPress={() => !isSubmitting && onDelete()}>
             {i18n.delete}
           </Text>
         )}
@@ -191,7 +215,9 @@ export default function ExpenseForm({
 
           <NotificationController
             initValue={item?.notification}
-            onChange={onNotifChange}
+            hasErr={notifErr}
+            onChange={setNotifEnabled}
+            onChangeDate={onNotifDateChange}
           />
 
           {renderButtons()}
