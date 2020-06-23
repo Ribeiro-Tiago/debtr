@@ -1,6 +1,11 @@
 v2.1.0 
 Features: 
 - list reoredering
+- added multiple language support (currently supports portuguese and english)
+- added multiple currency suppport (currently supports euro, usd and gbp)
+- added per expense reminder notification
+  when creating or updating a notification you can now choose a day to get a reminder notification
+- added a "settings" screen with about information and where you can now change your currency or language
 
 UI Changes: 
 - align "amounts" on lists
