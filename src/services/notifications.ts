@@ -3,7 +3,7 @@ import PushNotification from "react-native-push-notification";
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 
 import { Notification } from "../types/notification";
-import { removeNotif, addNotif, getNotif } from "./storage";
+import { removeNotif, addNotif, getNotifs } from "./storage";
 import { isCurrentMonth, isMonthly } from "../utils";
 
 interface NotifData {
@@ -74,7 +74,13 @@ export const registerNotif = (
     date, //: new Date(Date.now() + 5 * 1000),
   });
 
-  addNotif({ notif: notification, months });
+  if (isReschedule) {
+    removeNotif(notification.id).then(() => {
+      addNotif({ notif: notification, months });
+    });
+  } else {
+    addNotif({ notif: notification, months });
+  }
 };
 
 export const unregisterNotif = (id: string) => {
@@ -83,6 +89,22 @@ export const unregisterNotif = (id: string) => {
 
     removeNotif(id);
   } catch (err) {}
+};
+
+export const checkNotifsForReschedule = async () => {
+  const notifs = await getNotifs();
+
+  if (!notifs.length) {
+    return;
+  }
+
+  let notif;
+  const now = Date.now();
+  for (notif of notifs) {
+    if (new Date(notif.notif.date).getTime() < now) {
+      registerNotif(notif.notif, notif.months, true);
+    }
+  }
 };
 
 export default () => {
