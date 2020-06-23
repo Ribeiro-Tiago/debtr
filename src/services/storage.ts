@@ -6,7 +6,7 @@ import {
   SupportedLocales,
   SupportedCurrencies,
 } from "../types";
-import { Notification, StoredNotification } from "../types/notification";
+import { StoredNotification } from "../types/notification";
 
 type Metadata = {
   amountLeft: number;
@@ -51,16 +51,6 @@ const set = async (key: StorageKey, data: SetParams) => {
   const stringified = typeof data === "string" ? data : JSON.stringify(data);
 
   return await storage.setItem(`${PREFIX}_${key}`, stringified);
-};
-
-const getNotifs = async (): Promise<StoredNotification[]> => {
-  try {
-    const results = await get("notifs");
-
-    return !!results ? JSON.parse(results) : [];
-  } catch (err) {
-    return [];
-  }
 };
 
 export const getData = async (): Promise<StorageData> => {
@@ -110,6 +100,16 @@ export const updateLocale = async (locale: SupportedLocales) => {
 
 export const updateCurrency = async (currency: SupportedCurrencies) => {
   return await set("currency", currency);
+};
+
+export const getNotifs = async (): Promise<StoredNotification[]> => {
+  try {
+    const results = await get("notifs");
+
+    return !!results ? JSON.parse(results) : [];
+  } catch (err) {
+    return [];
+  }
 };
 
 export const removeNotif = async (notifId: string) => {
