@@ -9,7 +9,12 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 import { TopBar, List, ListItem } from "../../components";
-import { Item, RenderItemParams, SupportedCurrencies } from "../../types";
+import {
+  Item,
+  RenderItemParams,
+  SupportedCurrencies,
+  RemoveItemParams,
+} from "../../types";
 import { i18nContext } from "../../contexts/i18n";
 import { isMonthly } from "../../utils";
 
@@ -18,7 +23,7 @@ interface Props {
   currCurrency: SupportedCurrencies;
   reorderItems: (items: Item[]) => void;
   updateCurrent: (item?: Item) => void;
-  removeItem: (id: string, months: number[], amount: number) => void;
+  removeItem: (params: RemoveItemParams) => void;
 }
 
 export default function AllExpenses({
@@ -36,12 +41,22 @@ export default function AllExpenses({
     navigation.navigate("ExpenseForm");
   };
 
-  const onRemove = ({ id, months, amount }: Item) => {
+  const onRemove = ({ id, months, amount, notification }: Item) => {
     Alert.alert(
       i18n.confirmDeleteTitle,
       i18n.confirmDeleteDesc,
       [
-        { text: i18n.confirm, onPress: () => removeItem(id, months, amount) },
+        {
+          text: i18n.confirm,
+          onPress: () => {
+            return removeItem({
+              id,
+              months,
+              amount,
+              notifId: notification && notification.id,
+            });
+          },
+        },
         { text: i18n.cancel },
       ],
       { cancelable: true },
