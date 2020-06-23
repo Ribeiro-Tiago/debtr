@@ -80,8 +80,7 @@ export default {
   expenseNotif: "Notification reminder",
   weekDays: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
   timePickerTitle: "Pick a times for the notification to go off",
-  undefinedReminder:
-    "Select the day and time you'd like to be reminded of this expense",
+  undefinedReminder: "Select the day you'd like to be reminded of this expense",
   reminderAt: (date: Date) => {
     const day = addLeadZero(date.getDate());
     const hours = `${addLeadZero(date.getHours())}:${addLeadZero(
@@ -91,7 +90,7 @@ export default {
 
     return `You'll be reminded on the ${day}${dayTh} at ${hours} of every month this expense happens`;
   },
-  getNotifTitle: (expense: string) => `${expense} payment reminder`,
+  getNotifTitle: `Payment reminder`,
   getNotifDesc: (expense: string) => `Don't forget to pay ${expense}`,
-  noNotifErr: "You have to select for the notification reminder",
+  noNotifErr: "If you want to enable the notification you have to select a day",
 };
