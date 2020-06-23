@@ -55,10 +55,10 @@ export const registerNotif = (
   months: number[],
   isReschedule = false,
 ) => {
-  let date: Date;
+  let date = notification.date;
   if (!isReschedule && isCurrentMonth(months)) {
-    date = notification.date;
-  } else {
+    date.setMonth(date.getMonth() + 1);
+  } else if (isReschedule) {
     date = getNextNotifDate(notification.date, months);
   }
 
