@@ -23,9 +23,7 @@ export const name = "English";
 export default {
   _locale: "en",
   errTitle: "Error",
-  errMsg: (err: string) => {
-    return `An unexpected error ocurred retrieving your expenses. \n\nIf it persists contact support with the following message: \n\n${err}`;
-  },
+  errMsg: `An unexpected error ocurred retrieving your expenses. \n\nIf it persists contact support.`,
   close: "Close",
   emptyMonthlyExpenses: "You have no expenses left this month",
   amountLeft: (amount: number, currency: SupportedCurrencies) => {

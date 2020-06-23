@@ -108,7 +108,7 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
         }
 
         console.error(error);
-        Alert.alert(i18n.errTitle, i18n.errMsg(err), [{ text: i18n.close }]);
+        Alert.alert(i18n.errTitle, i18n.errMsg, [{ text: i18n.close }]);
       });
   }, []);
 

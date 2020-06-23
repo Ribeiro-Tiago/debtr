@@ -7,9 +7,7 @@ export const name = "Português";
 export default {
   _locale: "pt",
   errTitle: "Erro",
-  errMsg: (err: string) => {
-    return `Ocorreu um erro inesperado a obter as suas despesas. \n\nSe o problema persistir contacte-nos com a seguinte mensagem: \n\n${err}`;
-  },
+  errMsg: `Ocorreu um erro inesperado a obter as suas despesas. \n\nSe o problema persistir contacte-nos`,
   close: "Fechar",
   emptyMonthlyExpenses: "You have no expenses left this month",
   amountLeft: (amount: number, currency: SupportedCurrencies) => {
