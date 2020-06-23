@@ -1,13 +1,21 @@
-import { UPDATE_SELECTED_MONTHS, UPDATE_SELECTED_ITEM } from '../actions/types';
-import { CurrentReducerAction } from '../../types/store';
-import { Item } from '../../types';
+import { UPDATE_SELECTED_MONTHS, UPDATE_SELECTED_ITEM } from "../actions/types";
+import { ReducerAction } from "../../types/store";
+import { Item } from "../../types";
 
-const initState = {
+interface State {
+  months: number[];
+  item: Item;
+}
+
+const initState: State = {
   months: [],
   item: null,
 };
 
-export default (state = initState, { type, payload }: CurrentReducerAction) => {
+export default (
+  state = initState,
+  { type, payload }: ReducerAction<Item | Item[] | number[]>,
+) => {
   switch (type) {
     case UPDATE_SELECTED_MONTHS: {
       return { ...state, months: payload };

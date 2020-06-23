@@ -3,15 +3,15 @@ import {
   ADD_AMOUNT_LEFT,
   SET_AMOUNT_LEFT,
 } from "../actions/types";
-import { AmountLeftReducerAction } from "../../types/store";
-import { updateAmount } from "../../services/storage/storage";
+import { ReducerAction } from "../../types/store";
+import { updateAmount } from "../../services/storage";
 import { sanitizeAmount, formatDecimal } from "../../utils";
 
 const initState = 0;
 
 export default (
   state = initState,
-  { type, payload }: AmountLeftReducerAction,
+  { type, payload }: ReducerAction<number>,
 ) => {
   switch (type) {
     case SET_AMOUNT_LEFT: {

@@ -1,4 +1,4 @@
 {
-  "name": "Debtr - Your payment tracker assistant",
-  "displayName": "Debtr - Your payment tracker assistant"
+  "iosName": "debtr",
+  "androidName": "Debtr - Your payment tracker assistant"
 }

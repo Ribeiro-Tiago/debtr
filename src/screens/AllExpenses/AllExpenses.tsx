@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Text,
   View,
@@ -9,19 +9,31 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 import { TopBar, List, ListItem } from "../../components";
-import { Item, Month } from "../../types";
+import {
+  Item,
+  RenderItemParams,
+  SupportedCurrencies,
+  RemoveItemParams,
+} from "../../types";
+import { i18nContext } from "../../contexts/i18n";
+import { isMonthly } from "../../utils";
 
 interface Props {
   items: Item[];
+  currCurrency: SupportedCurrencies;
+  reorderItems: (items: Item[]) => void;
   updateCurrent: (item?: Item) => void;
-  removeItem: (id: string, months: Month[], amount: number) => void;
+  removeItem: (params: RemoveItemParams) => void;
 }
 
 export default function AllExpenses({
   items,
+  currCurrency,
+  reorderItems,
   updateCurrent,
   removeItem,
 }: Props) {
+  const { i18n } = useContext(i18nContext);
   const navigation = useNavigation();
 
   const goToForm = (item?: Item) => {
@@ -29,13 +41,23 @@ export default function AllExpenses({
     navigation.navigate("ExpenseForm");
   };
 
-  const onRemove = ({ id, months, amount }: Item) => {
+  const onRemove = ({ id, months, amount, notification }: Item) => {
     Alert.alert(
-      "Confirm delete?",
-      "You are about to delete this expense. This action is irreversable",
+      i18n.confirmDeleteTitle,
+      i18n.confirmDeleteDesc,
       [
-        { text: "Confirm", onPress: () => removeItem(id, months, amount) },
-        { text: "Cancel" },
+        {
+          text: i18n.confirm,
+          onPress: () => {
+            return removeItem({
+              id,
+              months,
+              amount,
+              notifId: notification && notification.id,
+            });
+          },
+        },
+        { text: i18n.cancel },
       ],
       { cancelable: true },
     );
@@ -47,7 +69,7 @@ export default function AllExpenses({
         <TouchableWithoutFeedback onPress={() => goToForm()}>
           <View style={styles.createExpenseContainer}>
             <Text style={styles.createExpenseText}>
-              Create your first expense
+              {i18n.emptyAllExpenses}
             </Text>
           </View>
         </TouchableWithoutFeedback>
@@ -55,26 +77,26 @@ export default function AllExpenses({
     );
   };
 
-  const renderMonths = (months: Month[]) => {
-    if (!months.length || months.length === 12) {
-      return <Text style={styles.tag}>Happens every month</Text>;
+  const renderMonths = (months: number[]) => {
+    if (isMonthly(months)) {
+      return <Text style={styles.tag}>{i18n.monthlyExpense}</Text>;
     }
 
     return months.map((m) => (
-      <Text key={m.id} style={styles.tag}>
-        {m.label}
+      <Text key={m} style={styles.tag}>
+        {i18n.monthNames[m]}
       </Text>
     ));
   };
 
-  const renderListItem = ({ item, index }: { item: Item; index: number }) => {
+  const renderListItem = (props: RenderItemParams) => {
     return (
       <ListItem
-        item={item}
-        iconName="ios-trash"
-        onPress={() => goToForm(item)}
-        isEven={index % 2 === 0}
+        {...props}
         onIconPress={onRemove}
+        iconName="ios-trash"
+        currency={currCurrency}
+        onPress={() => goToForm(props.item)}
         renderTags={({ months }) => (
           <View style={styles.tags}>{renderMonths(months)}</View>
         )}
@@ -86,7 +108,7 @@ export default function AllExpenses({
     if (items.length) {
       return (
         <Text onPress={() => goToForm()} style={styles.button}>
-          Create
+          {i18n.create}
         </Text>
       );
     }
@@ -94,13 +116,11 @@ export default function AllExpenses({
 
   return (
     <View style={styles.container}>
-      <TopBar>
-        <Text style={styles.title}>All monthly expenses</Text>
-        {renderHeaderButton()}
-      </TopBar>
+      <TopBar title={i18n.allExpensesTitle}>{renderHeaderButton()}</TopBar>
 
       <List
         data={items}
+        onItemReorder={reorderItems}
         renderEmptyList={renderEmptyList}
         renderListItem={renderListItem}
       />
@@ -111,11 +131,6 @@ export default function AllExpenses({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "#581c0c",
   },
   button: {
     fontSize: 20,

@@ -1,13 +1,22 @@
 # Todo (in no particular order)
 
-- add settings to choose the reset day
+- add settings
+
+  - choose the reset day
+  - push notifs
+  - repeat tutorial
+  - delete all local data
+  - update themes
+  - give feedback
+  - donate
+  - add date & time format customization
+
 - add tests
-- add i18n support
 - add support for reminder push notifications
 - add a tutorial
-- add currency config
-- add link to privacy policy and eula
-- better use of themes
+- add light / dark theme
 - optimize deploy workflow
-- add list ordering
-- update list item UI all amounts are aligned
+- replace delete confirms with undo (e.g.: google stuff)
+- add workflow to gen debug with different identifier so it doesnt clash with prod version on the same device
+- update splashscreen so it fits well on bigger screens (tablets, chromebooks)
+- update bottom tab bars to have icon tab and text on larger devices (tablets, chromebooks)
