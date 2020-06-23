@@ -132,8 +132,8 @@ android {
         applicationId "com.debtr"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "2.0.1"
+        versionCode 210
+        versionName "2.1.0"
     }
     splits {
         abi {
