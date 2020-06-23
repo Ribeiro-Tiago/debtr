@@ -35,7 +35,7 @@ const localePickerStyles: PickerStyle = {
   },
   inputAndroid: {
     fontSize: 18,
-    paddingHorizontal: 20,
+    marginLeft: 10,
     paddingVertical: 10,
   },
   chevronDown: {
