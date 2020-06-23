@@ -1,29 +1,28 @@
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import component from './component';
-import { StoreState } from '../../types/store';
-import { Item } from '../../types';
-import { toggleItemStatus } from '../../store/actions/items';
-import { addAmount, subtractAmount } from '../../store/actions/amountLeft';
+import component from "./MonthlyExpenses";
+import { StoreState } from "../../types/store";
+import { Item } from "../../types";
+import { toggleItemStatus, setItems } from "../../store/actions/items";
+import { addAmount, subtractAmount } from "../../store/actions/amountLeft";
+import { isCurrentMonth } from "../../utils";
 
 const getMonthlyItems = (items: Item[]) => {
-  const currMonth = new Date().getMonth();
-
-  return items.filter(({ months }) => {
-    return !months.length || !!months.find(({ id }) => id === currMonth);
-  });
+  return items.filter(({ months }) => isCurrentMonth(months));
 };
 
-const mapStateToProps = ({ items, amountLeft }: StoreState) => {
+const mapStateToProps = ({ items, amountLeft, currency }: StoreState) => {
   return {
     items: getMonthlyItems(items),
     amountLeft: amountLeft,
+    currCurrency: currency,
   };
 };
 
 const mapDispatchToProps = (dispatch: Function) => {
   return {
     togglePaidStatus: (id: string) => dispatch(toggleItemStatus(id)),
+    reorderItems: (items: Item[]) => dispatch(setItems(items)),
     updateAmountLeft: (amount: number, isPaid: boolean) => {
       return isPaid
         ? dispatch(addAmount(amount))

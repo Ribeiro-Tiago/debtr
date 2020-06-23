@@ -1,38 +1,49 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import dayjs from "dayjs";
 import Emoji from "react-native-emoji";
 
 import { List, TopBar, ListItem } from "../../components";
-import { Item } from "../../types";
+import { Item, RenderItemParams, SupportedCurrencies } from "../../types";
+import { i18nContext } from "../../contexts/i18n";
 
 interface Props {
   items: Item[];
   amountLeft: number;
+  currCurrency: SupportedCurrencies;
+  reorderItems: (items: Item[]) => void;
   togglePaidStatus: (id: string) => void;
   updateAmountLeft: (amount: number, isPaid: boolean) => void;
 }
-const emojis = "\\u+1F973 \\u+1F973";
 
 export default function MonthlyExpenses({
   items,
   amountLeft,
+  currCurrency,
   togglePaidStatus,
   updateAmountLeft,
+  reorderItems,
 }: Props) {
+  const { i18n } = useContext(i18nContext);
+
   const onItemPress = ({ id, isPaid, amount }: Item) => {
     togglePaidStatus(id);
     updateAmountLeft(amount, isPaid);
   };
 
-  const renderItem = ({ item, index }) => {
+  const getTitle = () => {
+    const d = new Date();
+
+    return `${i18n.monthNames[d.getMonth()]} ${d.getFullYear()}`;
+  };
+
+  const renderItem = (props: RenderItemParams) => {
     return (
       <ListItem
+        {...props}
         onPress={onItemPress}
-        item={item}
-        isEven={index % 2 === 0}
         iconName="ios-checkmark"
-        hideIcon={!item.isPaid}
+        hideIcon={!props.item.isPaid}
+        currency={currCurrency}
       />
     );
   };
@@ -41,7 +52,8 @@ export default function MonthlyExpenses({
     return (
       <View style={styles.emptyListContainer}>
         <Text style={styles.emptyListText}>
-          You have no expenses left this month <Emoji name="tada" />
+          {i18n.emptyMonthlyExpenses}
+          <Emoji name="tada" />
           <Emoji name="tada" />
         </Text>
       </View>
@@ -50,13 +62,15 @@ export default function MonthlyExpenses({
 
   return (
     <View style={styles.container}>
-      <TopBar>
-        <Text style={styles.title}>{dayjs().format("MMMM YYYY")}</Text>
-        <Text style={styles.leftover}>{amountLeft}€ Left</Text>
+      <TopBar title={getTitle()}>
+        <Text style={styles.leftover}>
+          {i18n.amountLeft(amountLeft, currCurrency)}
+        </Text>
       </TopBar>
 
       <List
         data={items}
+        onItemReorder={reorderItems}
         renderEmptyList={renderEmptyList}
         renderListItem={renderItem}
       />
@@ -67,11 +81,6 @@ export default function MonthlyExpenses({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "#581c0c",
   },
   leftover: {
     fontSize: 16,

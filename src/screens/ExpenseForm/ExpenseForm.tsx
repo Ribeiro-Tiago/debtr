@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -12,16 +12,29 @@ import {
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { nanoid } from "nanoid/non-secure";
 
-import { Item, Month, ItemCreation } from "../../types";
-import { TopBar, FormItem, MonthSelector } from "../../components";
+import { Item, ItemNotification } from "../../types";
+import {
+  TopBar,
+  FormItem,
+  MonthSelector,
+  NotificationController,
+} from "../../components";
+import { getPlatformIcon } from "../../utils";
+import { i18nContext } from "../../contexts/i18n";
+import {
+  CreateItemParams,
+  RemoveItemParams,
+  UpdateItemParams,
+} from "../../types/item";
 
 interface Props {
   item: Item | null;
-  selectedMonths: Month[];
-  create: (item: ItemCreation) => void;
-  update: (item: Item, amount: number) => void;
-  remove: (id: string, months: Month[], amount: number) => void;
+  selectedMonths: number[];
+  create: (params: CreateItemParams) => void;
+  update: (params: UpdateItemParams) => void;
+  remove: (params: RemoveItemParams) => void;
 }
 
 interface Form {
@@ -29,6 +42,7 @@ interface Form {
   amount: number;
 }
 
+// TODO: move notif values to redux
 export default function ExpenseForm({
   selectedMonths,
   item,
@@ -40,11 +54,20 @@ export default function ExpenseForm({
     description: item && item.description,
     amount: item && item.amount,
   };
+  const { i18n } = useContext(i18nContext);
   const { goBack } = useNavigation();
   const { register, setValue, handleSubmit, errors } = useForm<Form>({
     defaultValues: initialValues,
     reValidateMode: "onBlur",
   });
+  const [notif, setNotif] = useState<ItemNotification>(
+    item && item.notification,
+  );
+  const [isNotifEnabled, setNotifEnabled] = useState(
+    !!item ? !!item.notification : false,
+  );
+  const [notifErr, setNotifErr] = useState(false);
+  const [isSubmitting, setSubmitting] = useState(false);
   const isNew = !item;
 
   useEffect(() => {
@@ -52,31 +75,68 @@ export default function ExpenseForm({
     register({ name: "amount" }, { required: true });
   }, [register]);
 
+  // TODO: add validation for when switch is enabled but datetime isn't selected
   const onSubmit = (data: Form) => {
+    if (isSubmitting) {
+      return;
+    }
+
+    if (isNotifEnabled && (!notif || isNaN(notif.date?.getTime()))) {
+      return setNotifErr(true);
+    }
+
+    setSubmitting(true);
+
+    const notifTexts = {
+      title: i18n.getNotifTitle,
+      message: i18n.getNotifDesc(data.description),
+    };
     if (isNew) {
-      create({ ...data, months: selectedMonths });
+      create({
+        item: { ...data, months: selectedMonths, notification: notif },
+        notifTexts,
+      });
     } else {
-      update(
-        { ...item, ...data, months: selectedMonths },
-        initialValues.amount,
-      );
+      update({
+        item: { ...item, ...data, months: selectedMonths, notification: notif },
+        oldAmount: initialValues.amount,
+        oldNotif: item.notification,
+        notifTexts,
+      });
     }
 
     goBack();
   };
 
   const onDeleteConfirm = () => {
-    remove(item.id, item.months, item.amount);
+    remove({
+      id: item.id,
+      months: item.months,
+      amount: item.amount,
+      notifId: item.notification?.id,
+    });
     goBack();
   };
 
   const onDelete = () => {
     Alert.alert(
-      "Confirm delete?",
-      "You are about to delete this expense. This action is irreversable",
-      [{ text: "Confirm", onPress: onDeleteConfirm }, { text: "Cancel" }],
+      i18n.confirmDeleteTitle,
+      i18n.confirmDeleteDesc,
+      [{ text: i18n.confirm, onPress: onDeleteConfirm }, { text: i18n.cancel }],
       { cancelable: true },
     );
+  };
+
+  // TODO: move this to redux
+  const onNotifDateChange = (date?: Date) => {
+    if (!date) {
+      return setNotif(undefined);
+    }
+
+    setNotif({
+      id: Math.pow(2, 30).toString(),
+      date,
+    });
   };
 
   const renderTopBar = () => {
@@ -86,32 +146,38 @@ export default function ExpenseForm({
           <TouchableWithoutFeedback onPress={goBack}>
             <View style={styles.goBackWrapper}>
               <Icon
-                name={`${Platform.OS === "ios" ? "ios" : "md"}-arrow-back`}
+                name={getPlatformIcon("arrow-back")}
                 color="#581c0c"
                 size={24}
               />
-              <Text style={styles.goBackText}>Back</Text>
+              <Text style={styles.goBackText}>{i18n.back}</Text>
             </View>
           </TouchableWithoutFeedback>
 
           <Text style={styles.title}>
-            {isNew ? "New expense" : "Updating expense"}
+            {isNew ? i18n.createExpenseTitle : i18n.updateExpenseTitle}
           </Text>
         </View>
       </TopBar>
     );
   };
 
+  // TODO: add indication that the button is clicked
+  // TODO: make button disabled if errors or as soon as it's clicked to avoid multiple creation
   const renderButtons = () => {
     return (
       <View style={styles.buttonWrapper}>
-        <Text style={styles.buttonSubmit} onPress={handleSubmit(onSubmit)}>
-          Submit
+        <Text
+          style={styles.buttonSubmit}
+          onPress={() => !isSubmitting && handleSubmit(onSubmit)()}>
+          {i18n.submit}
         </Text>
 
         {!isNew && (
-          <Text style={styles.buttonDelete} onPress={onDelete}>
-            Delete
+          <Text
+            style={styles.buttonDelete}
+            onPress={() => !isSubmitting && onDelete()}>
+            {i18n.delete}
           </Text>
         )}
       </View>
@@ -127,18 +193,18 @@ export default function ExpenseForm({
         keyboardVerticalOffset={0}>
         <ScrollView style={styles.wrapper}>
           <FormItem
-            label="Description"
-            error="Description is required"
-            placeholder="E.g.: Netflix"
+            label={i18n.description}
+            error={i18n.descriptionErr}
+            placeholder={i18n.descriptionPlaceholder}
             hasErr={!!errors.description}
             onChange={(val: string) => setValue("description", val, true)}
             initialValue={item && item.description}
           />
 
           <FormItem
-            label="Amount"
-            error="Amount must be a valid number"
-            placeholder="E.g.: 14 (Just a number)"
+            label={i18n.amount}
+            error={i18n.amountErr}
+            placeholder={i18n.amountPlaceholder}
             hasErr={!!errors.amount}
             keyboard="numeric"
             onChange={(val: any) => setValue("amount", val, true)}
@@ -146,6 +212,13 @@ export default function ExpenseForm({
           />
 
           <MonthSelector />
+
+          <NotificationController
+            initValue={item?.notification}
+            hasErr={notifErr}
+            onChange={setNotifEnabled}
+            onChangeDate={onNotifDateChange}
+          />
 
           {renderButtons()}
         </ScrollView>

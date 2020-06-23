@@ -1,80 +1,127 @@
-import React from 'react';
-import { TouchableWithoutFeedback, View, StyleSheet, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React from "react";
+import { TouchableWithoutFeedback, View, StyleSheet, Text } from "react-native";
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import Ionicon from "react-native-vector-icons/Ionicons";
 
-import { Item } from '../types';
+import { Item, SupportedCurrencies } from "../types";
+import { formatCurrency } from "../utils/formatters";
 
-const primary = '#581c0c';
-const secondary = '#ca5116';
+const primary = "#581c0c";
+const secondary = "#ca5116";
 
 interface Props {
   item: Item;
-  isEven: boolean;
   iconName: string;
   hideIcon?: boolean;
+  isBeingDragged: boolean;
+  currency: SupportedCurrencies;
   onPress: (item: Item) => void;
+  onDrag: () => void;
   renderTags?: (item: Item) => React.ReactElement;
   onIconPress?: (item: Item) => void;
 }
 export default function ListItem({
   item,
-  isEven,
   iconName,
   hideIcon,
+  isBeingDragged,
+  currency,
   onPress,
+  onDrag,
   renderTags,
   onIconPress,
 }: Props) {
+  let wrapperColor = {};
+  let itemColor = {};
+  let iconColor = inactiveIcon;
+
+  if (isBeingDragged) {
+    wrapperColor = styles.activeWrapper;
+    itemColor = styles.activeItem;
+    iconColor = activeIcon;
+  }
+
   return (
-    <TouchableWithoutFeedback key={item.id} onPress={() => onPress(item)}>
-      <View style={styles.container}>
-        <View style={styles.infoContainer}>
-          <Text style={isEven ? styles.evenItem : styles.oddItem}>
-            {item.description}
-          </Text>
-          <Text style={isEven ? styles.evenItem : styles.oddItem}>
-            {item.amount}€
-          </Text>
+    <TouchableWithoutFeedback
+      key={item.id}
+      onLongPress={onDrag}
+      onPress={() => onPress(item)}>
+      <View style={[styles.wrapper, wrapperColor]}>
+        <MaterialIcon
+          name="drag"
+          size={32}
+          style={styles.reorder}
+          color={iconColor}
+        />
 
-          <Icon
-            onPress={() => onIconPress(item)}
-            name={iconName}
-            size={32}
-            color={hideIcon ? 'transparent' : isEven ? primary : secondary}
-            style={styles.icon}
-          />
+        <View style={styles.container}>
+          <View style={styles.infoContainer}>
+            <Text style={[styles.item, itemColor]}>{item.description}</Text>
+            <Text style={[styles.item, styles.amount, itemColor]}>
+              {formatCurrency(item.amount, currency)}
+            </Text>
+
+            <Ionicon
+              onPress={() => onIconPress && onIconPress(item)}
+              name={iconName}
+              size={32}
+              color={hideIcon ? "transparent" : iconColor}
+              style={styles.icon}
+            />
+          </View>
+
+          {renderTags && renderTags(item)}
         </View>
-
-        {renderTags && renderTags(item)}
       </View>
     </TouchableWithoutFeedback>
   );
 }
 
+const inactiveIcon = primary;
+const activeIcon = secondary;
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     height: 80,
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
     paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#f9b384',
+    borderBottomColor: "#f9b384",
   },
-  evenItem: {
+  item: {
+    fontSize: 18,
+    flex: 1,
     color: primary,
-    fontSize: 18,
   },
-  oddItem: {
+  activeItem: {
     color: secondary,
-    fontSize: 18,
+  },
+  amount: {
+    width: "25%",
+    textAlign: "right",
   },
   icon: {
-    textAlign: 'right',
+    width: "20%",
+    textAlign: "right",
   },
   infoContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  reorder: {
+    marginLeft: 10,
+    width: "5%",
+  },
+  wrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    flex: 1,
+  },
+  activeWrapper: {
+    backgroundColor: "#f0f0f0",
   },
 });

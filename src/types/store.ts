@@ -1,26 +1,16 @@
-import { Item, Month } from './';
+import { Item, SupportedCurrencies } from "./";
 
 export interface StoreState {
   items: Item[];
   current: {
     item: Item;
-    months: Month[];
+    months: number[];
   };
   amountLeft: number;
+  currency: SupportedCurrencies;
 }
 
-interface ReducerAction {
+export interface ReducerAction<T> {
   type: string;
-}
-
-export interface ListReducerAction extends ReducerAction {
-  payload: string & Item;
-}
-
-export interface AmountLeftReducerAction extends ReducerAction {
-  payload: number;
-}
-
-export interface CurrentReducerAction extends ReducerAction {
-  payload: Item | Item[];
+  payload: T;
 }
