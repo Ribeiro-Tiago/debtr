@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native";
 import FormLabel from "./FormLabel";
+import FormError from "./FormError";
 
 interface Props {
   label: string;
@@ -32,7 +33,7 @@ export default function FormItem({
         defaultValue={initialValue}
         returnKeyType="next"
       />
-      {hasErr && <Text style={styles.error}>{error}</Text>}
+      {hasErr && <FormError error={error} />}
     </>
   );
 }
@@ -46,5 +47,4 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     color: "#581c0c",
   },
-  error: { marginTop: 5, color: "red" },
 });
