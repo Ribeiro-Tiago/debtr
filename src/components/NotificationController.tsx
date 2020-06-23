@@ -1,35 +1,23 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, Text, Switch } from "react-native";
-import TimePicker from "react-native-modal-datetime-picker";
 import DatePicker from "react-native-calendar-picker";
 
 import FormLabel from "./FormLabel";
 import { i18nContext } from "../contexts/i18n";
 import { ItemNotification } from "../types";
+import FormError from "./FormError";
 
 interface Props {
+  hasErr: boolean;
+  onChange: (val: boolean) => void;
+  onChangeDate: (date?: Date) => void;
   initValue?: ItemNotification;
-  onChange: (date?: Date) => void;
 }
 
 // This is supposed to be a moment object but there's no reason
 // to include that entire library for a simple typing.
 // Comes from react-native-calendar-picker
 type FakeMoment = any;
-
-const getInitDate = (initVal?: { date: Date }) => {
-  if (!!initVal) {
-    return new Date(initVal.date);
-  }
-
-  const d = new Date();
-
-  d.setHours(20);
-  d.setMinutes(0);
-  d.setSeconds(0);
-
-  return d;
-};
 
 const dateLimits = () => {
   const date = new Date();
@@ -39,12 +27,14 @@ const dateLimits = () => {
   return { minDate: min, maxDate: max };
 };
 
-// TODO: add time picker
-export default function ({ onChange, initValue }: Props) {
+// TODO: add time picker > maybe with react-native-time-picker
+export default function ({ onChange, initValue, onChangeDate, hasErr }: Props) {
   const { i18n } = useContext(i18nContext);
   const [isSwitchEnabled, setSwitchEnabled] = useState(!!initValue);
   const [isDateSelected, setDateSelected] = useState(!!initValue);
-  const [date, setDate] = useState(!!initValue ? initValue.date : null);
+  const [date, setDate] = useState(
+    !!initValue ? new Date(initValue.date) : null,
+  );
 
   const onDateChange = (newDate: FakeMoment) => {
     const d = new Date(
@@ -56,13 +46,15 @@ export default function ({ onChange, initValue }: Props) {
       0,
     );
     setDate(d);
-    onChange(d);
+    onChangeDate(d);
     !isDateSelected && setDateSelected(true);
   };
 
   const onSwitchChange = (newValue: boolean) => {
+    onChange(newValue);
+
     if (!newValue) {
-      onChange(undefined);
+      onChangeDate(undefined);
     }
 
     setSwitchEnabled(newValue);
@@ -83,7 +75,7 @@ export default function ({ onChange, initValue }: Props) {
       </View>
 
       {isSwitchEnabled && (
-        <View>
+        <>
           <Text style={styles.reminderText}>
             {isDateSelected ? i18n.reminderAt(date) : i18n.undefinedReminder}
           </Text>
@@ -101,7 +93,9 @@ export default function ({ onChange, initValue }: Props) {
             todayBackgroundColor="transparent"
             {...dateLimits()}
           />
-        </View>
+
+          {hasErr && <FormError error={i18n.noNotifErr} />}
+        </>
       )}
     </>
   );

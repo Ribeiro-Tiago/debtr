@@ -93,4 +93,5 @@ export default {
   },
   getNotifTitle: (expense: string) => `${expense} payment reminder`,
   getNotifDesc: (expense: string) => `Don't forget to pay ${expense}`,
+  noNotifErr: "You have to select for the notification reminder",
 };
