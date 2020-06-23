@@ -1,5 +1,6 @@
 import { SupportedCurrencies } from "../types";
 import { formatCurrency } from "../utils/formatters";
+import { addLeadZero } from "../utils";
 
 export const name = "Português";
 
@@ -60,4 +61,19 @@ export default {
     "Novemmbro",
     "Dezembro",
   ],
+  expenseNotif: "Notificação de lembrete",
+  weekDays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
+  timePickerTitle: "Escolha uma hora para a notificação",
+  undefinedReminder: "Escolha o dia que gostaria para a notificação",
+  reminderAt: (date: Date) => {
+    const day = addLeadZero(date.getDate());
+    const hours = `${addLeadZero(date.getHours())}:${addLeadZero(
+      date.getMinutes(),
+    )}`;
+
+    return `Será lembrado no dia ${day} às ${hours} de todos os meses que esta despesa aconteça`;
+  },
+  getNotifTitle: `Lembrete de pagamento`,
+  getNotifDesc: (expense: string) => `Não se esqueça de pagar ${expense}`,
+  noNotifErr: "Se quer ativar notificação, tem que escolher um dia",
 };

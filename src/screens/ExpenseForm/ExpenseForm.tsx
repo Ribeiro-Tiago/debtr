@@ -88,7 +88,7 @@ export default function ExpenseForm({
     setSubmitting(true);
 
     const notifTexts = {
-      title: i18n.getNotifTitle(data.description),
+      title: i18n.getNotifTitle,
       message: i18n.getNotifDesc(data.description),
     };
     if (isNew) {
