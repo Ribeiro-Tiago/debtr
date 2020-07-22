@@ -44,7 +44,8 @@ interface Form {
   amount: number;
 }
 
-// TODO: move notif values to redux
+// TODO: fill correct notif values on item edit
+// TODO: make notifs work again
 export default function ExpenseForm({
   selectedMonths,
   item,
@@ -73,7 +74,6 @@ export default function ExpenseForm({
     register({ name: "amount" }, { required: true });
   }, [register]);
 
-  // TODO: add validation for when switch is enabled but datetime isn't selected
   const onSubmit = (data: Form) => {
     if (isSubmitting) {
       return;
@@ -87,8 +87,6 @@ export default function ExpenseForm({
     };
 
     if (isNew) {
-      console.log(isNotifEnabled, pickerDate);
-
       create({
         item: {
           ...data,

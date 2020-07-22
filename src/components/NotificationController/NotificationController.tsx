@@ -13,7 +13,6 @@ interface Props {
   toggleNotifStatus: () => void;
 }
 
-// TODO: add time picker > maybe with react-native-time-picker
 export default function ({
   initSwitchValue,
   pickerDate,
