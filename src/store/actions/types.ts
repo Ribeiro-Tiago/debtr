@@ -13,3 +13,7 @@ export const UPDATE_SELECTED_MONTHS = "update selected months";
 
 export const SET_CURRENCY = "set currency";
 export const UPDATE_CURRENCY = "update currency";
+
+export const TOGGLE_NOTIFICATION_PICKER = "toggle notification picker";
+export const UPDATE_PICKER_VALUE = "update picker value";
+export const TOGGLE_NOTIF_ENABLED = "toggle notification state";
