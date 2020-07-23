@@ -10,6 +10,7 @@ import { StoreState } from "../../types/store";
 
 const mapStatetoProps = ({ notification }: StoreState) => ({
   pickerDate: notification.pickerValue,
+  isPickerVisible: notification.isPickerVisible,
 });
 
 const mapDispatchToProps = (dispatch: Function) => ({
