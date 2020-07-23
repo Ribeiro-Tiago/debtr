@@ -8,6 +8,7 @@ import Webview from "./Webview";
 import SettingsPicker from "./SettingsPicker";
 import FormLabel from "./FormLabel";
 import NotificationController from "./NotificationController";
+import BetaTag from "./BetaTag";
 
 export {
   TopBar,
@@ -20,4 +21,5 @@ export {
   SettingsPicker,
   FormLabel,
   NotificationController,
+  BetaTag,
 };
