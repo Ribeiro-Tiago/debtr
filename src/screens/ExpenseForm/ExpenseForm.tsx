@@ -27,6 +27,7 @@ import {
   RemoveItemParams,
   UpdateItemParams,
 } from "../../types/item";
+import Snackbar from "react-native-snackbar";
 
 interface Props {
   item: Item | null;
@@ -37,6 +38,8 @@ interface Props {
   create: (params: CreateItemParams) => void;
   update: (params: UpdateItemParams) => void;
   remove: (params: RemoveItemParams) => void;
+  undoRemoval: (id: string) => void;
+  hideForRemoval: (id: string) => void;
 }
 
 interface Form {
@@ -55,6 +58,8 @@ export default function ExpenseForm({
   create,
   update,
   remove,
+  hideForRemoval,
+  undoRemoval,
 }: Props) {
   const initialValues = {
     description: item && item.description,
@@ -120,23 +125,34 @@ export default function ExpenseForm({
     goBack();
   };
 
-  const onDeleteConfirm = () => {
-    remove({
-      id: item.id,
-      months: item.months,
-      amount: item.amount,
-      notifId: item.notification?.id,
-    });
-    goBack();
-  };
-
   const onDelete = () => {
-    Alert.alert(
-      i18n.confirmDeleteTitle,
-      i18n.confirmDeleteDesc,
-      [{ text: i18n.confirm, onPress: onDeleteConfirm }, { text: i18n.cancel }],
-      { cancelable: true },
-    );
+    let removalTimeout: NodeJS.Timeout = null;
+
+    hideForRemoval(item.id);
+
+    removalTimeout = setTimeout(() => {
+      remove({
+        id: item.id,
+        months: item.months,
+        amount: item.amount,
+        notifId: item.notification?.id,
+      });
+    }, 6000);
+
+    Snackbar.show({
+      text: i18n.snackbarDeletedText,
+      duration: 5000,
+      action: {
+        text: i18n.undo,
+        onPress: () => {
+          clearTimeout(removalTimeout);
+
+          undoRemoval(item.id);
+        },
+      },
+    });
+
+    goBack();
   };
 
   const renderTopBar = () => {
