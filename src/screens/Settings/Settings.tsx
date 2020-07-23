@@ -5,6 +5,7 @@ import {
   ScrollView,
   Text,
   TouchableWithoutFeedback,
+  Platform,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -34,9 +35,18 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
   };
 
   const renderLanguage = () => {
-    const onPickerClose = () => {
+    /* TODO: IOS 
+      const onPickerClose = () => {
       setI18n(locales[locale]);
       updateLocale(locale);
+    }; */
+
+    const onChange = (locale: SupportedLocales) => {
+      // setLocale(locale);
+      setI18n(locales[locale]);
+      updateLocale(locale);
+
+      console.log("new locale", locale);
     };
 
     return (
@@ -44,8 +54,8 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
         {renderSectionTitle(i18n.langauge)}
 
         <SettingsPicker<SupportedLocales>
-          onClose={onPickerClose}
-          onChange={setLocale}
+          // onClose={onPickerClose} TODO: IOS
+          onChange={onChange}
           value={locale}
           data={localePickerData.map((l) => ({
             key: l.key,
@@ -87,15 +97,26 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
   };
 
   const renderCurrency = () => {
-    const onPickerClose = () => updateCurrency(currency);
+    // const onPickerClose = () => updateCurrency(currency); // TODO: IOS
+
+    const onChange = (currency: SupportedCurrencies) => {
+      console.log("New currency", currency);
+      updateCurrency(currency);
+      setCurrency(currency);
+
+      // TODO: activate when published to ios
+      // if (Platform.OS === "android") {
+      // onPickerClose();
+      // }
+    };
 
     return (
       <>
         {renderSectionTitle(i18n.currency)}
 
         <SettingsPicker<SupportedCurrencies>
-          onClose={onPickerClose}
-          onChange={setCurrency}
+          // onClose={onPickerClose} TODO: ios
+          onChange={onChange}
           value={currency}
           data={currencies.map((c) => ({
             key: c.key,
