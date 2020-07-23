@@ -13,9 +13,6 @@ export default {
   amountLeft: (amount: number, currency: SupportedCurrencies) => {
     return `${formatCurrency(amount, currency)} restante`;
   },
-  confirmDeleteTitle: "Confirmar remoção?",
-  confirmDeleteDesc:
-    "Está prestos a remover esta desepsa. Esta ação é irreversível",
   confirm: "Confirmar",
   cancel: "Cancelar",
   back: "Voltar",
@@ -76,4 +73,6 @@ export default {
   noNotifErr: "Se quer ativar notificação, tem que escolher um dia",
   reminderChooseDate: "Mudar dia",
   reminderChooseHour: "Mudar hora",
+  undo: "Restaurar",
+  snackbarDeletedText: "Apagado com sucesso",
 };

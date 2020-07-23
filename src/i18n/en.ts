@@ -29,9 +29,6 @@ export default {
   amountLeft: (amount: number, currency: SupportedCurrencies) => {
     return `${formatCurrency(amount, currency)} left`;
   },
-  confirmDeleteTitle: "Confirm delete?",
-  confirmDeleteDesc:
-    "You are about to delete this expense. This action is irreversable",
   confirm: "Confirm",
   cancel: "Cancel",
   back: "Back",
@@ -93,4 +90,6 @@ export default {
   noNotifErr: "If you want to enable the notification you have to select a day",
   reminderChooseDate: "Change day",
   reminderChooseHour: "Change hour",
+  undo: "Undo",
+  snackbarDeletedText: "Deleted successfully",
 };

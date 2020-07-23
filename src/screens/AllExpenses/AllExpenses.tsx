@@ -1,12 +1,7 @@
 import React, { useContext } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Alert,
-} from "react-native";
+import { Text, View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Snackbar from "react-native-snackbar";
 
 import { TopBar, List, ListItem } from "../../components";
 import {
@@ -24,6 +19,8 @@ interface Props {
   reorderItems: (items: Item[]) => void;
   updateCurrent: (item?: Item) => void;
   removeItem: (params: RemoveItemParams) => void;
+  undoRemoval: (id: string) => void;
+  hideForRemoval: (id: string) => void;
 }
 
 export default function AllExpenses({
@@ -32,6 +29,8 @@ export default function AllExpenses({
   reorderItems,
   updateCurrent,
   removeItem,
+  hideForRemoval,
+  undoRemoval,
 }: Props) {
   const { i18n } = useContext(i18nContext);
   const navigation = useNavigation();
@@ -42,25 +41,31 @@ export default function AllExpenses({
   };
 
   const onRemove = ({ id, months, amount, notification }: Item) => {
-    Alert.alert(
-      i18n.confirmDeleteTitle,
-      i18n.confirmDeleteDesc,
-      [
-        {
-          text: i18n.confirm,
-          onPress: () => {
-            return removeItem({
-              id,
-              months,
-              amount,
-              notifId: notification && notification.id,
-            });
-          },
+    let removalTimeout: NodeJS.Timeout = null;
+
+    hideForRemoval(id);
+
+    Snackbar.show({
+      text: i18n.snackbarDeletedText,
+      duration: 5000,
+      action: {
+        text: i18n.undo,
+        onPress: () => {
+          clearTimeout(removalTimeout);
+
+          undoRemoval(id);
         },
-        { text: i18n.cancel },
-      ],
-      { cancelable: true },
-    );
+      },
+    });
+
+    removalTimeout = setTimeout(() => {
+      return removeItem({
+        id,
+        months,
+        amount,
+        notifId: notification && notification.id,
+      });
+    }, 6000);
   };
 
   const renderEmptyList = () => {
