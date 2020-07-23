@@ -73,6 +73,8 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
           return;
         }
 
+        data.items = data.items.filter((i) => !i.toRemove);
+
         if (data.currMonth !== currMonth) {
           const { items, amountLeft } = data.items.reduce(
             (accu, curr) => {

@@ -16,6 +16,7 @@ export interface Item extends ItemCreation {
   id: string;
   isPaid: boolean;
   notification: ItemNotification;
+  toRemove?: boolean;
 }
 
 export interface UpdateItemParams {
