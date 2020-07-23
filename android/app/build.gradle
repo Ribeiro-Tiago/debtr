@@ -207,6 +207,8 @@ dependencies {
 
     implementation project(':react-native-push-notification')
 
+    compile project(':react-native-snackbar')
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }
