@@ -47,20 +47,19 @@ const getNextNotifDate = (notifDate: Date, months: number[]) => {
   return nextDate;
 };
 
-export const checkForNotifReschedule = () => {};
-
-// TODO: update date handling
 export const registerNotif = (
   notification: Notification,
   months: number[],
   isReschedule = false,
 ) => {
-  let date = notification.date;
-  if (!isReschedule && isCurrentMonth(months)) {
-    date.setMonth(date.getMonth() + 1);
-  } else if (isReschedule) {
-    date = getNextNotifDate(notification.date, months);
-  }
+  // we'll update date if we're rescheduling a notif, it doesn't happen on this month
+  // or if it happens on this month but at a time that already passed
+  const date =
+    isReschedule ||
+    !isCurrentMonth(months) ||
+    notification.date.getTime() < Date.now()
+      ? getNextNotifDate(notification.date, months)
+      : notification.date;
 
   PushNotification.localNotificationSchedule({
     playSound: true,
