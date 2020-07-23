@@ -26,18 +26,16 @@ export default (
 ) => {
   switch (type) {
     case TOGGLE_NOTIFICATION_PICKER: {
-      if (state.isPickerVisible) {
-        return { ...state, isPickerVisible: false };
-      }
-
-      return { ...state, pickerType: payload, isPickerVisible: true };
+      return state.isPickerVisible
+        ? { ...state, isPickerVisible: false }
+        : { ...state, pickerType: payload, isPickerVisible: true };
     }
 
     case UPDATE_PICKER_VALUE: {
       const d = new Date(state.pickerValue);
 
       if (state.pickerType === "date") {
-        d.setDate(payload.getFullYear());
+        d.setFullYear(payload.getFullYear());
         d.setMonth(payload.getMonth());
         d.setDate(payload.getDate());
       } else {
@@ -45,11 +43,11 @@ export default (
         d.setMinutes(payload.getMinutes());
       }
 
-      return { ...state, pickerValue: d };
+      return { ...state, pickerValue: d, isPickerVisible: false };
     }
 
     case TOGGLE_NOTIF_ENABLED: {
-      return { ...state, isEnabled: state.isEnabled };
+      return { ...state, isEnabled: !state.isEnabled };
     }
 
     default:
