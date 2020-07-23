@@ -25,3 +25,5 @@ export enum SupportedLocales {
   en = "en",
   pt = "pt",
 }
+
+export type PickerType = "date" | "time";

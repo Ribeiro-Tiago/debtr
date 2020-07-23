@@ -1,5 +1,11 @@
 import React from "react";
-import { Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native";
+import {
+  Text,
+  TextInput,
+  StyleSheet,
+  KeyboardTypeOptions,
+  View,
+} from "react-native";
 import FormLabel from "./FormLabel";
 import FormError from "./FormError";
 
@@ -23,7 +29,7 @@ export default function FormItem({
   keyboard = "default",
 }: Props) {
   return (
-    <>
+    <View style={{ paddingHorizontal: 20 }}>
       <FormLabel label={label} />
       <TextInput
         style={styles.input}
@@ -34,7 +40,7 @@ export default function FormItem({
         returnKeyType="next"
       />
       {hasErr && <FormError error={error} />}
-    </>
+    </View>
   );
 }
 

@@ -6,11 +6,7 @@ import { addItem, updateItem, removeItem } from "../../store/actions/items";
 import { Item, ItemCreation, ItemNotification } from "../../types";
 import { addAmount, subtractAmount } from "../../store/actions/amountLeft";
 import { isCurrentMonth } from "../../utils";
-import {
-  registerNotif,
-  unregisterNotif,
-  updateNotif,
-} from "../../services/notifications";
+import { registerNotif, unregisterNotif } from "../../services/notifications";
 import { NotificationTexts, Notification } from "../../types/notification";
 import {
   CreateItemParams,
@@ -18,13 +14,16 @@ import {
   RemoveItemParams,
 } from "../../types/item";
 
-const mapStateToProps = (state: StoreState) => {
-  const item = state.current.item;
+const mapStateToProps = ({ current, notification }: StoreState) => {
+  const { item, months } = current;
 
   return {
     item,
     isNew: !item,
-    selectedMonths: state.current.months,
+    selectedMonths: months,
+    isPickerVisible: notification.isPickerVisible,
+    pickerDate: notification.pickerValue,
+    isNotifEnabled: notification.isEnabled,
   };
 };
 
@@ -50,7 +49,7 @@ const mapDispatchToProps = (dispatch: Function) => {
       }
 
       if (JSON.stringify(item.notification) !== JSON.stringify(oldNotif)) {
-        updateNotif({ ...item.notification, ...notifTexts }, item.months);
+        /* updateNotif({ ...item.notification, ...notifTexts }, item.months); */
       }
     },
     remove: ({ id, months, amount, notifId }: RemoveItemParams) => {

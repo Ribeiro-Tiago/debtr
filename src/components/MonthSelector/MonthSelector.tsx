@@ -35,6 +35,7 @@ export default function MonthSelector({
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <FormLabel label={i18n.months} />
+
         <Icon
           name="ios-help-circle-outline"
           size={26}
@@ -58,14 +59,15 @@ export default function MonthSelector({
           />
         ))}
       </View>
+
+      <View style={styles.divider} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrapper: {
-    borderBottomColor: "#581c0c",
-    borderBottomWidth: 0.5,
+    paddingHorizontal: 20,
   },
   container: {
     paddingTop: 15,
@@ -83,5 +85,10 @@ const styles = StyleSheet.create({
   helper: {
     fontSize: 16,
     fontStyle: "italic",
+  },
+  divider: {
+    borderBottomColor: "#581c0c",
+    borderBottomWidth: 0.5,
+    marginTop: 5,
   },
 });
