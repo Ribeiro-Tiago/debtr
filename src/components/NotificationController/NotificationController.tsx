@@ -3,12 +3,14 @@ import { View, StyleSheet, Text, Switch } from "react-native";
 
 import FormLabel from "../FormLabel";
 import NotificationDatetimePicker from "../NotificationDatetimePicker";
+import BetaTag from "../BetaTag";
 import { i18nContext } from "../../contexts/i18n";
 import { PickerType } from "../../types";
 
 interface Props {
   pickerDate: Date;
   initSwitchValue: boolean;
+  isPickerVisible: boolean;
   togglePicker: (type: PickerType) => void;
   toggleNotifStatus: () => void;
 }
@@ -16,6 +18,7 @@ interface Props {
 export default function ({
   initSwitchValue,
   pickerDate,
+  isPickerVisible,
   togglePicker,
   toggleNotifStatus,
 }: Props) {
@@ -42,7 +45,15 @@ export default function ({
   return (
     <View style={{ paddingHorizontal: 20 }}>
       <View style={styles.headerWrapper}>
-        <FormLabel label={i18n.expenseNotif} />
+        <View
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "row",
+          }}>
+          <FormLabel label={i18n.expenseNotif} />
+          <BetaTag />
+        </View>
 
         <Switch
           trackColor={{ false: "#ccc", true: "#581c0c" }}
@@ -67,7 +78,7 @@ export default function ({
             </Text>
           </View>
 
-          <NotificationDatetimePicker />
+          {isPickerVisible && <NotificationDatetimePicker />}
         </>
       )}
     </View>

@@ -57,5 +57,5 @@ export default function List({
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "#ddd" },
+  container: { backgroundColor: "#f1f1f1" },
 });

@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Animated, StyleSheet, Dimensions, View, Text } from "react-native";
+import {
+  Animated,
+  StyleSheet,
+  Dimensions,
+  View,
+  Text,
+  Platform,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { PickerType } from "../../types";
@@ -18,6 +25,8 @@ const dateLimits = () => {
   const min = new Date(date.getFullYear(), date.getMonth(), 1, 0);
   const max = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
+  console.log(min, max);
+
   return { minimumDate: min, maximumDate: max };
 };
 
@@ -34,13 +43,11 @@ export default function ({
   const [top] = useState(new Animated.Value(pickerHiddenPosition));
   const { i18n } = useContext(i18nContext);
 
-  const onConfirm = () => {
-    updatePickerValue(date);
-    togglePicker();
-  };
+  const onConfirm = (d = date) => updatePickerValue(d);
 
   const onCancel = () => togglePicker();
 
+  /* TODO: enable when deployed to ios as well
   useEffect(() => {
     const to = isVisible ? 20 : pickerHiddenPosition;
     const from = top;
@@ -51,30 +58,65 @@ export default function ({
       useNativeDriver: false,
       speed: 2,
     }).start();
-  }, [isVisible]);
+  }, [isVisible]); */
 
-  return (
-    <Animated.View style={[styles.wrapper, { top }]}>
-      <View style={styles.buttonWrapper}>
-        <Text onPress={onCancel} style={styles.button}>
-          {i18n.cancel}
-        </Text>
-        <Text
-          onPress={onConfirm}
-          style={[styles.button, { fontWeight: "bold" }]}>
-          {i18n.confirm}
-        </Text>
-      </View>
+  const onChangeAndroid = (date?: Date) => {
+    if (date) {
+      return onConfirm(date);
+    }
 
+    onCancel();
+  };
+
+  /* TODO: enable when deployed to ios as well
+  const render = () => {
+    if (Platform.OS === "ios") {
+      return (
+        <Animated.View style={[styles.wrapper, { top }]}>
+          <View style={styles.buttonWrapper}>
+            <Text onPress={onCancel} style={styles.button}>
+              {i18n.cancel}
+            </Text>
+            <Text
+              onPress={() => onConfirm()}
+              style={[styles.button, { fontWeight: "bold" }]}>
+              {i18n.confirm}
+            </Text>
+          </View>
+
+          <DateTimePicker
+            value={date}
+            is24Hour={true}
+            mode={pickerType}
+            display="default"
+            onChange={(ev, d) => setDate(d)}
+            {...(pickerType === "date" && dateLimits())}
+          />
+        </Animated.View>
+      );
+    }
+
+    return (
       <DateTimePicker
         value={date}
         is24Hour={true}
         mode={pickerType}
         display="default"
-        onChange={(ev, d) => setDate(d)}
+        onChange={(ev, d) => onChangeAndroid(d)}
         {...(pickerType === "date" && dateLimits())}
       />
-    </Animated.View>
+    );
+  }; */
+
+  return (
+    <DateTimePicker
+      value={date}
+      is24Hour={true}
+      mode={pickerType}
+      display="default"
+      onChange={(ev, d) => onChangeAndroid(d)}
+      {...(pickerType === "date" && dateLimits())}
+    />
   );
 }
 
