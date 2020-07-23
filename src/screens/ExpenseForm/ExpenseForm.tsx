@@ -12,9 +12,8 @@ import {
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { nanoid } from "nanoid/non-secure";
 
-import { Item, ItemNotification } from "../../types";
+import { Item } from "../../types";
 import {
   TopBar,
   FormItem,
@@ -32,6 +31,9 @@ import {
 interface Props {
   item: Item | null;
   selectedMonths: number[];
+  isPickerVisible: boolean;
+  pickerDate: Date;
+  isNotifEnabled: boolean;
   create: (params: CreateItemParams) => void;
   update: (params: UpdateItemParams) => void;
   remove: (params: RemoveItemParams) => void;
@@ -42,10 +44,14 @@ interface Form {
   amount: number;
 }
 
-// TODO: move notif values to redux
+// TODO: fill correct notif values on item edit
+// TODO: make notifs work again
 export default function ExpenseForm({
   selectedMonths,
   item,
+  isPickerVisible,
+  pickerDate,
+  isNotifEnabled,
   create,
   update,
   remove,
@@ -60,13 +66,6 @@ export default function ExpenseForm({
     defaultValues: initialValues,
     reValidateMode: "onBlur",
   });
-  const [notif, setNotif] = useState<ItemNotification>(
-    item && item.notification,
-  );
-  const [isNotifEnabled, setNotifEnabled] = useState(
-    !!item ? !!item.notification : false,
-  );
-  const [notifErr, setNotifErr] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
   const isNew = !item;
 
@@ -75,14 +74,9 @@ export default function ExpenseForm({
     register({ name: "amount" }, { required: true });
   }, [register]);
 
-  // TODO: add validation for when switch is enabled but datetime isn't selected
   const onSubmit = (data: Form) => {
     if (isSubmitting) {
       return;
-    }
-
-    if (isNotifEnabled && (!notif || isNaN(notif.date?.getTime()))) {
-      return setNotifErr(true);
     }
 
     setSubmitting(true);
@@ -91,14 +85,32 @@ export default function ExpenseForm({
       title: i18n.getNotifTitle,
       message: i18n.getNotifDesc(data.description),
     };
+
     if (isNew) {
       create({
-        item: { ...data, months: selectedMonths, notification: notif },
+        item: {
+          ...data,
+          months: selectedMonths,
+          ...(isNotifEnabled && {
+            notification: {
+              id: Math.pow(2, 30).toString(),
+              date: pickerDate,
+            },
+          }),
+        },
         notifTexts,
       });
     } else {
       update({
-        item: { ...item, ...data, months: selectedMonths, notification: notif },
+        item: {
+          ...item,
+          ...data,
+          months: selectedMonths,
+          notification: {
+            id: item.notification.id,
+            date: pickerDate,
+          },
+        },
         oldAmount: initialValues.amount,
         oldNotif: item.notification,
         notifTexts,
@@ -127,18 +139,6 @@ export default function ExpenseForm({
     );
   };
 
-  // TODO: move this to redux
-  const onNotifDateChange = (date?: Date) => {
-    if (!date) {
-      return setNotif(undefined);
-    }
-
-    setNotif({
-      id: Math.pow(2, 30).toString(),
-      date,
-    });
-  };
-
   const renderTopBar = () => {
     return (
       <TopBar>
@@ -165,8 +165,11 @@ export default function ExpenseForm({
   // TODO: add indication that the button is clicked
   // TODO: make button disabled if errors or as soon as it's clicked to avoid multiple creation
   const renderButtons = () => {
+    const style = isPickerVisible
+      ? [styles.buttonWrapper, { opacity: 0, zIndex: -1 }]
+      : styles.buttonWrapper;
     return (
-      <View style={styles.buttonWrapper}>
+      <View style={style}>
         <Text
           style={styles.buttonSubmit}
           onPress={() => !isSubmitting && handleSubmit(onSubmit)()}>
@@ -186,43 +189,40 @@ export default function ExpenseForm({
 
   const renderForm = () => {
     return (
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        enabled
-        keyboardVerticalOffset={0}>
-        <ScrollView style={styles.wrapper}>
-          <FormItem
-            label={i18n.description}
-            error={i18n.descriptionErr}
-            placeholder={i18n.descriptionPlaceholder}
-            hasErr={!!errors.description}
-            onChange={(val: string) => setValue("description", val, true)}
-            initialValue={item && item.description}
-          />
+      <>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+          enabled
+          keyboardVerticalOffset={0}>
+          <ScrollView style={styles.wrapper}>
+            <FormItem
+              label={i18n.description}
+              error={i18n.descriptionErr}
+              placeholder={i18n.descriptionPlaceholder}
+              hasErr={!!errors.description}
+              onChange={(val: string) => setValue("description", val, true)}
+              initialValue={item && item.description}
+            />
 
-          <FormItem
-            label={i18n.amount}
-            error={i18n.amountErr}
-            placeholder={i18n.amountPlaceholder}
-            hasErr={!!errors.amount}
-            keyboard="numeric"
-            onChange={(val: any) => setValue("amount", val, true)}
-            initialValue={item && item.amount.toString()}
-          />
+            <FormItem
+              label={i18n.amount}
+              error={i18n.amountErr}
+              placeholder={i18n.amountPlaceholder}
+              hasErr={!!errors.amount}
+              keyboard="numeric"
+              onChange={(val: any) => setValue("amount", val, true)}
+              initialValue={item && item.amount.toString()}
+            />
 
-          <MonthSelector />
+            <MonthSelector />
 
-          <NotificationController
-            initValue={item?.notification}
-            hasErr={notifErr}
-            onChange={setNotifEnabled}
-            onChangeDate={onNotifDateChange}
-          />
+            <NotificationController initSwitchValue={!!item?.notification} />
 
-          {renderButtons()}
-        </ScrollView>
-      </KeyboardAvoidingView>
+            {renderButtons()}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </>
     );
   };
 
@@ -241,7 +241,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
   },
   buttonDelete: {
     color: "red",

@@ -74,4 +74,6 @@ export default {
   getNotifTitle: `Lembrete de pagamento`,
   getNotifDesc: (expense: string) => `Não se esqueça de pagar ${expense}`,
   noNotifErr: "Se quer ativar notificação, tem que escolher um dia",
+  reminderChooseDate: "Mudar dia",
+  reminderChooseHour: "Mudar hora",
 };

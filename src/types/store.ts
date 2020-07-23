@@ -1,4 +1,4 @@
-import { Item, SupportedCurrencies } from "./";
+import { Item, SupportedCurrencies, PickerType } from "./";
 
 export interface StoreState {
   items: Item[];
@@ -8,6 +8,12 @@ export interface StoreState {
   };
   amountLeft: number;
   currency: SupportedCurrencies;
+  notification: {
+    pickerType: PickerType;
+    isPickerVisible: boolean;
+    pickerValue: Date;
+    isEnabled: boolean;
+  };
 }
 
 export interface ReducerAction<T> {
