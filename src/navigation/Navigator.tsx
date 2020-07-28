@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { Alert, StyleSheet, View, Text } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -21,6 +21,7 @@ import { getData, updateCurrMonth as setCurrMonth } from "../services/storage";
 import setupNofis, {
   checkNotifsForReschedule,
 } from "../services/notifications";
+import { TabBarButton } from "../components";
 import { StorageData, Item, SupportedCurrencies } from "../types";
 import { isCurrentMonth } from "../utils";
 import { i18nContext } from "../contexts/i18n";
@@ -48,10 +49,10 @@ const barOptions: MaterialTopTabBarOptions = {
     backgroundColor: "#f1e3cb",
     borderTopColor: "#a6a6a6",
     borderTopWidth: 1,
+    zIndex: 9999,
   },
   indicatorStyle: {
-    top: 0,
-    backgroundColor: "#581c0c",
+    display: "none",
   },
 };
 
@@ -143,6 +144,8 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
   return (
     <Sentry.ErrorBoundary>
       <NavigationContainer>
+        <TabBarButton />
+
         <Tab.Navigator tabBarOptions={barOptions} tabBarPosition="bottom">
           <Tab.Screen
             key="monthly"
@@ -150,12 +153,12 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
             component={MonthlyExpensesScreen}
             options={tabOptions("home", "Monthly expenses")}
           />
-          <Tab.Screen
+          {/* <Tab.Screen
             key="all"
             name="all expesnes"
             component={buildStackNav}
             options={tabOptions("calendar", "All expenses")}
-          />
+          /> */}
           <Tab.Screen
             key="settings"
             name="settings"
