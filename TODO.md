@@ -11,7 +11,7 @@
   - give feedback
   - donate
   - add date & time format customization
-  
+
 - add way to "finish current month and move to next"
 - add button to change month reset day
 - add tests
@@ -23,4 +23,3 @@
 - add workflow to gen debug with different identifier so it doesnt clash with prod version on the same device
 - update splashscreen so it fits well on bigger screens (tablets, chromebooks)
 - update bottom tab bars to have icon tab and text on larger devices (tablets, chromebooks)
-- add monitoring for production errors (sentry, bugsnag, etc)
