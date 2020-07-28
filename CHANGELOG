@@ -7,6 +7,7 @@ Features:
   when creating or updating a notification you can now choose a day to get a reminder notification
 - added a "settings" screen with about information and where you can now change your currency or language
 - improved UX for expense removal
+- added error monitoring (sentry)
 
 UI Changes: 
 - align "amounts" on lists

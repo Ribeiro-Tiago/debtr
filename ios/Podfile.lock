@@ -308,16 +308,24 @@ PODS:
     - React
   - RNDateTimePicker (2.6.0):
     - React
+  - RNDeviceInfo (5.6.3):
+    - React
   - RNGestureHandler (1.6.1):
     - React
   - RNReanimated (1.9.0):
     - React
   - RNScreens (2.9.0):
     - React
+  - RNSentry (1.7.0):
+    - React
+    - Sentry (~> 5.1.8)
   - RNSnackbar (2.2.3):
     - React
   - RNVectorIcons (6.6.0):
     - React
+  - Sentry (5.1.10):
+    - Sentry/Core (= 5.1.10)
+  - Sentry/Core (5.1.10)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -377,9 +385,11 @@ DEPENDENCIES:
   - "RNCPicker (from `../node_modules/@react-native-community/picker`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSnackbar (from `../node_modules/react-native-snackbar`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -397,6 +407,7 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - OpenSSL-Universal
+    - Sentry
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -464,12 +475,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/push-notification-ios"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNSnackbar:
     :path: "../node_modules/react-native-snackbar"
   RNVectorIcons:
@@ -521,11 +536,14 @@ SPEC CHECKSUMS:
   RNCPicker: 55b9b4240d0a9eba8733d02616775d4040de2e7d
   RNCPushNotificationIOS: 4c97a36dbec42dba411cc35e6dac25e34a805fde
   RNDateTimePicker: e386ff4ef3300964ed0cad97ce6f206e0effbfdb
+  RNDeviceInfo: 5be12a5bfbb8da3528c43ee4373abd9c30d04616
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
+  RNSentry: 05192c14c02562eb7810d6ac3c227b68e76cfb9c
   RNSnackbar: a08d0d7e1e18c7312cd2b9c6f476211267855bce
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  Sentry: 8715e88b813bde9ad37aead365d5b04ac7302153
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
