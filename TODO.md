@@ -11,7 +11,9 @@
   - give feedback
   - donate
   - add date & time format customization
-
+  
+- add way to "finish current month and move to next"
+- add button to change month reset day
 - add tests
 - add a tutorial
 - add light / dark theme
