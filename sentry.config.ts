@@ -2,6 +2,10 @@ import * as Sentry from "@sentry/react-native";
 import DeviceInfo from "react-native-device-info";
 
 export default () => {
+  if (process.env.NODE_ENV !== "production") {
+    return;
+  }
+
   Sentry.init({
     dsn: "<key>",
     normalizeDepth: 10,
