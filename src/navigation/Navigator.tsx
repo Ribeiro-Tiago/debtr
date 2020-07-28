@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { Alert, StyleSheet } from "react-native";
+import { Alert, StyleSheet, View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -9,6 +9,7 @@ import {
 import SplashScreen from "react-native-splash-screen";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import * as Sentry from "@sentry/react-native";
 
 import {
   AllExpensesScreen,
@@ -104,15 +105,8 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
         return;
       })
       .catch((error) => {
+        Sentry.captureException(error);
         SplashScreen.hide();
-        let err: string;
-        try {
-          err = JSON.stringify(error);
-        } catch (ex) {
-          err = error;
-        }
-
-        console.error(error);
         Alert.alert(i18n.errTitle, i18n.errMsg, [{ text: i18n.close }]);
       });
   }, []);
@@ -147,28 +141,30 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
   };
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator tabBarOptions={barOptions} tabBarPosition="bottom">
-        <Tab.Screen
-          key="monthly"
-          name="monthly expenses"
-          component={MonthlyExpensesScreen}
-          options={tabOptions("home", "Monthly expenses")}
-        />
-        <Tab.Screen
-          key="all"
-          name="all expesnes"
-          component={buildStackNav}
-          options={tabOptions("calendar", "All expenses")}
-        />
-        <Tab.Screen
-          key="settings"
-          name="settings"
-          component={buildSettingsNav}
-          options={tabOptions("settings", "Settings")}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Sentry.ErrorBoundary>
+      <NavigationContainer>
+        <Tab.Navigator tabBarOptions={barOptions} tabBarPosition="bottom">
+          <Tab.Screen
+            key="monthly"
+            name="monthly expenses"
+            component={MonthlyExpensesScreen}
+            options={tabOptions("home", "Monthly expenses")}
+          />
+          <Tab.Screen
+            key="all"
+            name="all expesnes"
+            component={buildStackNav}
+            options={tabOptions("calendar", "All expenses")}
+          />
+          <Tab.Screen
+            key="settings"
+            name="settings"
+            component={buildSettingsNav}
+            options={tabOptions("settings", "Settings")}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Sentry.ErrorBoundary>
   );
 }
 
