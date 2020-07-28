@@ -82,6 +82,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -152,9 +153,9 @@ android {
         }
         release {
             storeFile file('release.keystore')
-            storePassword System.getenv('STORE_PASSWORD')
-            keyAlias System.getenv('STORE_ALIAS')
-            keyPassword System.getenv('ALIAS_PASSWORD')
+            storePassword "d3B7r_2020"
+            keyAlias "debtr"
+            keyPassword "d3B7r_2020"
         }
     }
     
