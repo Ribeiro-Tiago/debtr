@@ -4,6 +4,8 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { getPlatformIcon } from "../utils";
+import { ROUTES } from "../navigation/routes";
+import { navigate } from "../navigation/externalNavigate";
 
 export default () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -12,12 +14,13 @@ export default () => {
   const [itemWidth] = useState(new Animated.Value(80));
   const [itemHeight] = useState(new Animated.Value(80));
   const [itemMargin] = useState(new Animated.Value(20));
+  // const { navigate } = useNavigation();
   // for rotate animation
   // const [rotateZ] = useState(new Animated.Value(0));
 
   const menuItems = [
-    { icon: "playlist-plus", id: "addExpense" },
-    { icon: "calendar-arrow-right", id: "endMonth" },
+    { icon: "playlist-plus", route: ROUTES.EXPENSE_FORM },
+    { icon: "calendar-arrow-right", route: ROUTES.ALL_EXPENSES },
   ];
 
   const toggleMenu = () => {
@@ -69,9 +72,9 @@ export default () => {
     }).start();
   };
 
-  const onPress = (id: string) => {
-    console.log("press", id);
+  const onPress = (route: ROUTES) => {
     toggleMenu();
+    navigate(route);
   };
   return (
     <>
@@ -94,25 +97,16 @@ export default () => {
                 name={item.icon}
                 color="#f7f7f7"
                 size={38}
-                onPress={() => onPress(item.id)}
+                onPress={() => onPress(item.route)}
               />
             </Animated.View>
           );
         })}
       </Animated.View>
 
-      <Animated.View
-        style={[
-          styles.button,
-          // { transform: [{ rotateZ }] },
-        ]}>
+      <Animated.View style={styles.buttonWrapper}>
         <IonIcon
-          style={{
-            fontSize: 32,
-            color: "#f1e3cb",
-            height: 32,
-            width: 32,
-          }}
+          style={styles.button}
           name={getPlatformIcon(isVisible ? "close" : "add")}
           onPress={toggleMenu}
         />
@@ -133,7 +127,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    bottom: 60,
   },
   menuItem: {
     borderRadius: 30,
@@ -147,10 +140,10 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 3,
   },
-  button: {
+  buttonWrapper: {
     position: "absolute",
     zIndex: 999,
-    bottom: 8,
+    bottom: 20,
     backgroundColor: "#581c0c",
     alignSelf: "center",
     shadowColor: "black",
@@ -158,11 +151,19 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0.5, height: 0.5 },
     shadowRadius: 5,
     elevation: 3, //Because shadow only work on iOS, elevation is same thing but for android.
-    width: 40,
-    height: 40,
+    width: 48,
+    height: 48,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 40,
     display: "flex",
+  },
+  button: {
+    marginLeft: 2,
+    marginBottom: 2,
+    fontSize: 40,
+    color: "#f1e3cb",
+    height: 40,
+    width: 40,
   },
 });
