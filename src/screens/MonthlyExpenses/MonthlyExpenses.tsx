@@ -5,6 +5,7 @@ import Emoji from "react-native-emoji";
 import { List, TopBar, ListItem } from "../../components";
 import { Item, RenderItemParams, SupportedCurrencies } from "../../types";
 import { i18nContext } from "../../contexts/i18n";
+import { getPlatformIcon } from "../../utils";
 
 interface Props {
   items: Item[];
@@ -41,8 +42,10 @@ export default function MonthlyExpenses({
       <ListItem
         {...props}
         onPress={onItemPress}
-        iconName="ios-checkmark"
-        hideIcon={!props.item.isPaid}
+        iconName={getPlatformIcon(
+          props.item.isPaid ? "checkbox-outline" : "square-outline",
+        )}
+        halfVisible={props.item.isPaid}
         currency={currCurrency}
       />
     );
