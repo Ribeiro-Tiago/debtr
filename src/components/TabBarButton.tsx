@@ -1,14 +1,24 @@
 import React, { useState } from "react";
-import { View, Text, Animated, StyleSheet, Dimensions } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import { Animated, StyleSheet } from "react-native";
+import IonIcon from "react-native-vector-icons/Ionicons";
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { getPlatformIcon } from "../utils";
 
 export default () => {
-  const hiddenBottom = Math.floor((Dimensions.get("window").height / 2) * -1);
   const [isVisible, setIsVisible] = useState(false);
-  const [bottom] = useState(new Animated.Value(hiddenBottom));
-  const [rotateZ] = useState(new Animated.Value(0));
+  const [menuWrapperVisible, setMenuWrapper] = useState(false);
+  const [itemBottom] = useState(new Animated.Value(0));
+  const [itemWidth] = useState(new Animated.Value(80));
+  const [itemHeight] = useState(new Animated.Value(80));
+  const [itemMargin] = useState(new Animated.Value(20));
+  // for rotate animation
+  // const [rotateZ] = useState(new Animated.Value(0));
+
+  const menuItems = [
+    { icon: "playlist-plus", id: "addExpense" },
+    { icon: "calendar-arrow-right", id: "endMonth" },
+  ];
 
   const toggleMenu = () => {
     setIsVisible(!isVisible);
@@ -16,89 +26,143 @@ export default () => {
   };
 
   const animateMenu = () => {
-    Animated.spring(bottom, {
-      toValue: isVisible ? hiddenBottom : 60,
+    // TODO: implemnet rotate animation on button
+    // Animated.timing(rotateZ, {
+    //   toValue: isVisible ? 45 : 0,
+    //   useNativeDriver: false,
+    //   duration: 50,
+    //   isInteraction: false,
+    // }).start();
+
+    if (isVisible) {
+      setTimeout(() => setMenuWrapper(false), 200);
+    } else {
+      setMenuWrapper(true);
+    }
+
+    Animated.spring(itemBottom, {
+      toValue: isVisible ? -60 : 10,
       bounciness: 0,
       useNativeDriver: false,
-      speed: 2,
+      speed: 20,
     }).start();
 
-    Animated.spring(rotateZ, {
-      toValue: isVisible ? 0 : 45,
+    Animated.spring(itemHeight, {
+      toValue: isVisible ? 0 : 58,
       bounciness: 0,
       useNativeDriver: false,
-      speed: 2,
+      speed: 20,
+    }).start();
+
+    Animated.spring(itemWidth, {
+      toValue: isVisible ? 0 : 58,
+      bounciness: 0,
+      useNativeDriver: false,
+      speed: 20,
+    }).start();
+
+    Animated.spring(itemMargin, {
+      toValue: isVisible ? -60 : 20,
+      bounciness: 0,
+      useNativeDriver: false,
+      speed: 20,
     }).start();
   };
 
+  const onPress = (id: string) => {
+    console.log("press", id);
+    toggleMenu();
+  };
   return (
     <>
       <Animated.View
-        style={[
-          {
-            position: "absolute",
-            left: 0,
-            right: 0,
-            zIndex: 1,
-            backgroundColor: "#f9f9f9",
-            paddingVertical: 0,
-            shadowColor: "black",
-            shadowOpacity: 0.5,
-            shadowOffset: { width: 0, height: 0 },
-            shadowRadius: 5,
-            elevation: 3, //Because shadow only work on iOS, elevation is same thing but for android.
-          },
-          { bottom },
-        ]}>
-        {["create", "move"].map((item) => {
+        style={[styles.menu, { bottom: menuWrapperVisible ? 50 : -80 }]}>
+        {menuItems.map((item, index) => {
           return (
-            <View
-              style={{
-                padding: 10,
-                borderBottomWidth: 0.5,
-                borderBottomColor: "#000",
-                justifyContent: "center",
-                alignItems: "center",
-                display: "flex",
-              }}>
-              <Text key={item} style={{ fontSize: 20 }}>
-                {item}
-              </Text>
-            </View>
+            <Animated.View
+              key={index}
+              style={[
+                styles.menuItem,
+                {
+                  marginLeft: index !== 0 ? itemMargin : 0,
+                  bottom: itemBottom,
+                  width: itemWidth,
+                  height: itemHeight,
+                },
+              ]}>
+              <MaterialIcon
+                name={item.icon}
+                color="#f7f7f7"
+                size={38}
+                onPress={() => onPress(item.id)}
+              />
+            </Animated.View>
           );
         })}
       </Animated.View>
 
-      <View
+      <Animated.View
         style={[
-          {
-            position: "absolute",
-            zIndex: 999,
-            bottom: 8,
-            backgroundColor: "#581c0c",
-            alignSelf: "center",
-            shadowColor: "black",
-            shadowOpacity: 0.5,
-            shadowOffset: { width: 0.5, height: 0.5 },
-            shadowRadius: 5,
-            elevation: 3, //Because shadow only work on iOS, elevation is same thing but for android.
-            width: 40,
-            height: 40,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 40,
-            display: "flex",
-          },
-          { transform: [{ rotate: rotateZ as any }] },
+          styles.button,
+          // { transform: [{ rotateZ }] },
         ]}>
-        <Icon
-          style={{ fontSize: 40, color: "#f1e3cb" }}
-          name={getPlatformIcon("add")}
+        <IonIcon
+          style={{
+            fontSize: 32,
+            color: "#f1e3cb",
+            height: 32,
+            width: 32,
+          }}
+          name={getPlatformIcon(isVisible ? "close" : "add")}
           onPress={toggleMenu}
         />
-      </View>
+      </Animated.View>
     </>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  menu: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    paddingVertical: 0,
+    height: 80,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    bottom: 60,
+  },
+  menuItem: {
+    borderRadius: 30,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#581c0c",
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0.3, height: 0.3 },
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  button: {
+    position: "absolute",
+    zIndex: 999,
+    bottom: 8,
+    backgroundColor: "#581c0c",
+    alignSelf: "center",
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0.5, height: 0.5 },
+    shadowRadius: 5,
+    elevation: 3, //Because shadow only work on iOS, elevation is same thing but for android.
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 40,
+    display: "flex",
+  },
+});

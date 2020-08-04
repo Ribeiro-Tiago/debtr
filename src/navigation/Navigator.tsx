@@ -163,7 +163,7 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
             key="settings"
             name="settings"
             component={buildSettingsNav}
-            options={tabOptions("settings", "Settings")}
+            options={tabOptions("cog", "Settings")}
           />
         </Tab.Navigator>
       </NavigationContainer>
