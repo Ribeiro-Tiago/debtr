@@ -1,4 +1,4 @@
-name: "Create release"
+name: "create release"
 
 on:
   pull_request:
@@ -26,7 +26,7 @@ jobs:
       - name: Update app version
         run: yarn update-version
 
-      - uses: Push versions
+      - name: Push versions
         run: |
           git fetch
           git commit -m "Update app version" -a
