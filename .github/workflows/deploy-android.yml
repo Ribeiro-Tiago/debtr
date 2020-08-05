@@ -1,0 +1,33 @@
+name: "Google Play Deploy"
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    
+    env:
+      KEYSTORE_ALIAS: ${{ secrets.STORE_ALIAS }}
+      KEYSTORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+      KEYSTORE_ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn install --prod --frozen-lockfile
+
+      - name: Rebuild keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" > release.asc
+          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch release.asc > android/app/release.keystore
+
+      - name: Build aab
+        run: |
+          [ -d android/app/src/main/assets ] || mkdir android/app/src/main/assets
+          yarn build:aab
+
+      - name: Deploy to store
+        run: yarn deploy:android
