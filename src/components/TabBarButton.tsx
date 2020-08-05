@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Animated, StyleSheet } from "react-native";
-import IonIcon from "react-native-vector-icons/Ionicons";
-import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { getPlatformIcon } from "../utils";
 import { ROUTES } from "../navigation/routes";
 import { navigate } from "../navigation/externalNavigate";
 
@@ -93,7 +91,7 @@ export default () => {
                   height: itemHeight,
                 },
               ]}>
-              <MaterialIcon
+              <Icon
                 name={item.icon}
                 color="#f7f7f7"
                 size={38}
@@ -105,9 +103,9 @@ export default () => {
       </Animated.View>
 
       <Animated.View style={styles.buttonWrapper}>
-        <IonIcon
+        <Icon
           style={styles.button}
-          name={getPlatformIcon(isVisible ? "close" : "add")}
+          name={"dots-horizontal"}
           onPress={toggleMenu}
         />
       </Animated.View>
