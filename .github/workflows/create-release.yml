@@ -1,13 +1,7 @@
-name: "create release"
+name: "Create release"
 
 on:
   pull_request:
-    branches: [master]
-    paths:
-      - src/**
-      - android/**
-      - ios/**
-  push:
     branches: [master]
     paths:
       - src/**
@@ -32,8 +26,12 @@ jobs:
       - name: Update app version
         run: yarn update-version
 
-      - uses: mikeal/publish-to-github-action@master
-        env:
+      - uses: Push versions
+        run: |
+          git fetch
+          git commit -m "Update app version" -a
+          git push
+        with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ secrets.USER_NAME }}
 
