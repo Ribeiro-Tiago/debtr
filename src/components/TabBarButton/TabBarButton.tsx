@@ -22,7 +22,7 @@ export default ({ updateCurrItem }: Props) => {
 
   const menuItems = [
     {
-      icon: "playlist-plus",
+      icon: "plus-circle",
       action: () => {
         updateCurrItem();
         navigate(ROUTES.EXPENSE_FORM);
@@ -30,7 +30,7 @@ export default ({ updateCurrItem }: Props) => {
     },
     // { icon: "calendar-arrow-right", route: ROUTES.ALL_EXPENSES },
     {
-      icon: "calendar-arrow-right",
+      icon: "clipboard-text",
       action: () => navigate(ROUTES.ALL_EXPENSES),
     },
   ];
@@ -85,8 +85,8 @@ export default ({ updateCurrItem }: Props) => {
   };
 
   const onPress = (menuAction: Function) => {
-    toggleMenu();
     menuAction();
+    setTimeout(() => toggleMenu(), 500);
   };
   return (
     <>
@@ -108,7 +108,7 @@ export default ({ updateCurrItem }: Props) => {
               <Icon
                 name={item.icon}
                 color="#f7f7f7"
-                size={38}
+                size={32}
                 onPress={() => onPress(item.action)}
               />
             </Animated.View>
