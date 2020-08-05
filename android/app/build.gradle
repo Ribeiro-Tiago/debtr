@@ -133,8 +133,8 @@ android {
         applicationId "com.debtr"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 210
-        versionName "2.1.0"
+        versionCode 211
+        versionName "2.1.1"
     }
     splits {
         abi {
@@ -153,9 +153,9 @@ android {
         }
         release {
             storeFile file('release.keystore')
-            storePassword "$System.env.KEYSTORE_PASSWORD"
-            keyAlias "$System.env.STORE_ALIAS"
-            keyPassword "$System.env.STORE_PASSWORD"
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEYSTORE_ALIAS")
+            keyPassword System.getenv("KEYSTORE_ALIAS_PASSWORD")
         }
     }
     
