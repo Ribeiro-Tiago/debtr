@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { join } = require("path");
+const { resolve } = require("path");
 const { readFileSync, writeFileSync } = require("fs");
 const {
   versionWithDate,
@@ -8,7 +8,6 @@ const {
   pkgJsonVersion,
   buildGradle,
 } = require("./regex");
-const pkgjson = require("../package.json");
 
 const getToday = () => {
   const addLeadZero = (num) => `0${num}`.substr(-2);
@@ -20,7 +19,7 @@ const getToday = () => {
 };
 
 const updateChangelogDateAndGetVersion = () => {
-  const path = join(__dirname, "../CHANGELOG");
+  const path = resolve(__dirname, "../CHANGELOG");
   let changelog = readFileSync(path, { encoding: "utf-8" });
 
   const [version] = changelog.match(versionWithV);
@@ -36,15 +35,18 @@ const updateChangelogDateAndGetVersion = () => {
 };
 
 const updatePackageJsonVersion = (version) => {
+  const path = resolve(__dirname, "../package.json");
+  let json = readFileSync(path, { encoding: "utf-8" });
+
   console.log(`[>] Updating package.json version to ${version}`);
 
-  const json = pkgjson.replace(pkgJsonVersion, `"version": "${version}"`);
+  json = json.replace(pkgJsonVersion, `"version": "${version}"`);
 
   writeFileSync(path, json);
 };
 
 const updateBuildGradleVersion = (version) => {
-  const path = join(__dirname, "../android/app/build.gradle");
+  const path = resolve(__dirname, "../android/app/build.gradle");
   let gradle = readFileSync(path, { encoding: "utf-8" });
 
   const versionCode = version.replace(/\./g, "");

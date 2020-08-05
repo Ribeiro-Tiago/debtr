@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 const { Apkup } = require("apkup");
-const { resolve, join } = require("path");
+const { resolve } = require("path");
 const { readFileSync, existsSync } = require("fs");
 
 const { versionWithV } = require("./regex");
 
 const getChangelog = () => {
-  const results = readFileSync(join(__dirname, "../CHANGELOG"), {
+  const results = readFileSync(resolve(__dirname, "../CHANGELOG"), {
     encoding: "utf-8",
   });
 
