@@ -1,0 +1,55 @@
+name: "create release"
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - src/**
+      - android/**
+      - ios/**
+  push:
+    branches: [master]
+    paths:
+      - src/**
+      - android/**
+      - ios/**
+
+jobs:
+  upgrade-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Config
+        run: |
+          git config --local user.email ${{ secrets.USER_EMAIL }}
+          git config --local user.name ${{ secrets.USER_NAME }}
+
+      - name: "Install dependecies"
+        run: yarn install --frozen-lockfile
+
+      - name: Update app version
+        run: yarn update-version
+
+      - uses: mikeal/publish-to-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ secrets.USER_NAME }}
+
+  create-draft-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: New release
+          release_name: New Release
+          draft: true
+          prerelease: false
