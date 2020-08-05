@@ -5,7 +5,6 @@ import {
   ScrollView,
   Text,
   TouchableWithoutFeedback,
-  Platform,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -45,8 +44,6 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
       // setLocale(locale);
       setI18n(locales[locale]);
       updateLocale(locale);
-
-      console.log("new locale", locale);
     };
 
     return (
@@ -74,7 +71,7 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
           onPress={() => setWebviewUri(`${PDF_ASSET_URL}/${file}`)}>
           <View style={styles.group}>
             <Text style={styles.groupText}>{label}</Text>
-            <Icon name="ios-arrow-forward" size={24} />
+            <Icon name="ios-chevron-forward" size={24} />
           </View>
         </TouchableWithoutFeedback>
       );
@@ -100,7 +97,6 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
     // const onPickerClose = () => updateCurrency(currency); // TODO: IOS
 
     const onChange = (currency: SupportedCurrencies) => {
-      console.log("New currency", currency);
       updateCurrency(currency);
       setCurrency(currency);
 

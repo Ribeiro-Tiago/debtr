@@ -4,30 +4,27 @@ import {
   StyleSheet,
   Text,
   Platform,
-  TouchableWithoutFeedback,
   ScrollView,
-  Alert,
   KeyboardAvoidingView,
 } from "react-native";
 import { useForm } from "react-hook-form";
+import Snackbar from "react-native-snackbar";
 import { useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/Ionicons";
 
 import { Item } from "../../types";
 import {
-  TopBar,
   FormItem,
   MonthSelector,
   NotificationController,
+  TopBar,
 } from "../../components";
-import { getPlatformIcon } from "../../utils";
+
 import { i18nContext } from "../../contexts/i18n";
 import {
   CreateItemParams,
   RemoveItemParams,
   UpdateItemParams,
 } from "../../types/item";
-import Snackbar from "react-native-snackbar";
 
 interface Props {
   item: Item | null;
@@ -111,10 +108,12 @@ export default function ExpenseForm({
           ...item,
           ...data,
           months: selectedMonths,
-          notification: {
-            id: item.notification.id,
-            date: pickerDate,
-          },
+          ...(item.notification && {
+            notification: {
+              id: item.notification.id,
+              date: pickerDate,
+            },
+          }),
         },
         oldAmount: initialValues.amount,
         oldNotif: item.notification,
@@ -157,24 +156,10 @@ export default function ExpenseForm({
 
   const renderTopBar = () => {
     return (
-      <TopBar>
-        <View style={styles.topbarContainer}>
-          <TouchableWithoutFeedback onPress={goBack}>
-            <View style={styles.goBackWrapper}>
-              <Icon
-                name={getPlatformIcon("arrow-back")}
-                color="#581c0c"
-                size={24}
-              />
-              <Text style={styles.goBackText}>{i18n.back}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-
-          <Text style={styles.title}>
-            {isNew ? i18n.createExpenseTitle : i18n.updateExpenseTitle}
-          </Text>
-        </View>
-      </TopBar>
+      <TopBar
+        title={isNew ? i18n.createExpenseTitle : i18n.updateExpenseTitle}
+        hasBackButton={true}
+      />
     );
   };
 
@@ -283,18 +268,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-  },
-  goBackWrapper: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    position: "absolute",
-    left: 0,
-  },
-  goBackText: {
-    fontSize: 18,
-    marginLeft: 10,
-    color: "#581c0c",
   },
   title: {
     fontSize: 18,

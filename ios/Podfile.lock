@@ -321,7 +321,7 @@ PODS:
     - Sentry (~> 5.1.8)
   - RNSnackbar (2.2.3):
     - React
-  - RNVectorIcons (6.6.0):
+  - RNVectorIcons (7.0.0):
     - React
   - Sentry (5.1.10):
     - Sentry/Core (= 5.1.10)
@@ -542,7 +542,7 @@ SPEC CHECKSUMS:
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
   RNSentry: 05192c14c02562eb7810d6ac3c227b68e76cfb9c
   RNSnackbar: a08d0d7e1e18c7312cd2b9c6f476211267855bce
-  RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
   Sentry: 8715e88b813bde9ad37aead365d5b04ac7302153
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

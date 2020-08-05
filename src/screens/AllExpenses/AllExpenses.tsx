@@ -121,7 +121,9 @@ export default function AllExpenses({
 
   return (
     <View style={styles.container}>
-      <TopBar title={i18n.allExpensesTitle}>{renderHeaderButton()}</TopBar>
+      <TopBar hasBackButton={true} title={i18n.allExpensesTitle}>
+        {renderHeaderButton()}
+      </TopBar>
 
       <List
         data={items}
