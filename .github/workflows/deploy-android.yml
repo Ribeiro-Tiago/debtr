@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      KEYSTORE_ALIAS: ${{ secrets.STORE_ALIAS }}
-      KEYSTORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-      KEYSTORE_ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+      KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v2
