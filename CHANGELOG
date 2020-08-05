@@ -1,36 +1,36 @@
 v2.1.1 (05/08/2020)
-Features: 
-- list reoredering
-- added multiple language support (currently supports portuguese and english)
-- added multiple currency suppport (currently supports euro, usd and gbp)
-- added per expense reminder notification (BETA)
-  when creating or updating a notification you can now choose a day to get a reminder notification
-- added a "settings" screen with about information and where you can now change your currency or language
-- added error monitoring (sentry)
+  Features: 
+  - list reoredering
+  - added multiple language support (currently supports portuguese and english)
+  - added multiple currency suppport (currently supports euro, usd and gbp)
+  - added per expense reminder notification (BETA)
+    when creating or updating a notification you can now choose a day to get a reminder notification
+  - added a "settings" screen with about information and where you can now change your currency or language
+  - added error monitoring (sentry)
 
-UI Changes: 
-- align "amounts" on lists
-- improved UX for expense removal
-- updated menu (bottom) bar
-- changed indicator for when expense is (not) paid
+  UI Changes: 
+  - align "amounts" on lists
+  - improved UX for expense removal
+  - updated menu (bottom) bar
+  - changed indicator for when expense is (not) paid
 
-Fixes:
-- Fixed issue where click on "✓" on monthly expenses list would crash the app
+  Fixes:
+  - Fixed issue where click on "✓" on monthly expenses list would crash the app
 
 v2.0.1 (10/06/2020)
-- fixed issue with "left" on monthly expenses screen sometimes displaying wrong decimal values
-- fixed issue with error message that appeared sometimes on startup
-- fixed issue with "left" on monthly expenses screen where it was counting expenses not from the current month as well
+  - fixed issue with "left" on monthly expenses screen sometimes displaying wrong decimal values
+  - fixed issue with error message that appeared sometimes on startup
+  - fixed issue with "left" on monthly expenses screen where it was counting expenses not from the current month as well
 
 v2.0.0 (05/06/2020)
-- Overhauled UI
-- Deployed to google store
-- Fixed issue with total left to pay with expenses that only occur on some months (top priority)
-- added liting
-- added proper icon & splash screen
-- added listing of all existing expenses
-- added edit expense
-- added delete expense
+  - Overhauled UI
+  - Deployed to google store
+  - Fixed issue with total left to pay with expenses that only occur on some months (top priority)
+  - added liting
+  - added proper icon & splash screen
+  - added listing of all existing expenses
+  - added edit expense
+  - added delete expense
 
 v1.0.0 (03/03/2020)
-- Initial release
+  - Initial release
