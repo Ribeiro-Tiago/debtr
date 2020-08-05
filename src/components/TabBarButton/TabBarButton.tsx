@@ -30,7 +30,7 @@ export default ({ updateCurrItem }: Props) => {
     },
     // { icon: "calendar-arrow-right", route: ROUTES.ALL_EXPENSES },
     {
-      icon: "clipboard-text",
+      icon: "clipboard-text-multiple",
       action: () => navigate(ROUTES.ALL_EXPENSES),
     },
   ];
