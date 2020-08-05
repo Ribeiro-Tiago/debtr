@@ -6,12 +6,13 @@ Features:
 - added per expense reminder notification (BETA)
   when creating or updating a notification you can now choose a day to get a reminder notification
 - added a "settings" screen with about information and where you can now change your currency or language
-- improved UX for expense removal
 - added error monitoring (sentry)
 
 UI Changes: 
 - align "amounts" on lists
-- bottom menu bar now has icons instead of texts
+- improved UX for expense removal
+- updated menu (bottom) bar
+- changed indicator for when expense is (not) paid
 
 Fixes:
 - Fixed issue where click on "✓" on monthly expenses list would crash the app
