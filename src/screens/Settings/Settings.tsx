@@ -45,8 +45,6 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
       // setLocale(locale);
       setI18n(locales[locale]);
       updateLocale(locale);
-
-      console.log("new locale", locale);
     };
 
     return (
@@ -100,7 +98,6 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
     // const onPickerClose = () => updateCurrency(currency); // TODO: IOS
 
     const onChange = (currency: SupportedCurrencies) => {
-      console.log("New currency", currency);
       updateCurrency(currency);
       setCurrency(currency);
 

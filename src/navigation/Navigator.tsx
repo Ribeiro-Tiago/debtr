@@ -55,16 +55,9 @@ const renderTabBar = ({
   const icons: any = { expenses: "home", settings: "cog" };
   const inputRange = state.routes.map((_, i) => i);
 
-  console.log(
-    "render tabbar",
-    state.routes.map((r) => r.state),
-  );
-
   return (
     <View style={styles.tabBar}>
       {state.routes.map((route, index) => {
-        console.log(route);
-
         const onPress = () => {
           const event = navigation.emit({
             type: "tabPress",
