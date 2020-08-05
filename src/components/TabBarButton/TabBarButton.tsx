@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { Animated, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { ROUTES } from "../navigation/routes";
-import { navigate } from "../navigation/externalNavigate";
+import { ROUTES } from "../../navigation/routes";
+import { navigate } from "../../navigation/externalNavigate";
 
-export default () => {
+interface Props {
+  updateCurrItem: () => void;
+}
+
+export default ({ updateCurrItem }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
   const [menuWrapperVisible, setMenuWrapper] = useState(false);
   const [itemBottom] = useState(new Animated.Value(0));
@@ -17,8 +21,18 @@ export default () => {
   // const [rotateZ] = useState(new Animated.Value(0));
 
   const menuItems = [
-    { icon: "playlist-plus", route: ROUTES.EXPENSE_FORM },
-    { icon: "calendar-arrow-right", route: ROUTES.ALL_EXPENSES },
+    {
+      icon: "playlist-plus",
+      action: () => {
+        updateCurrItem();
+        navigate(ROUTES.EXPENSE_FORM);
+      },
+    },
+    // { icon: "calendar-arrow-right", route: ROUTES.ALL_EXPENSES },
+    {
+      icon: "calendar-arrow-right",
+      action: () => navigate(ROUTES.ALL_EXPENSES),
+    },
   ];
 
   const toggleMenu = () => {
@@ -70,9 +84,9 @@ export default () => {
     }).start();
   };
 
-  const onPress = (route: ROUTES) => {
+  const onPress = (menuAction: Function) => {
     toggleMenu();
-    navigate(route);
+    menuAction();
   };
   return (
     <>
@@ -95,7 +109,7 @@ export default () => {
                 name={item.icon}
                 color="#f7f7f7"
                 size={38}
-                onPress={() => onPress(item.route)}
+                onPress={() => onPress(item.action)}
               />
             </Animated.View>
           );
