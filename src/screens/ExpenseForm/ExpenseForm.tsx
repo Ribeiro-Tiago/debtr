@@ -108,10 +108,12 @@ export default function ExpenseForm({
           ...item,
           ...data,
           months: selectedMonths,
-          notification: {
-            id: item.notification.id,
-            date: pickerDate,
-          },
+          ...(item.notification && {
+            notification: {
+              id: item.notification.id,
+              date: pickerDate,
+            },
+          }),
         },
         oldAmount: initialValues.amount,
         oldNotif: item.notification,
