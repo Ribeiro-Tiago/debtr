@@ -7,7 +7,7 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    
+
     env:
       KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -27,7 +27,7 @@ jobs:
       - name: Build aab
         run: |
           [ -d android/app/src/main/assets ] || mkdir android/app/src/main/assets
-          yarn build:aab
+          yarn release:aab
 
       - name: Deploy to store
         run: yarn deploy:android
