@@ -30,7 +30,7 @@ jobs:
       - name: Push versions
         run: |
           git fetch
-          git checkout dev
+          git checkout master
           git commit -m "Update app version" -a
           git push
         env:
