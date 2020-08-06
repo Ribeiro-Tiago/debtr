@@ -210,6 +210,8 @@ dependencies {
 
     compile project(':react-native-snackbar')
 
+    implementation project(':react-native-config')
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }
@@ -244,4 +246,5 @@ project.ext.vectoricons = [
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); 
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 applyNativeModulesAppBuildGradle(project)
