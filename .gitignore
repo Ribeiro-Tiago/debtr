@@ -60,3 +60,5 @@ buck-out/
 
 index.android.bundle
 infra/google-api.json
+
+.env

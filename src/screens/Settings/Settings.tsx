@@ -34,7 +34,14 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
   };
 
   const renderLanguage = () => {
-    const onPickerClose = () => {
+    /* TODO: IOS 
+      const onPickerClose = () => {
+      setI18n(locales[locale]);
+      updateLocale(locale);
+    }; */
+
+    const onChange = (locale: SupportedLocales) => {
+      // setLocale(locale);
       setI18n(locales[locale]);
       updateLocale(locale);
     };
@@ -44,8 +51,8 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
         {renderSectionTitle(i18n.langauge)}
 
         <SettingsPicker<SupportedLocales>
-          onClose={onPickerClose}
-          onChange={setLocale}
+          // onClose={onPickerClose} TODO: IOS
+          onChange={onChange}
           value={locale}
           data={localePickerData.map((l) => ({
             key: l.key,
@@ -64,7 +71,7 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
           onPress={() => setWebviewUri(`${PDF_ASSET_URL}/${file}`)}>
           <View style={styles.group}>
             <Text style={styles.groupText}>{label}</Text>
-            <Icon name="ios-arrow-forward" size={24} />
+            <Icon name="ios-chevron-forward" size={24} />
           </View>
         </TouchableWithoutFeedback>
       );
@@ -87,15 +94,25 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
   };
 
   const renderCurrency = () => {
-    const onPickerClose = () => updateCurrency(currency);
+    // const onPickerClose = () => updateCurrency(currency); // TODO: IOS
+
+    const onChange = (currency: SupportedCurrencies) => {
+      updateCurrency(currency);
+      setCurrency(currency);
+
+      // TODO: activate when published to ios
+      // if (Platform.OS === "android") {
+      // onPickerClose();
+      // }
+    };
 
     return (
       <>
         {renderSectionTitle(i18n.currency)}
 
         <SettingsPicker<SupportedCurrencies>
-          onClose={onPickerClose}
-          onChange={setCurrency}
+          // onClose={onPickerClose} TODO: ios
+          onChange={onChange}
           value={currency}
           data={currencies.map((c) => ({
             key: c.key,

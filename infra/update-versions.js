@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 
-import { join } from "path";
-import { readFileSync, writeFileSync } from "fs";
-import {
+const { resolve } = require("path");
+const { readFileSync, writeFileSync } = require("fs");
+const {
   versionWithDate,
   versionWithV,
   pkgJsonVersion,
+  versionHasDate,
   buildGradle,
-} from "./regex";
+} = require("./regex");
 
 const getToday = () => {
-  const addLeadZero = (num: number) => `0${num}`.substr(-2);
+  const addLeadZero = (num) => `0${num}`.substr(-2);
   const d = new Date();
 
   return `${addLeadZero(d.getDate())}/${addLeadZero(
@@ -19,12 +20,15 @@ const getToday = () => {
 };
 
 const updateChangelogDateAndGetVersion = () => {
-  const path = join(__dirname, "../CHANGELOG");
+  const path = resolve(__dirname, "../CHANGELOG");
   let changelog = readFileSync(path, { encoding: "utf-8" });
 
   const [version] = changelog.match(versionWithV);
 
-  if (versionWithDate.test(changelog)) {
+  if (!versionHasDate.test(changelog)) {
+    console.log("[>] skiping changelog date update as it's already defined");
+  } else if (versionWithDate.test(changelog)) {
+    console.log("> updating changelog date");
     changelog = changelog.replace(version, `${version} (${getToday()})`);
   }
 
@@ -33,23 +37,28 @@ const updateChangelogDateAndGetVersion = () => {
   return version.split("v")[1];
 };
 
-const updatePackageJsonVersion = (version: string) => {
-  const path = join(__dirname, "../package.json");
+const updatePackageJsonVersion = (version) => {
+  const path = resolve(__dirname, "../package.json");
   let json = readFileSync(path, { encoding: "utf-8" });
+
+  console.log(`[>] Updating package.json version to ${version}`);
 
   json = json.replace(pkgJsonVersion, `"version": "${version}"`);
 
   writeFileSync(path, json);
 };
 
-const updateBuildGradleVersion = (version: string) => {
-  const path = join(__dirname, "../android/app/build.gradle");
+const updateBuildGradleVersion = (version) => {
+  const path = resolve(__dirname, "../android/app/build.gradle");
   let gradle = readFileSync(path, { encoding: "utf-8" });
 
-  gradle = gradle.replace(
-    buildGradle.code,
-    `versionCode ${version.replace(".", "")}`,
-  );
+  const versionCode = version.replace(/\./g, "");
+
+  console.log(`[>] replacing build.gradle version code to ${versionCode}`);
+
+  gradle = gradle.replace(buildGradle.code, `versionCode ${versionCode}`);
+
+  console.log(`[>] replacing build.gradle version name to ${version}`);
   gradle = gradle.replace(buildGradle.name, `versionName "${version}"`);
 
   writeFileSync(path, gradle);

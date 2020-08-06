@@ -8,7 +8,9 @@ import { addAmount, subtractAmount } from "../../store/actions/amountLeft";
 import { isCurrentMonth } from "../../utils";
 
 const getMonthlyItems = (items: Item[]) => {
-  return items.filter(({ months }) => isCurrentMonth(months));
+  return items.filter(({ months, toRemove }) => {
+    return !toRemove && isCurrentMonth(months);
+  });
 };
 
 const mapStateToProps = ({ items, amountLeft, currency }: StoreState) => {

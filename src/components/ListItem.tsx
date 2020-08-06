@@ -12,9 +12,9 @@ const secondary = "#ca5116";
 interface Props {
   item: Item;
   iconName: string;
-  hideIcon?: boolean;
   isBeingDragged: boolean;
   currency: SupportedCurrencies;
+  halfVisible?: boolean;
   onPress: (item: Item) => void;
   onDrag: () => void;
   renderTags?: (item: Item) => React.ReactElement;
@@ -23,9 +23,9 @@ interface Props {
 export default function ListItem({
   item,
   iconName,
-  hideIcon,
   isBeingDragged,
   currency,
+  halfVisible = false,
   onPress,
   onDrag,
   renderTags,
@@ -46,7 +46,8 @@ export default function ListItem({
       key={item.id}
       onLongPress={onDrag}
       onPress={() => onPress(item)}>
-      <View style={[styles.wrapper, wrapperColor]}>
+      <View
+        style={[styles.wrapper, wrapperColor, halfVisible && { opacity: 0.5 }]}>
         <MaterialIcon
           name="drag"
           size={32}
@@ -65,7 +66,7 @@ export default function ListItem({
               onPress={() => onIconPress && onIconPress(item)}
               name={iconName}
               size={32}
-              color={hideIcon ? "transparent" : iconColor}
+              color={iconColor}
               style={styles.icon}
             />
           </View>

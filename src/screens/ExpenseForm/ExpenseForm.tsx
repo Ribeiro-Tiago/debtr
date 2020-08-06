@@ -4,24 +4,21 @@ import {
   StyleSheet,
   Text,
   Platform,
-  TouchableWithoutFeedback,
   ScrollView,
-  Alert,
   KeyboardAvoidingView,
 } from "react-native";
 import { useForm } from "react-hook-form";
+import Snackbar from "react-native-snackbar";
 import { useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/Ionicons";
-import { nanoid } from "nanoid/non-secure";
 
-import { Item, ItemNotification } from "../../types";
+import { Item } from "../../types";
 import {
-  TopBar,
   FormItem,
   MonthSelector,
   NotificationController,
+  TopBar,
 } from "../../components";
-import { getPlatformIcon } from "../../utils";
+
 import { i18nContext } from "../../contexts/i18n";
 import {
   CreateItemParams,
@@ -32,9 +29,14 @@ import {
 interface Props {
   item: Item | null;
   selectedMonths: number[];
+  isPickerVisible: boolean;
+  pickerDate: Date;
+  isNotifEnabled: boolean;
   create: (params: CreateItemParams) => void;
   update: (params: UpdateItemParams) => void;
   remove: (params: RemoveItemParams) => void;
+  undoRemoval: (id: string) => void;
+  hideForRemoval: (id: string) => void;
 }
 
 interface Form {
@@ -42,13 +44,19 @@ interface Form {
   amount: number;
 }
 
-// TODO: move notif values to redux
+// TODO: fill correct notif values on item edit
+// TODO: make notifs work again
 export default function ExpenseForm({
   selectedMonths,
   item,
+  isPickerVisible,
+  pickerDate,
+  isNotifEnabled,
   create,
   update,
   remove,
+  hideForRemoval,
+  undoRemoval,
 }: Props) {
   const initialValues = {
     description: item && item.description,
@@ -60,13 +68,6 @@ export default function ExpenseForm({
     defaultValues: initialValues,
     reValidateMode: "onBlur",
   });
-  const [notif, setNotif] = useState<ItemNotification>(
-    item && item.notification,
-  );
-  const [isNotifEnabled, setNotifEnabled] = useState(
-    !!item ? !!item.notification : false,
-  );
-  const [notifErr, setNotifErr] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
   const isNew = !item;
 
@@ -75,14 +76,9 @@ export default function ExpenseForm({
     register({ name: "amount" }, { required: true });
   }, [register]);
 
-  // TODO: add validation for when switch is enabled but datetime isn't selected
   const onSubmit = (data: Form) => {
     if (isSubmitting) {
       return;
-    }
-
-    if (isNotifEnabled && (!notif || isNaN(notif.date?.getTime()))) {
-      return setNotifErr(true);
     }
 
     setSubmitting(true);
@@ -91,14 +87,34 @@ export default function ExpenseForm({
       title: i18n.getNotifTitle,
       message: i18n.getNotifDesc(data.description),
     };
+
     if (isNew) {
       create({
-        item: { ...data, months: selectedMonths, notification: notif },
+        item: {
+          ...data,
+          months: selectedMonths,
+          ...(isNotifEnabled && {
+            notification: {
+              id: Math.pow(2, 30).toString(),
+              date: pickerDate,
+            },
+          }),
+        },
         notifTexts,
       });
     } else {
       update({
-        item: { ...item, ...data, months: selectedMonths, notification: notif },
+        item: {
+          ...item,
+          ...data,
+          months: selectedMonths,
+          ...(item.notification && {
+            notification: {
+              id: item.notification.id,
+              date: pickerDate,
+            },
+          }),
+        },
         oldAmount: initialValues.amount,
         oldNotif: item.notification,
         notifTexts,
@@ -108,65 +124,53 @@ export default function ExpenseForm({
     goBack();
   };
 
-  const onDeleteConfirm = () => {
-    remove({
-      id: item.id,
-      months: item.months,
-      amount: item.amount,
-      notifId: item.notification?.id,
-    });
-    goBack();
-  };
-
   const onDelete = () => {
-    Alert.alert(
-      i18n.confirmDeleteTitle,
-      i18n.confirmDeleteDesc,
-      [{ text: i18n.confirm, onPress: onDeleteConfirm }, { text: i18n.cancel }],
-      { cancelable: true },
-    );
-  };
+    let removalTimeout: NodeJS.Timeout = null;
 
-  // TODO: move this to redux
-  const onNotifDateChange = (date?: Date) => {
-    if (!date) {
-      return setNotif(undefined);
-    }
+    hideForRemoval(item.id);
 
-    setNotif({
-      id: Math.pow(2, 30).toString(),
-      date,
+    removalTimeout = setTimeout(() => {
+      remove({
+        id: item.id,
+        months: item.months,
+        amount: item.amount,
+        notifId: item.notification?.id,
+      });
+    }, 6000);
+
+    Snackbar.show({
+      text: i18n.snackbarDeletedText,
+      duration: 5000,
+      action: {
+        text: i18n.undo,
+        onPress: () => {
+          clearTimeout(removalTimeout);
+
+          undoRemoval(item.id);
+        },
+      },
     });
+
+    goBack();
   };
 
   const renderTopBar = () => {
     return (
-      <TopBar>
-        <View style={styles.topbarContainer}>
-          <TouchableWithoutFeedback onPress={goBack}>
-            <View style={styles.goBackWrapper}>
-              <Icon
-                name={getPlatformIcon("arrow-back")}
-                color="#581c0c"
-                size={24}
-              />
-              <Text style={styles.goBackText}>{i18n.back}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-
-          <Text style={styles.title}>
-            {isNew ? i18n.createExpenseTitle : i18n.updateExpenseTitle}
-          </Text>
-        </View>
-      </TopBar>
+      <TopBar
+        title={isNew ? i18n.createExpenseTitle : i18n.updateExpenseTitle}
+        hasBackButton={true}
+      />
     );
   };
 
   // TODO: add indication that the button is clicked
   // TODO: make button disabled if errors or as soon as it's clicked to avoid multiple creation
   const renderButtons = () => {
+    const style = isPickerVisible
+      ? [styles.buttonWrapper, { opacity: 0, zIndex: -1 }]
+      : styles.buttonWrapper;
     return (
-      <View style={styles.buttonWrapper}>
+      <View style={style}>
         <Text
           style={styles.buttonSubmit}
           onPress={() => !isSubmitting && handleSubmit(onSubmit)()}>
@@ -186,43 +190,40 @@ export default function ExpenseForm({
 
   const renderForm = () => {
     return (
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        enabled
-        keyboardVerticalOffset={0}>
-        <ScrollView style={styles.wrapper}>
-          <FormItem
-            label={i18n.description}
-            error={i18n.descriptionErr}
-            placeholder={i18n.descriptionPlaceholder}
-            hasErr={!!errors.description}
-            onChange={(val: string) => setValue("description", val, true)}
-            initialValue={item && item.description}
-          />
+      <>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+          enabled
+          keyboardVerticalOffset={0}>
+          <ScrollView style={styles.wrapper}>
+            <FormItem
+              label={i18n.description}
+              error={i18n.descriptionErr}
+              placeholder={i18n.descriptionPlaceholder}
+              hasErr={!!errors.description}
+              onChange={(val: string) => setValue("description", val, true)}
+              initialValue={item && item.description}
+            />
 
-          <FormItem
-            label={i18n.amount}
-            error={i18n.amountErr}
-            placeholder={i18n.amountPlaceholder}
-            hasErr={!!errors.amount}
-            keyboard="numeric"
-            onChange={(val: any) => setValue("amount", val, true)}
-            initialValue={item && item.amount.toString()}
-          />
+            <FormItem
+              label={i18n.amount}
+              error={i18n.amountErr}
+              placeholder={i18n.amountPlaceholder}
+              hasErr={!!errors.amount}
+              keyboard="numeric"
+              onChange={(val: any) => setValue("amount", val, true)}
+              initialValue={item && item.amount.toString()}
+            />
 
-          <MonthSelector />
+            <MonthSelector />
 
-          <NotificationController
-            initValue={item?.notification}
-            hasErr={notifErr}
-            onChange={setNotifEnabled}
-            onChangeDate={onNotifDateChange}
-          />
+            <NotificationController initSwitchValue={!!item?.notification} />
 
-          {renderButtons()}
-        </ScrollView>
-      </KeyboardAvoidingView>
+            {renderButtons()}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </>
     );
   };
 
@@ -241,7 +242,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
   },
   buttonDelete: {
     color: "red",
@@ -268,18 +268,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-  },
-  goBackWrapper: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    position: "absolute",
-    left: 0,
-  },
-  goBackText: {
-    fontSize: 18,
-    marginLeft: 10,
-    color: "#581c0c",
   },
   title: {
     fontSize: 18,
