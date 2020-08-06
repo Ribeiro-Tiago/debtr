@@ -21,7 +21,7 @@ jobs:
           git config --local user.name ${{ secrets.USER_NAME }}
 
       - name: "Install dependecies"
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Update app version
         run: yarn update-version
