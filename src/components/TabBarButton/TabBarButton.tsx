@@ -12,9 +12,9 @@ interface Props {
 export default ({ updateCurrItem }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
   const [menuWrapperVisible, setMenuWrapper] = useState(false);
-  const [itemBottom] = useState(new Animated.Value(0));
-  const [itemWidth] = useState(new Animated.Value(80));
-  const [itemHeight] = useState(new Animated.Value(80));
+  const [itemBottom] = useState(new Animated.Value(-60));
+  const [itemWidth] = useState(new Animated.Value(0));
+  const [itemHeight] = useState(new Animated.Value(0));
   const [itemMargin] = useState(new Animated.Value(20));
   // const { navigate } = useNavigation();
   // for rotate animation
