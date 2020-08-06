@@ -1,55 +1,37 @@
-name: "Create Release"
+name: "Google Play Deploy"
 
 on:
-  pull_request:
-    types: [closed]
-    branches: [master]
-    paths:
-      - src/**
-      - android/**
-      - ios/**
+  release:
+    types: [published]
 
 jobs:
-  upgrade-version:
+  build-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Config
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Rebuild keystore
         run: |
-          git config --local user.email ${{ secrets.USER_EMAIL }}
-          git config --local user.name ${{ secrets.USER_NAME }}
+          echo "${{ secrets.KEYSTORE }}" > release.asc
+          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch release.asc > android/app/release.keystore
 
-      - name: "Install dependecies"
-        run: yarn install
-
-      - name: Update app version
-        run: yarn update-version
-
-      - name: Push versions
+      - name: Build aab
         run: |
-          git fetch
-          git checkout master
-          git commit -m "Update app version" -a
-          git push
+          [ -d android/app/src/main/assets ] || mkdir android/app/src/main/assets
+          yarn release:aab
+
+      - name: Deploy to store
+        run: yarn deploy:android
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTOR: ${{ secrets.USER_NAME }}
-
-  create-draft-release:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: New release draft
-          release_name: New release draft
-          draft: true
-          prerelease: false
+          GAPI_EMAIL: ${{ secrets.GAPI_EMAIL }}
+          GAPI_KEY: ${{ secrets.GAPI_KEY }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
