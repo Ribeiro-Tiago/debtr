@@ -52,7 +52,7 @@ const deploy = () => {
 };
 
 deploy()
-  .then((data) => console.log(`Version ${data.versionCode} deployed!`))
+  .then((data) => console.log(`[>] Version ${data.versionCode} deployed!`))
   .catch((err) => {
     console.error(err);
     throw err;
