@@ -75,4 +75,8 @@ export default {
   reminderChooseHour: "Mudar hora",
   undo: "Restaurar",
   snackbarDeletedText: "Apagado com sucesso",
+  select: "Escolher",
+  selectLanguage: "Escolha um dos idiomas suportados:",
+  languageNotFound: "Uh oh... Parece que o ",
+  languageNotFound2: " não suporta o idioma do teu dispositivo",
 };

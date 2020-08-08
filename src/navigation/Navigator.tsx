@@ -203,25 +203,6 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
     );
   };
 
-  // const buildSettingsNav = () => {
-  //   return buildStackNav(
-  //     () => <Stack.Screen name={ROUTES.SETTINGS} component={SettingsScreen} />,
-  //     ROUTES.SETTINGS,
-  //   );
-  // };
-
-  // const buildExpensesNav = () => {
-  //   return buildStackNav(
-  //     () => (
-  //       <Stack.Screen
-  //         name={ROUTES.MONHTLY_EXPENSES}
-  //         component={MonthlyExpensesScreen}
-  //       />
-  //     ),
-  //     ROUTES.MONHTLY_EXPENSES,
-  //   );
-  // };
-
   return (
     <Sentry.ErrorBoundary>
       <NavigationContainer ref={navigationRef}>
