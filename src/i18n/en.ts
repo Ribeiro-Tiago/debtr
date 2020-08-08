@@ -45,7 +45,7 @@ export default {
   amountPlaceholder: "E.g.: 14 (Just a number)",
   emptyAllExpenses: "Create your first expense",
   monthlyExpense: "Happens every month",
-  allExpensesTitle: "All monthly expenses",
+  allExpensesTitle: "All expenses",
   months: "Months",
   monthsHelper:
     "Does this expense only happen in certain months ? Leaving all unselected means it happens every month",

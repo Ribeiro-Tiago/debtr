@@ -29,7 +29,7 @@ export default {
   amountPlaceholder: "E.g.: 14 (Apenas o número)",
   emptyAllExpenses: "Crie a sua primeira despesa",
   monthlyExpense: "Acontece todos os meses",
-  allExpensesTitle: "Todas as despesas mensais",
+  allExpensesTitle: "Todas as despesas",
   months: "Meses",
   monthsHelper:
     "Esta só existe nalguns meses ? Não selecionar nenhum significa que acontece em todos",
