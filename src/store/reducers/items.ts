@@ -81,7 +81,9 @@ export default (
 
     case UNDO_REMOVAL: {
       const items = state.map((item) => {
-        delete item.toRemove;
+        if (item.id === payload) {
+          delete item.toRemove;
+        }
 
         return item;
       });
