@@ -4,6 +4,11 @@ A mobile app to help me keep track of the status of my monthly expenses, given t
 
 Currently only available on [android](https://play.google.com/store/apps/details?id=com.debtr) due to licensing costs
 
+[![Screenshot](screenshots/1.png)](screenshots/1.png)
+[![Screenshot](screenshots/2.png)](screenshots/2.png)
+[![Screenshot](screenshots/3.png)](screenshots/3.png)
+[![Screenshot](screenshots/4.png)](screenshots/4.png)
+
 ## Build android
 
 - `yarn build:apk` to build an apk
