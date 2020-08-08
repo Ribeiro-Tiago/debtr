@@ -24,6 +24,16 @@ Config for [android](https://github.com/crazycodeboy/react-native-splash-screen)
 - optional: if you want a specific android version have the emulator running
 - yarn android
 
+### Errors running android
+
+##### :app:installDebug - INSTALL_FAILED_INVALID_APK: Package couldn't be installed in (...) /base.apk code is missing
+
+No idea what issue this is but `cd android && ./gradlew clean` seems to fix it
+
+##### :app:mergeExtDexDebug - java.nio.file.NoSuchFileException: android/app/build/intermediates/external_file_lib_dex_archives/debug/out
+
+It's very likely that this issue appears with fresh gradlew (or after gradlew clean). Just run `yarn build:android` and you're good to go
+
 # Runing locally on ios
 
 - yarn install
