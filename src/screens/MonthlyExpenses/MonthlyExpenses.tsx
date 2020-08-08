@@ -47,6 +47,7 @@ export default function MonthlyExpenses({
       <ListItem
         {...props}
         onPress={onItemPress}
+        onIconPress={onItemPress}
         iconName={getPlatformIcon(
           props.item.isPaid ? "checkbox-outline" : "square-outline",
         )}
