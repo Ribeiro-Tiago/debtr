@@ -59,25 +59,21 @@ const mapDispatchToProps = (dispatch: Function) => ({
       }
     }
   },
-  remove: ({ id, months, amount, notifId }: RemoveItemParams) => {
+  remove: (id: string, notifId?: string) => {
     dispatch(removeItem(id));
-
-    if (isCurrentMonth(months)) {
-      dispatch(subtractAmount(amount));
-    }
 
     if (notifId) {
       unregisterNotif(notifId);
     }
   },
-  undoRemoval: (id: string, months: number[], amount: number) => {
+  undoRemoval: ({ id, months, amount }: RemoveItemParams) => {
     dispatch(undoRemoval(id));
 
     if (isCurrentMonth(months)) {
       dispatch(addAmount(amount));
     }
   },
-  hideForRemoval: (id: string, months: number[], amount: number) => {
+  hideForRemoval: ({ id, months, amount }: RemoveItemParams) => {
     dispatch(hideForRemoval(id));
 
     if (isCurrentMonth(months)) {
