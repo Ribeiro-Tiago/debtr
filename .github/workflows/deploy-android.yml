@@ -31,3 +31,7 @@ jobs:
 
       - name: Deploy to store
         run: yarn deploy:android
+        env:
+          GAPI_EMAIL: ${{ secrets.GAPI_EMAIL }}
+          GAPI_KEY: ${{ secrets.GAPI_KEY }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
