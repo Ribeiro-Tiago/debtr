@@ -4,10 +4,10 @@ on:
   pull_request:
     branches:
       - master
-    paths:
-      - src/**
-      - android/**
-      - ios/**
+    #paths:
+      #- src/**
+      #- android/**
+      #- ios/**
 
 jobs:
   upgrade-version:
