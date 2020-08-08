@@ -52,7 +52,11 @@ const mapDispatchToProps = (dispatch: Function) => ({
     }
 
     if (JSON.stringify(item.notification) !== JSON.stringify(oldNotif)) {
-      /* updateNotif({ ...item.notification, ...notifTexts }, item.months); */
+      unregisterNotif(oldNotif.id);
+
+      if (item.notification || item.notification.id) {
+        registerNotif({ ...item.notification, ...notifTexts }, item.months);
+      }
     }
   },
   remove: ({ id, months, amount, notifId }: RemoveItemParams) => {
