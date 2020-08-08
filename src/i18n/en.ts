@@ -50,6 +50,7 @@ export default {
   monthsHelper:
     "Does this expense only happen in certain months ? Leaving all unselected means it happens every month",
   settings: "Settings",
+  expenses: "Expenses",
   create: "Create",
   langauge: "Language",
   about: "About",

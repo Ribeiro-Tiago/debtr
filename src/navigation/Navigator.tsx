@@ -47,75 +47,6 @@ interface Props {
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-const renderTabBar = ({
-  state,
-  navigation,
-  position,
-}: MaterialTopTabBarProps) => {
-  const icons: any = { expenses: "home", settings: "cog" };
-  const inputRange = state.routes.map((_, i) => i);
-
-  return (
-    <View style={styles.tabBar}>
-      {state.routes.map((route, index) => {
-        const onPress = () => {
-          const event = navigation.emit({
-            type: "tabPress",
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (!isActive && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
-
-        const opacity = Animated.interpolate(position, {
-          inputRange,
-          outputRange: inputRange.map((i: number) => (i === index ? 1 : 0.6)),
-        });
-
-        const isActive = index === state.index;
-
-        // type as any to avoid unnecessary import.
-        // typing is StyleProp<ViewStyle>
-        const viewStyle: any = {
-          flexDirection: "row-reverse",
-          justifyContent: "flex-end",
-        };
-
-        const isSecondTab = index === 1;
-
-        return (
-          <TouchableWithoutFeedback
-            key={route.key}
-            accessibilityRole="button"
-            accessibilityState={{ selected: isActive }}
-            onPress={onPress}>
-            <Animated.View
-              style={[styles.tab, isSecondTab && viewStyle, { opacity }]}>
-              <Icon
-                style={styles.barIcon}
-                name={
-                  isActive ? icons[route.name] : `${icons[route.name]}-outline`
-                }
-              />
-
-              <Text
-                style={[
-                  styles.tabText,
-                  isSecondTab && { marginRight: 10, marginLeft: 0 },
-                ]}>
-                {route.name}
-              </Text>
-            </Animated.View>
-          </TouchableWithoutFeedback>
-        );
-      })}
-    </View>
-  );
-};
-
 function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
   const { i18n } = useContext(i18nContext);
 
@@ -171,6 +102,77 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
         Alert.alert(i18n.errTitle, i18n.errMsg, [{ text: i18n.close }]);
       });
   }, []);
+
+  const renderTabBar = ({
+    state,
+    navigation,
+    position,
+  }: MaterialTopTabBarProps) => {
+    const icons: any = { expenses: "home", settings: "cog" };
+    const inputRange = state.routes.map((_, i) => i);
+
+    return (
+      <View style={styles.tabBar}>
+        {state.routes.map((route, index) => {
+          const onPress = () => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (!isActive && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
+
+          const opacity = Animated.interpolate(position, {
+            inputRange,
+            outputRange: inputRange.map((i: number) => (i === index ? 1 : 0.6)),
+          });
+
+          const isActive = index === state.index;
+
+          // type as any to avoid unnecessary import.
+          // typing is StyleProp<ViewStyle>
+          const viewStyle: any = {
+            flexDirection: "row-reverse",
+            justifyContent: "flex-end",
+          };
+
+          const isSecondTab = index === 1;
+
+          return (
+            <TouchableWithoutFeedback
+              key={route.key}
+              accessibilityRole="button"
+              accessibilityState={{ selected: isActive }}
+              onPress={onPress}>
+              <Animated.View
+                style={[styles.tab, isSecondTab && viewStyle, { opacity }]}>
+                <Icon
+                  style={styles.barIcon}
+                  name={
+                    isActive
+                      ? icons[route.name]
+                      : `${icons[route.name]}-outline`
+                  }
+                />
+
+                <Text
+                  style={[
+                    styles.tabText,
+                    isSecondTab && { marginRight: 10, marginLeft: 0 },
+                  ]}>
+                  {(i18n as any)[route.name]}
+                </Text>
+              </Animated.View>
+            </TouchableWithoutFeedback>
+          );
+        })}
+      </View>
+    );
+  };
 
   const buildTabNav = () => {
     return (

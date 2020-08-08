@@ -34,6 +34,7 @@ export default {
   monthsHelper:
     "Esta só existe nalguns meses ? Não selecionar nenhum significa que acontece em todos",
   settings: "Definições",
+  expenses: "Despesas",
   create: "Criar",
   about: "About",
   langauge: "Linguagem",
