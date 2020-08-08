@@ -2,7 +2,6 @@ name: "Create Release"
 
 on:
   pull_request:
-    types: [opened]
     branches: [master]
     paths:
       - src/**
