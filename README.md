@@ -4,6 +4,7 @@ A mobile app to help me keep track of the status of my monthly expenses, given t
 
 Currently only available on [android](https://play.google.com/store/apps/details?id=com.debtr) due to licensing costs
 
+![app screenshot](screenshots/1.png)
 ![app screenshot](screenshots/2.png)
 ![app screenshot](screenshots/3.png)
 ![app screenshot](screenshots/4.png)
