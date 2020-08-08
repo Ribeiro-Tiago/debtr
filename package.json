@@ -1,6 +1,6 @@
 {
   "name": "debtr",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "private": false,
   "description": "Simplistic app to help me keep track of what monthly expenses I have left to pay this month",
   "scripts": {
