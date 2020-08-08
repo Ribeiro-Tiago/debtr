@@ -5,8 +5,8 @@ const { readFileSync, writeFileSync } = require("fs");
 const {
   versionWithDate,
   versionWithV,
-  pkgJsonVersion,
   versionHasDate,
+  pkgJsonVersion,
   buildGradle,
 } = require("./regex");
 
@@ -25,10 +25,10 @@ const updateChangelogDateAndGetVersion = () => {
 
   const [version] = changelog.match(versionWithV);
 
-  if (!versionHasDate.test(changelog)) {
+  if (versionHasDate.test(changelog)) {
     console.log("[>] skiping changelog date update as it's already defined");
   } else if (versionWithDate.test(changelog)) {
-    console.log("> updating changelog date");
+    console.log("[>] updating changelog date");
     changelog = changelog.replace(version, `${version} (${getToday()})`);
   }
 
