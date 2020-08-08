@@ -18,9 +18,9 @@ interface Props {
   currCurrency: SupportedCurrencies;
   reorderItems: (items: Item[]) => void;
   updateCurrent: (item?: Item) => void;
-  removeItem: (params: RemoveItemParams) => void;
-  undoRemoval: (id: string) => void;
-  hideForRemoval: (id: string) => void;
+  removeItem: (id: string, notifId?: string) => void;
+  undoRemoval: (params: RemoveItemParams) => void;
+  hideForRemoval: (params: RemoveItemParams) => void;
 }
 
 export default function AllExpenses({
@@ -43,7 +43,7 @@ export default function AllExpenses({
   const onRemove = ({ id, months, amount, notification }: Item) => {
     let removalTimeout: NodeJS.Timeout = null;
 
-    hideForRemoval(id);
+    hideForRemoval({ id, months, amount });
 
     Snackbar.show({
       text: i18n.snackbarDeletedText,
@@ -53,18 +53,13 @@ export default function AllExpenses({
         onPress: () => {
           clearTimeout(removalTimeout);
 
-          undoRemoval(id);
+          undoRemoval({ id, months, amount });
         },
       },
     });
 
     removalTimeout = setTimeout(() => {
-      return removeItem({
-        id,
-        months,
-        amount,
-        notifId: notification && notification.id,
-      });
+      return removeItem(id, notification?.id);
     }, 6000);
   };
 

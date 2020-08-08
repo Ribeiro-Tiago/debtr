@@ -9,7 +9,8 @@ export default {
   errTitle: "Erro",
   errMsg: `Ocorreu um erro inesperado a obter as suas despesas. \n\nSe o problema persistir contacte-nos`,
   close: "Fechar",
-  emptyMonthlyExpenses: "You have no expenses left this month",
+  noMonthlyExpenses: "Ainda não tem despesa nenhuma",
+  emptyMonthlyExpenses: "Não tem despesas este mês",
   amountLeft: (amount: number, currency: SupportedCurrencies) => {
     return `${formatCurrency(amount, currency)} restante`;
   },
@@ -28,14 +29,15 @@ export default {
   amountPlaceholder: "E.g.: 14 (Apenas o número)",
   emptyAllExpenses: "Crie a sua primeira despesa",
   monthlyExpense: "Acontece todos os meses",
-  allExpensesTitle: "Todas as despesas mensais",
+  allExpensesTitle: "Todas as despesas",
   months: "Meses",
   monthsHelper:
     "Esta só existe nalguns meses ? Não selecionar nenhum significa que acontece em todos",
   settings: "Definições",
+  expenses: "Despesas",
   create: "Criar",
   about: "About",
-  langauge: "Linguagem",
+  langauge: "Idioma",
   version: "Versão da aplicação",
   privacyPolicy: "Política de privacidade",
   tos: "Termos de utilização",
@@ -75,4 +77,8 @@ export default {
   reminderChooseHour: "Mudar hora",
   undo: "Restaurar",
   snackbarDeletedText: "Apagado com sucesso",
+  select: "Escolher",
+  selectLanguage: "Escolha um dos idiomas suportados:",
+  languageNotFound: "Uh oh... Parece que o ",
+  languageNotFound2: " não suporta o idioma do teu dispositivo",
 };

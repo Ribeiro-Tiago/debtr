@@ -25,8 +25,6 @@ const dateLimits = () => {
   const min = new Date(date.getFullYear(), date.getMonth(), 1, 0);
   const max = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-  console.log(min, max);
-
   return { minimumDate: min, maximumDate: max };
 };
 

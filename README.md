@@ -4,6 +4,11 @@ A mobile app to help me keep track of the status of my monthly expenses, given t
 
 Currently only available on [android](https://play.google.com/store/apps/details?id=com.debtr) due to licensing costs
 
+![app screenshot](screenshots/1.png)
+![app screenshot](screenshots/2.png)
+![app screenshot](screenshots/3.png)
+![app screenshot](screenshots/4.png)
+
 ## Build android
 
 - `yarn build:apk` to build an apk
@@ -23,6 +28,16 @@ Config for [android](https://github.com/crazycodeboy/react-native-splash-screen)
 - yarn install
 - optional: if you want a specific android version have the emulator running
 - yarn android
+
+### Errors running android
+
+##### :app:installDebug - INSTALL_FAILED_INVALID_APK: Package couldn't be installed in (...) /base.apk code is missing
+
+No idea what issue this is but `cd android && ./gradlew clean` seems to fix it
+
+##### :app:mergeExtDexDebug - java.nio.file.NoSuchFileException: android/app/build/intermediates/external_file_lib_dex_archives/debug/out
+
+It's very likely that this issue appears with fresh gradlew (or after gradlew clean). Just run `yarn build:android` and you're good to go
 
 # Runing locally on ios
 

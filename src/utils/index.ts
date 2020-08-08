@@ -15,7 +15,7 @@ export const sanitizeAmount = (amount: any) => {
 export const isCurrentMonth = (months: number[]) => {
   const m = new Date().getMonth();
 
-  return isMonthly(months) || !months.includes(m);
+  return isMonthly(months) || months.includes(m);
 };
 
 export const isMonthly = (months: number[]) => {

@@ -9,11 +9,9 @@ import {
   undoRemoval,
   hideForRemoval,
 } from "../../store/actions/items";
-import { Item, ItemCreation, ItemNotification } from "../../types";
 import { addAmount, subtractAmount } from "../../store/actions/amountLeft";
 import { isCurrentMonth } from "../../utils";
 import { registerNotif, unregisterNotif } from "../../services/notifications";
-import { NotificationTexts, Notification } from "../../types/notification";
 import {
   CreateItemParams,
   UpdateItemParams,
@@ -54,22 +52,34 @@ const mapDispatchToProps = (dispatch: Function) => ({
     }
 
     if (JSON.stringify(item.notification) !== JSON.stringify(oldNotif)) {
-      /* updateNotif({ ...item.notification, ...notifTexts }, item.months); */
+      unregisterNotif(oldNotif.id);
+
+      if (item.notification || item.notification.id) {
+        registerNotif({ ...item.notification, ...notifTexts }, item.months);
+      }
     }
   },
-  remove: ({ id, months, amount, notifId }: RemoveItemParams) => {
+  remove: (id: string, notifId?: string) => {
     dispatch(removeItem(id));
-
-    if (isCurrentMonth(months)) {
-      dispatch(subtractAmount(amount));
-    }
 
     if (notifId) {
       unregisterNotif(notifId);
     }
   },
-  undoRemoval: (id: string) => dispatch(undoRemoval(id)),
-  hideForRemoval: (id: string) => dispatch(hideForRemoval(id)),
+  undoRemoval: ({ id, months, amount }: RemoveItemParams) => {
+    dispatch(undoRemoval(id));
+
+    if (isCurrentMonth(months)) {
+      dispatch(addAmount(amount));
+    }
+  },
+  hideForRemoval: ({ id, months, amount }: RemoveItemParams) => {
+    dispatch(hideForRemoval(id));
+
+    if (isCurrentMonth(months)) {
+      dispatch(subtractAmount(amount));
+    }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(component);

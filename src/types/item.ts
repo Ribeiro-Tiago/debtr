@@ -30,7 +30,6 @@ export interface RemoveItemParams {
   id: string;
   months: number[];
   amount: number;
-  notifId: string;
 }
 
 export interface CreateItemParams {

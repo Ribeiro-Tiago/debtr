@@ -25,7 +25,8 @@ export default {
   errTitle: "Error",
   errMsg: `An unexpected error ocurred retrieving your expenses. \n\nIf it persists contact support.`,
   close: "Close",
-  emptyMonthlyExpenses: "You have no expenses left this month",
+  noMonthlyExpenses: "You haven't created any expenses yet",
+  emptyMonthlyExpenses: "You have no expenses this month",
   amountLeft: (amount: number, currency: SupportedCurrencies) => {
     return `${formatCurrency(amount, currency)} left`;
   },
@@ -44,11 +45,12 @@ export default {
   amountPlaceholder: "E.g.: 14 (Just a number)",
   emptyAllExpenses: "Create your first expense",
   monthlyExpense: "Happens every month",
-  allExpensesTitle: "All monthly expenses",
+  allExpensesTitle: "All expenses",
   months: "Months",
   monthsHelper:
     "Does this expense only happen in certain months ? Leaving all unselected means it happens every month",
   settings: "Settings",
+  expenses: "Expenses",
   create: "Create",
   langauge: "Language",
   about: "About",
@@ -92,4 +94,8 @@ export default {
   reminderChooseHour: "Change hour",
   undo: "Undo",
   snackbarDeletedText: "Deleted successfully",
+  select: "Select",
+  selectLanguage: "Select one of the supported languages:",
+  languageNotFound: "Uh oh... It seems ",
+  languageNotFound2: " doesn't support your device language",
 };

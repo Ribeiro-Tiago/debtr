@@ -34,9 +34,9 @@ interface Props {
   isNotifEnabled: boolean;
   create: (params: CreateItemParams) => void;
   update: (params: UpdateItemParams) => void;
-  remove: (params: RemoveItemParams) => void;
-  undoRemoval: (id: string) => void;
-  hideForRemoval: (id: string) => void;
+  remove: (id: string, notifId?: string) => void;
+  undoRemoval: (params: RemoveItemParams) => void;
+  hideForRemoval: (params: RemoveItemParams) => void;
 }
 
 interface Form {
@@ -126,16 +126,12 @@ export default function ExpenseForm({
 
   const onDelete = () => {
     let removalTimeout: NodeJS.Timeout = null;
+    const { id, months, amount, notification } = item;
 
-    hideForRemoval(item.id);
+    hideForRemoval({ id, months, amount });
 
     removalTimeout = setTimeout(() => {
-      remove({
-        id: item.id,
-        months: item.months,
-        amount: item.amount,
-        notifId: item.notification?.id,
-      });
+      remove(id, notification?.id);
     }, 6000);
 
     Snackbar.show({
@@ -146,7 +142,7 @@ export default function ExpenseForm({
         onPress: () => {
           clearTimeout(removalTimeout);
 
-          undoRemoval(item.id);
+          undoRemoval({ id, months, amount });
         },
       },
     });
