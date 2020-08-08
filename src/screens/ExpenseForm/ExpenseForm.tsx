@@ -35,8 +35,8 @@ interface Props {
   create: (params: CreateItemParams) => void;
   update: (params: UpdateItemParams) => void;
   remove: (params: RemoveItemParams) => void;
-  undoRemoval: (id: string) => void;
-  hideForRemoval: (id: string) => void;
+  undoRemoval: (id: string, months: number[], amount: number) => void;
+  hideForRemoval: (id: string, months: number[], amount: number) => void;
 }
 
 interface Form {
@@ -126,15 +126,16 @@ export default function ExpenseForm({
 
   const onDelete = () => {
     let removalTimeout: NodeJS.Timeout = null;
+    const { id, months, amount, notification } = item;
 
-    hideForRemoval(item.id);
+    hideForRemoval(id, months, amount);
 
     removalTimeout = setTimeout(() => {
       remove({
-        id: item.id,
-        months: item.months,
-        amount: item.amount,
-        notifId: item.notification?.id,
+        id: id,
+        months: months,
+        amount: amount,
+        notifId: notification?.id,
       });
     }, 6000);
 
@@ -146,7 +147,7 @@ export default function ExpenseForm({
         onPress: () => {
           clearTimeout(removalTimeout);
 
-          undoRemoval(item.id);
+          undoRemoval(id, months, amount);
         },
       },
     });

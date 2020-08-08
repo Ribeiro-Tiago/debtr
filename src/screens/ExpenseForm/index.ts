@@ -9,11 +9,9 @@ import {
   undoRemoval,
   hideForRemoval,
 } from "../../store/actions/items";
-import { Item, ItemCreation, ItemNotification } from "../../types";
 import { addAmount, subtractAmount } from "../../store/actions/amountLeft";
 import { isCurrentMonth } from "../../utils";
 import { registerNotif, unregisterNotif } from "../../services/notifications";
-import { NotificationTexts, Notification } from "../../types/notification";
 import {
   CreateItemParams,
   UpdateItemParams,
@@ -68,8 +66,20 @@ const mapDispatchToProps = (dispatch: Function) => ({
       unregisterNotif(notifId);
     }
   },
-  undoRemoval: (id: string) => dispatch(undoRemoval(id)),
-  hideForRemoval: (id: string) => dispatch(hideForRemoval(id)),
+  undoRemoval: (id: string, months: number[], amount: number) => {
+    dispatch(undoRemoval(id));
+
+    if (isCurrentMonth(months)) {
+      dispatch(addAmount(amount));
+    }
+  },
+  hideForRemoval: (id: string, months: number[], amount: number) => {
+    dispatch(hideForRemoval(id));
+
+    if (isCurrentMonth(months)) {
+      dispatch(subtractAmount(amount));
+    }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(component);
