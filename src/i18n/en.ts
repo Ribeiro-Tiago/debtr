@@ -25,7 +25,8 @@ export default {
   errTitle: "Error",
   errMsg: `An unexpected error ocurred retrieving your expenses. \n\nIf it persists contact support.`,
   close: "Close",
-  emptyMonthlyExpenses: "You have no expenses left this month",
+  noMonthlyExpenses: "You haven't created any expenses yet",
+  emptyMonthlyExpenses: "You have no expenses this month",
   amountLeft: (amount: number, currency: SupportedCurrencies) => {
     return `${formatCurrency(amount, currency)} left`;
   },

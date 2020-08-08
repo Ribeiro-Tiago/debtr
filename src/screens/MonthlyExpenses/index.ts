@@ -15,6 +15,7 @@ const getMonthlyItems = (items: Item[]) => {
 
 const mapStateToProps = ({ items, amountLeft, currency }: StoreState) => {
   return {
+    hasItems: !!items.length,
     items: getMonthlyItems(items),
     amountLeft: amountLeft,
     currCurrency: currency,

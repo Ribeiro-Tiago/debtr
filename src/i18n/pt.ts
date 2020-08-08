@@ -9,7 +9,8 @@ export default {
   errTitle: "Erro",
   errMsg: `Ocorreu um erro inesperado a obter as suas despesas. \n\nSe o problema persistir contacte-nos`,
   close: "Fechar",
-  emptyMonthlyExpenses: "You have no expenses left this month",
+  noMonthlyExpenses: "Ainda não tem despesa nenhuma",
+  emptyMonthlyExpenses: "Não tem despesas este mês",
   amountLeft: (amount: number, currency: SupportedCurrencies) => {
     return `${formatCurrency(amount, currency)} restante`;
   },
