@@ -37,7 +37,7 @@ export default {
   expenses: "Despesas",
   create: "Criar",
   about: "About",
-  langauge: "Linguagem",
+  langauge: "Idioma",
   version: "Versão da aplicação",
   privacyPolicy: "Política de privacidade",
   tos: "Termos de utilização",
