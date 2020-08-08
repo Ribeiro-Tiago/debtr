@@ -3,7 +3,7 @@ name: "Create Release"
 on:
   pull_request:
     types: [opened]
-    branches: [master]
+    branches: [dev]
     paths:
       - src/**
       - android/**
