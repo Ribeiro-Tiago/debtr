@@ -24,6 +24,9 @@ jobs:
           echo "${{ secrets.KEYSTORE }}" > release.asc
           gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch release.asc > android/app/release.keystore
 
+      - name: Build dotenv
+        run: yarn build-dotenv
+
       - name: Build aab
         run: |
           [ -d android/app/src/main/assets ] || mkdir android/app/src/main/assets
