@@ -12,7 +12,9 @@ const setup = () => {
 
   writeFileSync(
     resolve(__dirname, "../.env"),
-    envVars.map(([key, value]) => `${key}=${value}`).join("\n"),
+    envVars
+      .map(([key, value]) => `${key.split("DOTENV_")[1]}=${value}`)
+      .join("\n"),
   );
 };
 
