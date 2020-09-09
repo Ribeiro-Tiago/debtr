@@ -13,6 +13,7 @@
     "release:apk": "yarn build:android && cd android && ./gradlew assembleRelease",
     "release:aab": "yarn build:android && cd android && ./gradlew bundleRelease",
     "debug:apk": "yarn build:android && cd android && ./gradlew assembleDebug",
+    "build-dotenv": "node infra/build-dotenv.js",
     "update-version": "node infra/update-versions.js",
     "deploy:android": "node infra/deploy-android.js"
   },
