@@ -18,9 +18,16 @@ type SetParams =
   | Item[]
   | SupportedLocales
   | SupportedCurrencies
-  | StoredNotification[];
+  | StoredNotification[]
+  | number;
 
-type StorageKey = "items" | "metadata" | "locale" | "currency" | "notifs";
+type StorageKey =
+  | "items"
+  | "metadata"
+  | "locale"
+  | "currency"
+  | "notifs"
+  | "resetDay";
 
 const PREFIX = "MPT_DATA";
 
@@ -54,19 +61,21 @@ const set = async (key: StorageKey, data: SetParams) => {
 };
 
 export const getData = async (): Promise<StorageData> => {
-  const [items, metadata, currency] = await Promise.all([
+  const [items, metadata, currency, resetDay] = await Promise.all([
     get("items"),
     get("metadata"),
     get("currency"),
+    get("resetDay"),
   ]);
 
-  if (!items && !metadata && !currency) {
+  if (!items && !metadata && !currency && !resetDay) {
     return undefined;
   }
 
   return {
     items: handleItems(items),
     currency: currency || SupportedCurrencies.EUR,
+    resetDay: resetDay || 1,
     ...(metadata && { ...JSON.parse(metadata) }),
   };
 };
@@ -101,6 +110,8 @@ export const updateLocale = async (locale: SupportedLocales) => {
 export const updateCurrency = async (currency: SupportedCurrencies) => {
   return await set("currency", currency);
 };
+
+export const updateResetDay = async (day: number) => await set("resetDay", day);
 
 export const getNotifs = async (): Promise<StoredNotification[]> => {
   try {

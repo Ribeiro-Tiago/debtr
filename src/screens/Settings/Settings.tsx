@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import locales from "../../i18n";
 import pkgJson from "../../../package.json";
@@ -15,19 +16,32 @@ import { updateLocale } from "../../services/storage";
 import { TopBar, Webview, SettingsPicker } from "../../components";
 import { SupportedCurrencies, SupportedLocales } from "../../types";
 import { locales as localePickerData, currencies } from "../../configs";
+import { TextInput } from "react-native-gesture-handler";
 
 interface Props {
   initCurrency: SupportedCurrencies;
   updateCurrency: (currency: SupportedCurrencies) => void;
+  updateResetDay: (day: number) => void;
 }
 
-const PDF_ASSET_URL = "https://tiago-ribeiro.com/debtr";
+const PDF_ASSET_URL = process.env.PDF_ASSET_URL;
 
-export default function Settings({ initCurrency, updateCurrency }: Props) {
+export default function Settings({
+  initCurrency,
+  updateCurrency,
+  updateResetDay,
+}: Props) {
   const { i18n, setI18n } = useContext(i18nContext);
   const [locale, setLocale] = useState(i18n._locale as SupportedLocales);
   const [currency, setCurrency] = useState(initCurrency);
   const [webviewUri, setWebviewUri] = useState("");
+  const [resetDay, setResetDay] = useState("1");
+  const [isEditable, setEditable] = useState(false);
+  const [isHelperVisible, setHelperVisible] = useState(false);
+
+  if (!!webviewUri) {
+    return <Webview uri={webviewUri} onClose={() => setWebviewUri("")} />;
+  }
 
   const renderSectionTitle = (title: string) => {
     return <Text style={styles.sectionTitle}>{title}</Text>;
@@ -124,9 +138,66 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
     );
   };
 
-  if (!!webviewUri) {
-    return <Webview uri={webviewUri} onClose={() => setWebviewUri("")} />;
-  }
+  const renderResetDayChange = () => {
+    const onChange = (editing: boolean) => {
+      if (!editing) {
+        setResetDay(`${resetDay}st`);
+      } else {
+        setResetDay(resetDay.replace(/\D/g, ""));
+      }
+    };
+
+    const toggleHelper = () => setHelperVisible(!isHelperVisible);
+
+    return (
+      <>
+        {renderSectionTitle(i18n.resetDay)}
+
+        <View style={styles.group}>
+          <Text style={styles.groupText}>
+            Reset day{" "}
+            <Icon
+              name="ios-help-circle-outline"
+              size={18}
+              onPress={toggleHelper}
+            />
+          </Text>
+          {/* <Icon
+            name="ios-today-outline"
+            size={24}
+            onPress={() => setIsVisible(true)}
+          /> */}
+          <TextInput
+            value={resetDay}
+            onChangeText={setResetDay}
+            keyboardType="number-pad"
+            allowFontScaling={true}
+            style={
+              isEditable
+                ? [
+                    { borderBottomColor: "#000", borderBottomWidth: 1 },
+                    { fontSize: 18 },
+                  ]
+                : { fontSize: 18 }
+            }
+            onFocus={() => onChange(true)}
+            onBlur={() => onChange(false)}
+          />
+        </View>
+
+        {/* {isVisible && (
+          <DateTimePicker
+            mode="date"
+            value={resetDay}
+            display="calendar"
+            onChange={(ev, d) => onChange(d)}
+            maximumDate={new Date(2020, 0, 31)}
+            minimumDate={new Date(2020, 0, 1)}
+          />
+        )} */}
+      </>
+    );
+  };
 
   return (
     <>
@@ -136,6 +207,8 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
         {renderLanguage()}
 
         {renderCurrency()}
+
+        {renderResetDayChange()}
 
         {renderAbout()}
       </ScrollView>

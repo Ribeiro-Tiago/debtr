@@ -81,4 +81,5 @@ export default {
   selectLanguage: "Escolha um dos idiomas suportados:",
   languageNotFound: "Uh oh... Parece que o ",
   languageNotFound2: " não suporta o idioma do teu dispositivo",
+  resetDay: "Dia de recomeço",
 };
