@@ -31,7 +31,7 @@ jobs:
       - name: Push versions
         run: |
           git fetch
-          git checkout master
+          git checkout master --force
           git commit -m "Update app version" -a
           git push
         env:
