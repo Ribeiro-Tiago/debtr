@@ -46,7 +46,11 @@ const mapDispatchToProps = (dispatch: Function) => ({
   update: ({ item, oldAmount, oldNotif, notifTexts }: UpdateItemParams) => {
     dispatch(updateItem(item));
 
-    if (isCurrentMonth(item.months) && oldAmount !== undefined) {
+    if (
+      isCurrentMonth(item.months) &&
+      oldAmount !== undefined &&
+      !item.isPaid
+    ) {
       dispatch(addAmount(item.amount));
       dispatch(subtractAmount(oldAmount));
     }
