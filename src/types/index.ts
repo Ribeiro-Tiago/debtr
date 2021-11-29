@@ -1,4 +1,4 @@
-import {Item} from "./item";
+import { Item } from "./item";
 
 export * from "./item";
 
@@ -25,6 +25,7 @@ export enum SupportedCurrencies {
 export enum SupportedLocales {
   en = "en",
   pt = "pt",
+  es = "es",
 }
 
 export type PickerType = "date" | "time";

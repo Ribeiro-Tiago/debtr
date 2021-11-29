@@ -1,6 +1,6 @@
-import {SupportedCurrencies} from "../types";
-import {formatCurrency} from "../utils/formatters";
-import {addLeadZero} from "../utils";
+import { SupportedCurrencies } from "../types";
+import { formatCurrency } from "../utils/formatters";
+import { addLeadZero } from "../utils";
 
 export const name = "Português";
 
