@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from "react";
+import React, { useEffect, useContext } from "react";
 import {
   Alert,
   StyleSheet,
@@ -6,14 +6,14 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from "react-native";
-import {NavigationContainer} from "@react-navigation/native";
-import {createStackNavigator} from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBarProps,
 } from "@react-navigation/material-top-tabs";
 import SplashScreen from "react-native-splash-screen";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Animated from "react-native-reanimated";
 
@@ -23,18 +23,20 @@ import {
   ExpenseFormScreen,
   SettingsScreen,
 } from "../screens";
-import {getData, updateCurrMonth as setCurrMonth} from "../services/storage";
-import setupNofis, {checkNotifsForReschedule} from "../services/notifications";
-import {TabBarButton} from "../components";
-import {StorageData, Item, SupportedCurrencies} from "../types";
-import {isCurrentMonth} from "../utils";
-import {i18nContext} from "../contexts/i18n";
-import {setAmount} from "../store/actions/amountLeft";
-import {setItems} from "../store/actions/items";
-import {setCurrency} from "../store/actions/currency";
-import {setResetDay} from "../store/actions/settings";
-import {ROUTES} from "./routes";
-import {navigationRef} from "./externalNavigate";
+import { getData, updateCurrMonth as setCurrMonth } from "../services/storage";
+import setupNofis, {
+  checkNotifsForReschedule,
+} from "../services/notifications";
+import { TabBarButton } from "../components";
+import { StorageData, Item, SupportedCurrencies } from "../types";
+import { isCurrentMonth } from "../utils";
+import { i18nContext } from "../contexts/i18n";
+import { setAmount } from "../store/actions/amountLeft";
+import { setItems } from "../store/actions/items";
+import { setCurrency } from "../store/actions/currency";
+import { setResetDay } from "../store/actions/settings";
+import { ROUTES } from "./routes";
+import { navigationRef } from "./externalNavigate";
 import Sentry from "../../sentry.config";
 
 interface Props {
@@ -47,8 +49,13 @@ interface Props {
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-function Navigator({setAmountLeft, setItems, setCurrency, setResetDay}: Props) {
-  const {i18n} = useContext(i18nContext);
+function Navigator({
+  setAmountLeft,
+  setItems,
+  setCurrency,
+  setResetDay,
+}: Props) {
+  const { i18n } = useContext(i18nContext);
 
   // load stuff from local storage
   // TODO: make this better
@@ -72,18 +79,18 @@ function Navigator({setAmountLeft, setItems, setCurrency, setResetDay}: Props) {
         data.items = data.items.filter((i) => !i.toRemove);
 
         if (data.currMonth !== currMonth || resetDay <= today.getDate()) {
-          const {items, amountLeft} = data.items.reduce(
+          const { items, amountLeft } = data.items.reduce(
             (accu, curr) => {
               if (isCurrentMonth(curr.months)) {
-                accu.amountLeft += curr.amount;
+                accu.amountLeft += Number(curr.amount);
               }
 
               return {
-                items: [...accu.items, {...curr, isPaid: false}],
+                items: [...accu.items, { ...curr, isPaid: false }],
                 amountLeft: accu.amountLeft,
               };
             },
-            {items: [], amountLeft: 0},
+            { items: [], amountLeft: 0 },
           );
 
           setItems(items);
@@ -101,15 +108,15 @@ function Navigator({setAmountLeft, setItems, setCurrency, setResetDay}: Props) {
         return;
       })
       .catch((error) => {
-        console.log(error);
+        console.trace(error);
         Sentry.captureException(error);
         SplashScreen.hide();
-        Alert.alert(i18n.errTitle, i18n.errMsg, [{text: i18n.close}]);
+        Alert.alert(i18n.errTitle, i18n.errMsg, [{ text: i18n.close }]);
       });
   }, []);
 
-  const renderTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
-    const icons: any = {expenses: "home", settings: "cog"};
+  const renderTabBar = ({ state, navigation }: MaterialTopTabBarProps) => {
+    const icons: any = { expenses: "home", settings: "cog" };
 
     return (
       <View style={styles.tabBar}>
@@ -141,7 +148,7 @@ function Navigator({setAmountLeft, setItems, setCurrency, setResetDay}: Props) {
             <TouchableWithoutFeedback
               key={route.key}
               accessibilityRole="button"
-              accessibilityState={{selected: isActive}}
+              accessibilityState={{ selected: isActive }}
               onPress={onPress}>
               <Animated.View
                 style={[
@@ -160,7 +167,7 @@ function Navigator({setAmountLeft, setItems, setCurrency, setResetDay}: Props) {
                 <Text
                   style={[
                     styles.tabText,
-                    isSecondTab && {marginRight: 10, marginLeft: 0},
+                    isSecondTab && { marginRight: 10, marginLeft: 0 },
                   ]}>
                   {(i18n as any)[route.name]}
                 </Text>
@@ -188,7 +195,7 @@ function Navigator({setAmountLeft, setItems, setCurrency, setResetDay}: Props) {
 
   const buildStackNav = () => {
     return (
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name={ROUTES.MONHTLY_EXPENSES} component={buildTabNav} />
 
         <Stack.Screen

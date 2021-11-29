@@ -2,7 +2,7 @@ import {
   SUBTRACT_AMOUNT_LEFT,
   ADD_AMOUNT_LEFT,
   SET_AMOUNT_LEFT,
-} from './types';
+} from "./types";
 
 export const subtractAmount = (amount: number) => ({
   type: SUBTRACT_AMOUNT_LEFT,
