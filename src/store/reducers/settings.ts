@@ -1,22 +1,19 @@
-import { SET_RESET_DAY, UPDATE_RESET_DAY } from "../actions/types";
-import { ReducerAction } from "../../types/store";
-import { updateResetDay } from "../../services/storage";
+import {SET_RESET_DAY, UPDATE_RESET_DAY} from "../actions/types";
+import {ReducerAction} from "../../types/store";
+import {updateResetDay} from "../../services/storage";
 
-const initState = 1;
+const initState = {resetDay: 1};
 
-export default (
-  state = initState,
-  { type, payload }: ReducerAction<number>,
-) => {
+export default (state = initState, {type, payload}: ReducerAction<number>) => {
   switch (type) {
     case SET_RESET_DAY: {
-      return payload;
+      return {...state, resetDay: payload};
     }
 
     case UPDATE_RESET_DAY: {
       updateResetDay(payload);
 
-      return payload;
+      return {...state, resetDay: payload};
     }
 
     default:

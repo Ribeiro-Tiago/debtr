@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useState} from "react";
 import {
   View,
   StyleSheet,
@@ -11,15 +11,20 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 import locales from "../../i18n";
 import pkgJson from "../../../package.json";
-import { i18nContext } from "../../contexts/i18n";
-import { updateLocale } from "../../services/storage";
-import { TopBar, Webview, SettingsPicker } from "../../components";
-import { SupportedCurrencies, SupportedLocales } from "../../types";
-import { locales as localePickerData, currencies } from "../../configs";
-import { TextInput } from "react-native-gesture-handler";
+import {i18nContext} from "../../contexts/i18n";
+import {updateLocale} from "../../services/storage";
+import {
+  TopBar,
+  Webview,
+  SettingsPicker,
+  CollapsableView,
+} from "../../components";
+import {SupportedCurrencies, SupportedLocales} from "../../types";
+import {locales as localePickerData, currencies} from "../../configs";
 
 interface Props {
   initCurrency: SupportedCurrencies;
+  initResetDay: Date;
   updateCurrency: (currency: SupportedCurrencies) => void;
   updateResetDay: (day: number) => void;
 }
@@ -28,15 +33,16 @@ const PDF_ASSET_URL = process.env.PDF_ASSET_URL;
 
 export default function Settings({
   initCurrency,
+  initResetDay,
   updateCurrency,
   updateResetDay,
 }: Props) {
-  const { i18n, setI18n } = useContext(i18nContext);
+  const {i18n, setI18n} = useContext(i18nContext);
   const [locale, setLocale] = useState(i18n._locale as SupportedLocales);
   const [currency, setCurrency] = useState(initCurrency);
   const [webviewUri, setWebviewUri] = useState("");
-  const [resetDay, setResetDay] = useState("1");
-  const [isEditable, setEditable] = useState(false);
+  const [resetDay, setResetDay] = useState(initResetDay);
+  const [isCalendarVisible, setResetDayCalendar] = useState(false);
   const [isHelperVisible, setHelperVisible] = useState(false);
 
   if (!!webviewUri) {
@@ -55,7 +61,7 @@ export default function Settings({
     }; */
 
     const onChange = (locale: SupportedLocales) => {
-      // setLocale(locale);
+      // setLocale(locale);r
       setI18n(locales[locale]);
       updateLocale(locale);
     };
@@ -139,15 +145,23 @@ export default function Settings({
   };
 
   const renderResetDayChange = () => {
-    const onChange = (editing: boolean) => {
-      if (!editing) {
-        setResetDay(`${resetDay}st`);
-      } else {
-        setResetDay(resetDay.replace(/\D/g, ""));
-      }
-    };
+    const minDate = new Date();
+    minDate.setDate(1);
+
+    const maxDate = new Date(minDate.getFullYear(), minDate.getMonth() + 1, 0);
 
     const toggleHelper = () => setHelperVisible(!isHelperVisible);
+
+    const onDayChange = (date: Date | undefined) => {
+      setResetDayCalendar(false);
+
+      if (!date) {
+        return;
+      }
+
+      setResetDay(date);
+      updateResetDay(date.getDate());
+    };
 
     return (
       <>
@@ -162,39 +176,28 @@ export default function Settings({
               onPress={toggleHelper}
             />
           </Text>
-          {/* <Icon
-            name="ios-today-outline"
-            size={24}
-            onPress={() => setIsVisible(true)}
-          /> */}
-          <TextInput
-            value={resetDay}
-            onChangeText={setResetDay}
-            keyboardType="number-pad"
-            allowFontScaling={true}
-            style={
-              isEditable
-                ? [
-                    { borderBottomColor: "#000", borderBottomWidth: 1 },
-                    { fontSize: 18 },
-                  ]
-                : { fontSize: 18 }
-            }
-            onFocus={() => onChange(true)}
-            onBlur={() => onChange(false)}
-          />
+
+          <Text onPress={() => setResetDayCalendar(true)}>
+            {resetDay.getDate()}
+          </Text>
         </View>
 
-        {/* {isVisible && (
+        <View style={styles.helperWrapper}>
+          <CollapsableView isOpen={isHelperVisible}>
+            <Text style={styles.helper}>{i18n.resetDayHelper}</Text>
+          </CollapsableView>
+        </View>
+
+        {isCalendarVisible && (
           <DateTimePicker
             mode="date"
             value={resetDay}
             display="calendar"
-            onChange={(ev, d) => onChange(d)}
-            maximumDate={new Date(2020, 0, 31)}
-            minimumDate={new Date(2020, 0, 1)}
+            onChange={(ev, d) => onDayChange(d)}
+            minimumDate={minDate}
+            maximumDate={maxDate}
           />
-        )} */}
+        )}
       </>
     );
   };
@@ -238,5 +241,12 @@ const styles = StyleSheet.create({
   },
   groupText: {
     fontSize: 18,
+  },
+  helper: {
+    fontSize: 16,
+    fontStyle: "italic",
+  },
+  helperWrapper: {
+    paddingHorizontal: 20,
   },
 });
