@@ -1,7 +1,7 @@
-import {formatCurrency, addLeadZero} from "../utils";
-import {SupportedCurrencies} from "../types";
+import { formatCurrency, addLeadZero } from "../utils";
+import { SupportedCurrencies } from "../types";
 
-export const getDayTh = (digit: string) => {
+const getDayTh = (digit: string) => {
   switch (digit) {
     case "1": {
       return "st";
