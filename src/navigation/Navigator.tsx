@@ -15,7 +15,6 @@ import {
 import SplashScreen from "react-native-splash-screen";
 import {connect} from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import * as Sentry from "@sentry/react-native";
 import Animated from "react-native-reanimated";
 
 import {
@@ -36,6 +35,7 @@ import {setCurrency} from "../store/actions/currency";
 import {setResetDay} from "../store/actions/settings";
 import {ROUTES} from "./routes";
 import {navigationRef} from "./externalNavigate";
+import Sentry from "../../sentry.config";
 
 interface Props {
   setAmountLeft: (amount: number) => void;

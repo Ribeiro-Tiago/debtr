@@ -1,19 +1,20 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { NativeModules, Platform } from "react-native";
-import { Provider } from "react-redux";
+import React, {useMemo, useState, useEffect} from "react";
+import {NativeModules, Platform} from "react-native";
+import {Provider} from "react-redux";
 
 import store from "./src/store";
 import locales from "./src/i18n";
-import { i18nContext } from "./src/contexts/i18n";
-import { I18n } from "./src/types/context";
-import { SupportedLocales } from "./src/types";
-import { getLocale, updateLocale } from "./src/services/storage";
-import { LocaleSelectorScreen } from "./src/screens";
+import {i18nContext} from "./src/contexts/i18n";
+import {I18n} from "./src/types/context";
+import {SupportedLocales} from "./src/types";
+import {getLocale, updateLocale} from "./src/services/storage";
+import {LocaleSelectorScreen} from "./src/screens";
 import Navigator from "./src/navigation/Navigator";
+import Sentry from "./sentry.config";
 
-export default function App() {
+function App() {
   const [i18n, setI18n] = useState<I18n>();
-  const i18nProviderValue = useMemo(() => ({ i18n, setI18n }), [i18n]);
+  const i18nProviderValue = useMemo(() => ({i18n, setI18n}), [i18n]);
 
   useEffect(() => {
     const locale = getDeviceLocale();
@@ -56,3 +57,5 @@ export default function App() {
     </Provider>
   );
 }
+
+export default Sentry.wrap(App);
