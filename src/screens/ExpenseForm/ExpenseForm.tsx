@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, {useEffect, useContext, useState} from "react";
 import {
   View,
   StyleSheet,
@@ -7,11 +7,11 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-import { useForm } from "react-hook-form";
+import {useForm} from "react-hook-form";
 import Snackbar from "react-native-snackbar";
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/native";
 
-import { Item } from "../../types";
+import {Item} from "../../types";
 import {
   FormItem,
   MonthSelector,
@@ -19,7 +19,7 @@ import {
   TopBar,
 } from "../../components";
 
-import { i18nContext } from "../../contexts/i18n";
+import {i18nContext} from "../../contexts/i18n";
 import {
   CreateItemParams,
   RemoveItemParams,
@@ -42,6 +42,7 @@ interface Props {
 interface Form {
   description: string;
   amount: number;
+  name: string;
 }
 
 // TODO: fill correct notif values on item edit
@@ -62,9 +63,14 @@ export default function ExpenseForm({
     description: item && item.description,
     amount: item && item.amount,
   };
-  const { i18n } = useContext(i18nContext);
-  const { goBack } = useNavigation();
-  const { register, setValue, handleSubmit, errors } = useForm<Form>({
+  const {i18n} = useContext(i18nContext);
+  const {goBack} = useNavigation();
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<Form>({
     defaultValues: initialValues,
     reValidateMode: "onBlur",
   });
@@ -72,8 +78,8 @@ export default function ExpenseForm({
   const isNew = !item;
 
   useEffect(() => {
-    register({ name: "description" }, { required: true });
-    register({ name: "amount" }, { required: true });
+    register("description", {required: true});
+    register("amount", {required: true});
   }, [register]);
 
   const onSubmit = (data: Form) => {
@@ -126,9 +132,9 @@ export default function ExpenseForm({
 
   const onDelete = () => {
     let removalTimeout: NodeJS.Timeout = null;
-    const { id, months, amount, notification } = item;
+    const {id, months, amount, notification} = item;
 
-    hideForRemoval({ id, months, amount });
+    hideForRemoval({id, months, amount});
 
     removalTimeout = setTimeout(() => {
       remove(id, notification?.id);
@@ -142,7 +148,7 @@ export default function ExpenseForm({
         onPress: () => {
           clearTimeout(removalTimeout);
 
-          undoRemoval({ id, months, amount });
+          undoRemoval({id, months, amount});
         },
       },
     });
@@ -163,8 +169,9 @@ export default function ExpenseForm({
   // TODO: make button disabled if errors or as soon as it's clicked to avoid multiple creation
   const renderButtons = () => {
     const style = isPickerVisible
-      ? [styles.buttonWrapper, { opacity: 0, zIndex: -1 }]
+      ? [styles.buttonWrapper, {opacity: 0, zIndex: -1}]
       : styles.buttonWrapper;
+
     return (
       <View style={style}>
         <Text
@@ -198,7 +205,9 @@ export default function ExpenseForm({
               error={i18n.descriptionErr}
               placeholder={i18n.descriptionPlaceholder}
               hasErr={!!errors.description}
-              onChange={(val: string) => setValue("description", val, true)}
+              onChange={(val: string) =>
+                setValue("description", val, {shouldValidate: true})
+              }
               initialValue={item && item.description}
             />
 
@@ -208,7 +217,9 @@ export default function ExpenseForm({
               placeholder={i18n.amountPlaceholder}
               hasErr={!!errors.amount}
               keyboard="numeric"
-              onChange={(val: any) => setValue("amount", val, true)}
+              onChange={(val: any) =>
+                setValue("amount", val, {shouldValidate: true})
+              }
               initialValue={item && item.amount.toString()}
             />
 
