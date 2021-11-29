@@ -16,13 +16,13 @@ export interface RenderItemParams {
   onDrag: () => void;
 }
 
-export const enum SupportedCurrencies {
+export enum SupportedCurrencies {
   EUR = "EUR",
   USD = "USD",
   GBP = "GBP",
 }
 
-export const enum SupportedLocales {
+export enum SupportedLocales {
   en = "en",
   pt = "pt",
   es = "es",
