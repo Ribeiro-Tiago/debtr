@@ -1,4 +1,4 @@
-import {Item} from "./item";
+import { Item } from "./item";
 
 export * from "./item";
 
@@ -16,15 +16,16 @@ export interface RenderItemParams {
   onDrag: () => void;
 }
 
-export enum SupportedCurrencies {
+export const enum SupportedCurrencies {
   EUR = "EUR",
   USD = "USD",
   GBP = "GBP",
 }
 
-export enum SupportedLocales {
+export const enum SupportedLocales {
   en = "en",
   pt = "pt",
+  es = "es",
 }
 
 export type PickerType = "date" | "time";
