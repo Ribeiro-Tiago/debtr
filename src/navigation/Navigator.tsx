@@ -126,10 +126,10 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
             }
           };
 
-          const opacity = Animated.interpolate(position, {
-            inputRange,
-            outputRange: inputRange.map((i: number) => (i === index ? 1 : 0.6)),
-          });
+          // const opacity = Animated.interpolate(position, {
+          //   inputRange,
+          //   outputRange: inputRange.map((i: number) => (i === index ? 1 : 0.6)),
+          // });
 
           const isActive = index === state.index;
 
@@ -149,7 +149,7 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
               accessibilityState={{ selected: isActive }}
               onPress={onPress}>
               <Animated.View
-                style={[styles.tab, isSecondTab && viewStyle, { opacity }]}>
+                style={[styles.tab, isSecondTab && viewStyle/*, { opacity }*/]}>
                 <Icon
                   style={styles.barIcon}
                   name={
@@ -190,7 +190,7 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
 
   const buildStackNav = () => {
     return (
-      <Stack.Navigator headerMode="none">
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name={ROUTES.MONHTLY_EXPENSES} component={buildTabNav} />
 
         <Stack.Screen

@@ -1,4 +1,4 @@
-import storage from "@react-native-community/async-storage";
+import storage from "@react-native-async-storage/async-storage";
 
 import {
   Item,
