@@ -19,3 +19,6 @@ export const UPDATE_CURRENCY = "update currency";
 export const TOGGLE_NOTIFICATION_PICKER = "toggle notification picker";
 export const UPDATE_PICKER_VALUE = "update picker value";
 export const TOGGLE_NOTIF_ENABLED = "toggle notification state";
+
+export const SET_RESET_DAY = "set reset day";
+export const UPDATE_RESET_DAY = "update reset day";

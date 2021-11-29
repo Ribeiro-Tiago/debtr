@@ -16,6 +16,12 @@ target 'debtr' do
 
   pod 'RNCPicker', :path => '../node_modules/@react-native-picker/picker'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+
+  pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
+
   target 'debtrTests' do
     inherit! :complete
     # Pods for testing

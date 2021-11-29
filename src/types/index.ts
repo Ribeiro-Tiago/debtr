@@ -1,4 +1,4 @@
-import { Item } from "./item";
+import {Item} from "./item";
 
 export * from "./item";
 
@@ -7,6 +7,7 @@ export interface StorageData {
   currMonth: number;
   items: Item[];
   currency: SupportedCurrencies;
+  resetDay: number;
 }
 
 export interface RenderItemParams {

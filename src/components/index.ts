@@ -10,6 +10,7 @@ import FormLabel from "./FormLabel";
 import NotificationController from "./NotificationController";
 import BetaTag from "./BetaTag";
 import TabBarButton from "./TabBarButton";
+import CollapsableView from "./CollapsableView";
 
 export {
   TopBar,
@@ -24,4 +25,5 @@ export {
   NotificationController,
   BetaTag,
   TabBarButton,
+  CollapsableView,
 };

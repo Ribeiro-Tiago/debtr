@@ -26,6 +26,8 @@ jobs:
 
       - name: Build dotenv
         run: yarn build-dotenv
+        env:
+          DOTENV_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
       - name: Build aab
         run: |
@@ -37,4 +39,3 @@ jobs:
         env:
           GAPI_EMAIL: ${{ secrets.GAPI_EMAIL }}
           GAPI_KEY: ${{ secrets.GAPI_KEY }}
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}

@@ -6,7 +6,7 @@ import {
   SupportedLocales,
   SupportedCurrencies,
 } from "../types";
-import { StoredNotification } from "../types/notification";
+import {StoredNotification} from "../types/notification";
 
 type Metadata = {
   amountLeft: number;
@@ -18,9 +18,16 @@ type SetParams =
   | Item[]
   | SupportedLocales
   | SupportedCurrencies
-  | StoredNotification[];
+  | StoredNotification[]
+  | number;
 
-type StorageKey = "items" | "metadata" | "locale" | "currency" | "notifs";
+type StorageKey =
+  | "items"
+  | "metadata"
+  | "locale"
+  | "currency"
+  | "notifs"
+  | "resetDay";
 
 const PREFIX = "MPT_DATA";
 
@@ -43,8 +50,17 @@ const handleItems = (items: string) => {
   return newItems;
 };
 
-const get = async (key: StorageKey) => {
-  return await storage.getItem(`${PREFIX}_${key}`);
+const get = async (
+  key: StorageKey,
+  defaultVal: any = undefined,
+): Promise<any> => {
+  const result = await storage.getItem(`${PREFIX}_${key}`);
+
+  if (!result) {
+    return defaultVal;
+  }
+
+  return result;
 };
 
 const set = async (key: StorageKey, data: SetParams) => {
@@ -54,20 +70,22 @@ const set = async (key: StorageKey, data: SetParams) => {
 };
 
 export const getData = async (): Promise<StorageData> => {
-  const [items, metadata, currency] = await Promise.all([
+  const [items, metadata, currency, resetDay] = await Promise.all([
     get("items"),
     get("metadata"),
     get("currency"),
+    get("resetDay", 1),
   ]);
 
-  if (!items && !metadata && !currency) {
+  if (!items && !metadata && !currency && !resetDay) {
     return undefined;
   }
 
   return {
     items: handleItems(items),
     currency: currency || SupportedCurrencies.EUR,
-    ...(metadata && { ...JSON.parse(metadata) }),
+    resetDay: Number(resetDay),
+    ...(metadata && {...JSON.parse(metadata)}),
   };
 };
 
@@ -75,8 +93,8 @@ export const updateCurrMonth = async (currMonth: number) => {
   const data = JSON.parse(await get("metadata")) as Metadata;
 
   return !data
-    ? set("metadata", { amountLeft: 0, currMonth })
-    : set("metadata", { amountLeft: data.amountLeft, currMonth });
+    ? set("metadata", {amountLeft: 0, currMonth})
+    : set("metadata", {amountLeft: data.amountLeft, currMonth});
 };
 
 export const updateAmount = async (amount: number) => {
@@ -102,6 +120,8 @@ export const updateCurrency = async (currency: SupportedCurrencies) => {
   return await set("currency", currency);
 };
 
+export const updateResetDay = async (day: number) => await set("resetDay", day);
+
 export const getNotifs = async (): Promise<StoredNotification[]> => {
   try {
     const results = await get("notifs");
@@ -117,7 +137,7 @@ export const removeNotif = async (notifId: string) => {
 
   set(
     "notifs",
-    notifs.filter(({ notif }) => notif.id !== notifId),
+    notifs.filter(({notif}) => notif.id !== notifId),
   );
 };
 
@@ -135,7 +155,5 @@ export const getNotif = async (notifId: string) => {
 
   const notifs: StoredNotification[] = await getNotifs();
 
-  const notif = notifs.find(({ notif }) => notif.id === notifId);
-
-  return notif ? notif : undefined;
+  return notifs.find(({notif}) => notif.id === notifId) || undefined;
 };

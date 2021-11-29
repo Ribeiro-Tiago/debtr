@@ -1,6 +1,6 @@
-import { SupportedCurrencies } from "../types";
-import { formatCurrency } from "../utils/formatters";
-import { addLeadZero } from "../utils";
+import {SupportedCurrencies} from "../types";
+import {formatCurrency} from "../utils/formatters";
+import {addLeadZero} from "../utils";
 
 export const name = "Português";
 
@@ -81,4 +81,7 @@ export default {
   selectLanguage: "Escolha um dos idiomas suportados:",
   languageNotFound: "Uh oh... Parece que o ",
   languageNotFound2: " não suporta o idioma do teu dispositivo",
+  resetDay: "Dia de recomeço",
+  resetDayHelper:
+    'Determina quando é o "fim do mês". Este dia indica quando o mês "começa" e as despesas recomeçam',
 };

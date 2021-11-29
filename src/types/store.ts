@@ -1,4 +1,4 @@
-import { Item, SupportedCurrencies, PickerType } from "./";
+import {Item, SupportedCurrencies, PickerType} from "./";
 
 export interface StoreState {
   items: Item[];
@@ -13,6 +13,9 @@ export interface StoreState {
     isPickerVisible: boolean;
     pickerValue: Date;
     isEnabled: boolean;
+  };
+  settings: {
+    resetDay: number;
   };
 }
 
