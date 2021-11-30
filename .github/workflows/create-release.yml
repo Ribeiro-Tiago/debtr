@@ -27,12 +27,13 @@ jobs:
         run: yarn install
 
       - name: Update app version
-        run: yarn update-version
+        run: |
+          git fetch
+          git checkout dev --force
+          yarn update-version
 
       - name: Push versions
         run: |
-          git fetch
-          git checkout master --force
           git commit -m "Update app version" -a
           git push
         env:
