@@ -48,7 +48,7 @@ It's very likely that this issue appears with fresh gradlew (or after gradlew cl
 
 # Contribution
 
-Wanna contribute? Check the [how to](https://github.com/Ribeiro-Tiago/debtr/blob/master/CONTRIBUTING.md) and then see what [needs to be done](https://github.com/Ribeiro-Tiago/debtr/blob/master/TODO.md), look for `TODO:` comments in the code of stuff I have to do but haven't gotten around to it yet, or come up with new features yourself
+Wanna contribute? Check the [how to](https://github.com/Ribeiro-Tiago/debtr/blob/master/CONTRIBUTING.md) and then see what [needs to be done](https://github.com/Ribeiro-Tiago/debtr/projects/1), look for `TODO:` comments in the code of stuff I have to do but haven't gotten around to it yet, or come up with new features yourself
 
 # Credits
 
