@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -11,16 +11,16 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 import locales from "../../i18n";
 import pkgJson from "../../../package.json";
-import {i18nContext} from "../../contexts/i18n";
-import {updateLocale} from "../../services/storage";
+import { i18nContext } from "../../contexts/i18n";
+import { updateLocale } from "../../services/storage";
 import {
   TopBar,
   Webview,
   SettingsPicker,
   CollapsableView,
 } from "../../components";
-import {SupportedCurrencies, SupportedLocales} from "../../types";
-import {locales as localePickerData, currencies} from "../../configs";
+import { SupportedCurrencies, SupportedLocales } from "../../types";
+import { locales as localePickerData, currencies } from "../../configs";
 
 interface Props {
   initCurrency: SupportedCurrencies;
@@ -37,7 +37,7 @@ export default function Settings({
   updateCurrency,
   updateResetDay,
 }: Props) {
-  const {i18n, setI18n} = useContext(i18nContext);
+  const { i18n, setI18n } = useContext(i18nContext);
   const [locale, setLocale] = useState(i18n._locale as SupportedLocales);
   const [currency, setCurrency] = useState(initCurrency);
   const [webviewUri, setWebviewUri] = useState("");
@@ -177,9 +177,11 @@ export default function Settings({
             />
           </Text>
 
-          <Text onPress={() => setResetDayCalendar(true)}>
-            {resetDay.getDate()}
-          </Text>
+          <TouchableWithoutFeedback onPress={() => setResetDayCalendar(true)}>
+            <View style={styles.resetDayContainer}>
+              <Text style={styles.resetDayText}>{resetDay.getDate()}</Text>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
 
         <View style={styles.helperWrapper}>
@@ -249,4 +251,11 @@ const styles = StyleSheet.create({
   helperWrapper: {
     paddingHorizontal: 20,
   },
+  resetDayContainer: {
+    borderColor: "#581c0c",
+    borderWidth: 1,
+    borderRadius: 2000,
+    width: 20,
+  },
+  resetDayText: { textAlign: "center" },
 });
