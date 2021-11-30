@@ -1,6 +1,7 @@
 name: "Google Play Deploy"
 
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
