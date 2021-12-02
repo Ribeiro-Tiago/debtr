@@ -7,6 +7,7 @@ export interface StorageData {
   currMonth: number;
   items: Item[];
   currency: SupportedCurrencies;
+  resetDay: number;
 }
 
 export interface RenderItemParams {
@@ -24,6 +25,7 @@ export enum SupportedCurrencies {
 export enum SupportedLocales {
   en = "en",
   pt = "pt",
+  es = "es",
 }
 
 export type PickerType = "date" | "time";

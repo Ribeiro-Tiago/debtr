@@ -25,6 +25,11 @@ jobs:
           echo "${{ secrets.KEYSTORE }}" > release.asc
           gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch release.asc > android/app/release.keystore
 
+      - name: Build dotenv
+        run: yarn build-dotenv
+        env:
+          DOTENV_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+
       - name: Build aab
         run: |
           [ -d android/app/src/main/assets ] || mkdir android/app/src/main/assets
@@ -35,4 +40,3 @@ jobs:
         env:
           GAPI_EMAIL: ${{ secrets.GAPI_EMAIL }}
           GAPI_KEY: ${{ secrets.GAPI_KEY }}
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}

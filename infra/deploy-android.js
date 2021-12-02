@@ -4,7 +4,7 @@ const { Apkup } = require("apkup");
 const { resolve } = require("path");
 const { readFileSync, existsSync } = require("fs");
 
-const { versionWithV } = require("./regex");
+const { versionWithV } = require("./utils/regex");
 
 const getChangelog = () => {
   const results = readFileSync(resolve(__dirname, "../CHANGELOG"), {

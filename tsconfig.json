@@ -2,8 +2,8 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
-    "lib": ["es6"],
-    "allowJs": false,
+    "lib": ["es2017"],
+    "allowJs": true,
     "jsx": "react-native",
     "noEmit": true,
     "isolatedModules": true,
@@ -12,6 +12,7 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "skipLibCheck": false,
     "resolveJsonModule": true
   },
   "exclude": [

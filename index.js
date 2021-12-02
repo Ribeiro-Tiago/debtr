@@ -1,12 +1,9 @@
-import { AppRegistry, Platform } from "react-native";
+/**
+ * @format
+ */
 
+import {AppRegistry} from "react-native";
 import App from "./App";
-import { iosName, androidName } from "./app.json";
-import setupSentry from "./sentry.config";
+import {name as appName} from "./app.json";
 
-setupSentry();
-
-AppRegistry.registerComponent(
-  Platform.OS === "ios" ? iosName : androidName,
-  () => App,
-);
+AppRegistry.registerComponent(appName, () => App);

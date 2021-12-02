@@ -7,27 +7,47 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import locales from "../../i18n";
 import pkgJson from "../../../package.json";
 import { i18nContext } from "../../contexts/i18n";
 import { updateLocale } from "../../services/storage";
-import { TopBar, Webview, SettingsPicker } from "../../components";
+import {
+  TopBar,
+  Webview,
+  SettingsPicker,
+  CollapsableView,
+} from "../../components";
 import { SupportedCurrencies, SupportedLocales } from "../../types";
 import { locales as localePickerData, currencies } from "../../configs";
 
 interface Props {
   initCurrency: SupportedCurrencies;
+  initResetDay: Date;
   updateCurrency: (currency: SupportedCurrencies) => void;
+  updateResetDay: (day: number) => void;
 }
 
-const PDF_ASSET_URL = "https://tiago-ribeiro.com/debtr";
+const PDF_ASSET_URL = process.env.PDF_ASSET_URL;
 
-export default function Settings({ initCurrency, updateCurrency }: Props) {
+export default function Settings({
+  initCurrency,
+  initResetDay,
+  updateCurrency,
+  updateResetDay,
+}: Props) {
   const { i18n, setI18n } = useContext(i18nContext);
   const [locale, setLocale] = useState(i18n._locale as SupportedLocales);
   const [currency, setCurrency] = useState(initCurrency);
   const [webviewUri, setWebviewUri] = useState("");
+  const [resetDay, setResetDay] = useState(initResetDay);
+  const [isCalendarVisible, setResetDayCalendar] = useState(false);
+  const [isHelperVisible, setHelperVisible] = useState(false);
+
+  if (!!webviewUri) {
+    return <Webview uri={webviewUri} onClose={() => setWebviewUri("")} />;
+  }
 
   const renderSectionTitle = (title: string) => {
     return <Text style={styles.sectionTitle}>{title}</Text>;
@@ -41,7 +61,7 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
     }; */
 
     const onChange = (locale: SupportedLocales) => {
-      // setLocale(locale);
+      // setLocale(locale);r
       setI18n(locales[locale]);
       updateLocale(locale);
     };
@@ -124,9 +144,65 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
     );
   };
 
-  if (!!webviewUri) {
-    return <Webview uri={webviewUri} onClose={() => setWebviewUri("")} />;
-  }
+  const renderResetDayChange = () => {
+    const minDate = new Date();
+    minDate.setDate(1);
+
+    const maxDate = new Date(minDate.getFullYear(), minDate.getMonth() + 1, 0);
+
+    const toggleHelper = () => setHelperVisible(!isHelperVisible);
+
+    const onDayChange = (date: Date | undefined) => {
+      setResetDayCalendar(false);
+
+      if (!date) {
+        return;
+      }
+
+      setResetDay(date);
+      updateResetDay(date.getDate());
+    };
+
+    return (
+      <>
+        {renderSectionTitle(i18n.resetDay)}
+
+        <View style={styles.group}>
+          <Text style={styles.groupText}>
+            Reset day{" "}
+            <Icon
+              name="ios-help-circle-outline"
+              size={18}
+              onPress={toggleHelper}
+            />
+          </Text>
+
+          <TouchableWithoutFeedback onPress={() => setResetDayCalendar(true)}>
+            <View style={styles.resetDayContainer}>
+              <Text style={styles.resetDayText}>{resetDay.getDate()}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <View style={styles.helperWrapper}>
+          <CollapsableView isOpen={isHelperVisible}>
+            <Text style={styles.helper}>{i18n.resetDayHelper}</Text>
+          </CollapsableView>
+        </View>
+
+        {isCalendarVisible && (
+          <DateTimePicker
+            mode="date"
+            value={resetDay}
+            display="calendar"
+            onChange={(ev, d) => onDayChange(d)}
+            minimumDate={minDate}
+            maximumDate={maxDate}
+          />
+        )}
+      </>
+    );
+  };
 
   return (
     <>
@@ -136,6 +212,8 @@ export default function Settings({ initCurrency, updateCurrency }: Props) {
         {renderLanguage()}
 
         {renderCurrency()}
+
+        {renderResetDayChange()}
 
         {renderAbout()}
       </ScrollView>
@@ -166,4 +244,18 @@ const styles = StyleSheet.create({
   groupText: {
     fontSize: 18,
   },
+  helper: {
+    fontSize: 16,
+    fontStyle: "italic",
+  },
+  helperWrapper: {
+    paddingHorizontal: 20,
+  },
+  resetDayContainer: {
+    borderColor: "#581c0c",
+    borderWidth: 1,
+    borderRadius: 2000,
+    width: 20,
+  },
+  resetDayText: { textAlign: "center" },
 });

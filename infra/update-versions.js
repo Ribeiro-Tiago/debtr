@@ -8,7 +8,7 @@ const {
   versionHasDate,
   pkgJsonVersion,
   buildGradle,
-} = require("./regex");
+} = require("./utils/regex");
 
 const getToday = () => {
   const addLeadZero = (num) => `0${num}`.substr(-2);

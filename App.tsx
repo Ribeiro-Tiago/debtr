@@ -10,8 +10,9 @@ import { SupportedLocales } from "./src/types";
 import { getLocale, updateLocale } from "./src/services/storage";
 import { LocaleSelectorScreen } from "./src/screens";
 import Navigator from "./src/navigation/Navigator";
+import Sentry from "./sentry.config";
 
-export default function App() {
+function App() {
   const [i18n, setI18n] = useState<I18n>();
   const i18nProviderValue = useMemo(() => ({ i18n, setI18n }), [i18n]);
 
@@ -56,3 +57,5 @@ export default function App() {
     </Provider>
   );
 }
+
+export default Sentry.wrap(App);

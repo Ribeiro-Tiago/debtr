@@ -15,7 +15,6 @@ import {
 import SplashScreen from "react-native-splash-screen";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import * as Sentry from "@sentry/react-native";
 import Animated from "react-native-reanimated";
 
 import {
@@ -35,19 +34,27 @@ import { i18nContext } from "../contexts/i18n";
 import { setAmount } from "../store/actions/amountLeft";
 import { setItems } from "../store/actions/items";
 import { setCurrency } from "../store/actions/currency";
+import { setResetDay } from "../store/actions/settings";
 import { ROUTES } from "./routes";
-import { navigationRef, navigate } from "./externalNavigate";
+import { navigationRef } from "./externalNavigate";
+import Sentry from "../../sentry.config";
 
 interface Props {
   setAmountLeft: (amount: number) => void;
   setItems: (items: Item[]) => void;
   setCurrency: (currency: SupportedCurrencies) => void;
+  setResetDay: (day: number) => void;
 }
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
+function Navigator({
+  setAmountLeft,
+  setItems,
+  setCurrency,
+  setResetDay,
+}: Props) {
   const { i18n } = useContext(i18nContext);
 
   // load stuff from local storage
@@ -57,7 +64,8 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
       .then((data: StorageData) => {
         setupNofis();
         checkNotifsForReschedule();
-        const currMonth = new Date().getMonth();
+        const today = new Date();
+        const currMonth = today.getMonth();
 
         if (!data) {
           setCurrMonth(currMonth);
@@ -66,13 +74,15 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
           return;
         }
 
+        const resetDay = data.resetDay;
+
         data.items = data.items.filter((i) => !i.toRemove);
 
-        if (data.currMonth !== currMonth) {
+        if (data.currMonth !== currMonth || resetDay <= today.getDate()) {
           const { items, amountLeft } = data.items.reduce(
             (accu, curr) => {
               if (isCurrentMonth(curr.months)) {
-                accu.amountLeft += curr.amount;
+                accu.amountLeft += Number(curr.amount);
               }
 
               return {
@@ -92,24 +102,21 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
         }
 
         setCurrency(data.currency);
+        setResetDay(resetDay);
 
         SplashScreen.hide();
         return;
       })
       .catch((error) => {
+        console.trace(error);
         Sentry.captureException(error);
         SplashScreen.hide();
         Alert.alert(i18n.errTitle, i18n.errMsg, [{ text: i18n.close }]);
       });
   }, []);
 
-  const renderTabBar = ({
-    state,
-    navigation,
-    position,
-  }: MaterialTopTabBarProps) => {
+  const renderTabBar = ({ state, navigation }: MaterialTopTabBarProps) => {
     const icons: any = { expenses: "home", settings: "cog" };
-    const inputRange = state.routes.map((_, i) => i);
 
     return (
       <View style={styles.tabBar}>
@@ -125,11 +132,6 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
               navigation.navigate(route.name);
             }
           };
-
-          const opacity = Animated.interpolate(position, {
-            inputRange,
-            outputRange: inputRange.map((i: number) => (i === index ? 1 : 0.6)),
-          });
 
           const isActive = index === state.index;
 
@@ -149,7 +151,10 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
               accessibilityState={{ selected: isActive }}
               onPress={onPress}>
               <Animated.View
-                style={[styles.tab, isSecondTab && viewStyle, { opacity }]}>
+                style={[
+                  styles.tab,
+                  isSecondTab && viewStyle /*, { opacity }*/,
+                ]}>
                 <Icon
                   style={styles.barIcon}
                   name={
@@ -190,7 +195,7 @@ function Navigator({ setAmountLeft, setItems, setCurrency }: Props) {
 
   const buildStackNav = () => {
     return (
-      <Stack.Navigator headerMode="none">
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name={ROUTES.MONHTLY_EXPENSES} component={buildTabNav} />
 
         <Stack.Screen
@@ -252,6 +257,7 @@ const mapDispatchToProps = (dispatch: Function) => {
     setCurrency: (currency: SupportedCurrencies) => {
       return dispatch(setCurrency(currency));
     },
+    setResetDay: (day: number) => dispatch(setResetDay(day)),
   };
 };
 

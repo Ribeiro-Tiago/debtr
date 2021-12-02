@@ -1,16 +1,16 @@
 import * as Sentry from "@sentry/react-native";
 import DeviceInfo from "react-native-device-info";
-import Config from "react-native-config";
+import config from "react-native-config";
+import pkg from "./package.json";
 
-export default () => {
-  if (process.env.NODE_ENV !== "production") {
-    return;
-  }
-
+if (config.NODE_ENV !== "development") {
   Sentry.init({
-    dsn: Config.SENTRY_DSN,
+    dsn: config.SENTRY_DSN,
     normalizeDepth: 10,
-    debug: process.env.NODE_ENV !== "production",
+    debug: true,
+    enableNative: true,
+    attachStacktrace: true,
+    release: pkg.version,
   });
 
   Sentry.setTags({
@@ -20,4 +20,6 @@ export default () => {
     systemVersion: DeviceInfo.getSystemVersion(),
     deviceName: DeviceInfo.getDeviceNameSync(),
   });
-};
+}
+
+export default Sentry;

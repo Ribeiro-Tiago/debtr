@@ -1,7 +1,7 @@
 import { formatCurrency, addLeadZero } from "../utils";
 import { SupportedCurrencies } from "../types";
 
-export const getDayTh = (digit: string) => {
+const getDayTh = (digit: string) => {
   switch (digit) {
     case "1": {
       return "st";
@@ -98,4 +98,7 @@ export default {
   selectLanguage: "Select one of the supported languages:",
   languageNotFound: "Uh oh... It seems ",
   languageNotFound2: " doesn't support your device language",
+  resetDay: "Reset day",
+  resetDayHelper:
+    'Determines when is your "end of the month" day. This day is when the month "starts" and expenses reset',
 };
